@@ -3,6 +3,7 @@ import 'package:tekachigeojit/home.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:tekachigeojit/prep/prepHome.dart';
+import 'package:tekachigeojit/services/AuthService.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -61,6 +62,14 @@ class _LoginState extends State<Login> {
       );
 
       if (response.statusCode == 200) {
+        AuthService().setCredentials(
+          _emailCtrl.text.trim(),
+          _passwordCtrl.text.trim(),
+        );
+        final data = jsonDecode(response.body);
+        final token = data['token'];
+        AuthService().setToken(token);
+
         Navigator.of(
           context,
         ).pushReplacement(MaterialPageRoute(builder: (_) => PrepHome()));

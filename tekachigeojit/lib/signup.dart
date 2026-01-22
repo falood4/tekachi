@@ -1,4 +1,4 @@
-import 'dart:convert' show jsonEncode;
+import 'dart:convert' show jsonEncode, jsonDecode;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:tekachigeojit/home.dart';
@@ -90,7 +90,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
     }
 
     FocusScope.of(context).unfocus();
-    final url = Uri.parse('http://10.0.2.2:8080/api/users');
+    final url = Uri.parse('http://10.0.2.2:8080/api/users/register');
 
     try {
       final response = await AuthService.signup(
@@ -101,7 +101,14 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
       if (!mounted) return;
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        // Only set success state and run animations after a successful response
+        AuthService().setCredentials(
+          _emailCtrl.text.trim(),
+          _passwordCtrl.text.trim(),
+        );
+        final data = jsonDecode(response.body);
+        final token = data['token'];
+        AuthService().setToken(token);
+        
         setState(() => _signedUp = true);
 
         _circleController.value = 0;

@@ -1,15 +1,54 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class AuthService {
-  static const String _baseUrl = 'http://10.0.2.2:8080/api';
+  static const String _baseUrl = 'http://10.0.2.2:8080/api/users';
+  
+  // Singleton instance
+  static final AuthService _instance = AuthService._internal();
+  
+  factory AuthService() {
+    return _instance;
+  }
+  
+  AuthService._internal();
+  
+  // Stored credentials and token for logout
+  String? _email;
+  String? _password;
+  String? _token;
+  
+  void setCredentials(String email, String password) {
+    _email = email;
+    _password = password;
+  }
+  
+  void clearCredentials() {
+    _email = null;
+    _password = null;
+    _token = null;
+  }
 
+  void setToken(String token) {
+    _token = token;
+  }
+
+  /// Build headers with Content-Type and Authorization
+  Map<String, String> _headers() {
+    final headers = {'Content-Type': 'application/json'};
+    if (_token != null && _token!.isNotEmpty) {
+      headers['Authorization'] = 'Bearer $_token';
+    }
+    return headers;
+  }
+  
   static Future<http.Response> signup({
     required String email,
     required String password,
   }) {
     return http.post(
-      Uri.parse('$_baseUrl/users'),
+      Uri.parse('$_baseUrl/register'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
         'email': email,
@@ -17,4 +56,28 @@ class AuthService {
       }),
     );
   }
+
+  Future<http.Response> logout() async {
+    try {
+      final response = await http.post(
+        Uri.parse('$_baseUrl/logout'),
+        headers: _headers(),
+        body: jsonEncode({
+          'email': _email,
+          'password': _password,
+        }),
+      );
+      
+      if (response.statusCode == 200) {
+        clearCredentials();
+        debugPrint('Logout Successful');
+      }
+      
+      return response;
+    } catch (e) {
+      debugPrint('Logout error: $e');
+      rethrow;
+    }
+  }
+
 }
