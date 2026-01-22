@@ -9,6 +9,7 @@ import com.geojit.tekachi.usersignin.repository.UserRepository;
 import com.geojit.tekachi.usersignin.entity.User;
 import com.geojit.tekachi.usersignin.service.UserService;
 import com.geojit.tekachi.usersignin.service.JwtService;
+import com.geojit.tekachi.usersignin.service.TokenBlacklistService;
 
 import java.util.List;
 import java.util.Map;
@@ -21,11 +22,13 @@ public class UserController {
     private final UserRepository repository;
     private final UserService userService;
     private final JwtService jwtService;
+    private final TokenBlacklistService tokenBlacklistService;
 
-    public UserController(UserRepository repository, UserService userService, JwtService jwtService) {
+    public UserController(UserRepository repository, UserService userService, JwtService jwtService, TokenBlacklistService tokenBlacklistService) {
         this.repository = repository;
         this.userService = userService;
         this.jwtService = jwtService;
+        this.tokenBlacklistService = tokenBlacklistService;
     }
 
     @PostMapping("/register")
@@ -85,7 +88,6 @@ public class UserController {
         }
     }
 
-    //Get all users (admin only - requires authentication)
     @GetMapping
     public ResponseEntity<?> getAll() {
         try {
@@ -119,8 +121,21 @@ public class UserController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<?> logout() {
-        return ResponseEntity.ok(Map.of("message", "Logout successful. Please remove the token from client."));
+    public ResponseEntity<?> logout(@RequestHeader("Authorization") String authHeader) {
+        try {
+            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("error", "Missing or invalid token"));
+            }
+            
+            String token = authHeader.substring(7);
+            tokenBlacklistService.blacklistToken(token);
+            
+            return ResponseEntity.ok(Map.of("message", "Logout successful. Token revoked."));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Logout failed"));
+        }
     }
 
 }

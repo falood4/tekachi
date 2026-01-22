@@ -24,36 +24,53 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
+    private final TokenBlacklistService tokenBlacklistService;
+
+    public JwtAuthFilter(JwtService jwtService, CustomUserDetailsService customUserDetailsService, TokenBlacklistService tokenBlacklistService) {
+        this.jwtService = jwtService;
+        this.customUserDetailsService = customUserDetailsService;
+        this.tokenBlacklistService = tokenBlacklistService;
+    }
+
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
             HttpServletResponse response,
             FilterChain filterChain) throws ServletException, IOException {
 
-        try {
-            String jwt = extractJwtFromRequest(request);
+        String authHeader = request.getHeader("Authorization");
+        String token = null;
+        String email = null;
 
-            if (StringUtils.hasText(jwt) && jwtService.isTokenValid(jwt)) {
-                String username = jwtService.extractUsername(jwt);
-                UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7);
 
-                UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(
-                                userDetails,
-                                null,
-                                userDetails.getAuthorities()
-                        );
-
-                authentication.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request)
-                );
-
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+            // CHECK IF TOKEN IS BLACKLISTED
+            if (tokenBlacklistService.isTokenBlacklisted(token)) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getWriter().write("Token has been revoked");
+                return;
             }
-        } catch (Exception ex) {
-            logger.error("Could not set user authentication in security context", ex);
+
+            email = jwtService.extractEmail(token);
         }
 
+        if (StringUtils.hasText(token) && jwtService.isTokenValid(token)) {
+            UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
+
+            UsernamePasswordAuthenticationToken authentication =
+                    new UsernamePasswordAuthenticationToken(
+                            userDetails,
+                            null,
+                            userDetails.getAuthorities()
+                    );
+
+            authentication.setDetails(
+                    new WebAuthenticationDetailsSource().buildDetails(request)
+            );
+
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
         filterChain.doFilter(request, response);
     }
 

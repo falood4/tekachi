@@ -20,7 +20,7 @@ public class JwtService {
     @Value("${jwt.secret:MyVerySecureSecretKeyForJWTTokenGenerationWithAtLeast256BitsLength123456789}")
     private String jwtSecret;
 
-    @Value("${jwt.expiration:86400000}") // 24 hours in milliseconds
+    @Value("${jwt.expiration:36000000}")
     private long jwtExpiration;
 
     public String generateToken(UserDetails userDetails) {
@@ -88,5 +88,9 @@ public class JwtService {
 
     private SecretKey getSigningKey() {
         return Keys.hmacShaKeyFor(jwtSecret.getBytes());
+    }
+
+    public String extractEmail(String token) {
+        return extractUsername(token);
     }
 }
