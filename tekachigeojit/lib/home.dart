@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tekachigeojit/login.dart';
+import 'package:tekachigeojit/signup.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -6,25 +8,20 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    
+
     return Scaffold(
       backgroundColor: const Color.fromRGBO(20, 20, 20, 1.0),
       body: SafeArea(
         child: Center(
           child: Column(
             children: [
-            Container(
+              Container(
                 width: double.infinity,
                 margin: EdgeInsets.symmetric(
                   vertical: screenWidth * 0.25,
                   horizontal: screenHeight * 0.05,
                 ),
-                child: const Column(
-                  children: [
-                    AppTitle(),
-                    AppSubtitle(),
-                  ],
-                ),
+                child: const Column(children: [AppTitle(), AppSubtitle()]),
               ),
 
               Padding(
@@ -32,7 +29,11 @@ class HomeScreen extends StatelessWidget {
                 child: SizedBox(
                   width: screenWidth * 0.45,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (_) => Login()),
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                       textStyle: TextStyle(
                         fontSize: 0.05 * screenWidth,
@@ -42,7 +43,10 @@ class HomeScreen extends StatelessWidget {
                       padding: EdgeInsets.all(16),
                       backgroundColor: Color(0xFF8DD300),
                     ),
-                    child: Text("Log In", style: TextStyle(color: Colors.black)),
+                    child: Text(
+                      "Log In",
+                      style: TextStyle(color: Colors.black),
+                    ),
                   ),
                 ),
               ),
@@ -51,7 +55,11 @@ class HomeScreen extends StatelessWidget {
                 child: SizedBox(
                   width: screenWidth * 0.45,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (_) => Signup()),
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                       textStyle: TextStyle(
                         fontSize: 0.05 * screenWidth,
@@ -61,7 +69,10 @@ class HomeScreen extends StatelessWidget {
                       padding: EdgeInsets.all(16),
                       backgroundColor: Color(0xFFD1D1D1),
                     ),
-                    child: Text("Sign Up", style: TextStyle(color: Colors.black)),
+                    child: Text(
+                      "Sign Up",
+                      style: TextStyle(color: Colors.black),
+                    ),
                   ),
                 ),
               ),

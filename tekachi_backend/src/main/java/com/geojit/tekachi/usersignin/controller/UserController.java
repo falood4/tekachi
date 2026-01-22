@@ -24,7 +24,8 @@ public class UserController {
     private final JwtService jwtService;
     private final TokenBlacklistService tokenBlacklistService;
 
-    public UserController(UserRepository repository, UserService userService, JwtService jwtService, TokenBlacklistService tokenBlacklistService) {
+    public UserController(UserRepository repository, UserService userService, JwtService jwtService,
+            TokenBlacklistService tokenBlacklistService) {
         this.repository = repository;
         this.userService = userService;
         this.jwtService = jwtService;
@@ -52,8 +53,7 @@ public class UserController {
                     .body(Map.of(
                             "id", registeredUser.getId(),
                             "email", registeredUser.getEmail(),
-                            "message", "User registered successfully"
-                    ));
+                            "message", "User registered successfully"));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body(Map.of("error", e.getMessage()));
@@ -80,8 +80,7 @@ public class UserController {
                     "id", user.getId(),
                     "email", user.getEmail(),
                     "token", token,
-                    "message", "Login successful"
-            ));
+                    "message", "Login successful"));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(Map.of("error", e.getMessage()));
@@ -100,7 +99,7 @@ public class UserController {
         }
     }
 
-    //Get current user profile (requires authentication)
+    // Get current user profile (requires authentication)
     @GetMapping("/me")
     public ResponseEntity<?> getCurrentUser() {
         try {
@@ -127,15 +126,23 @@ public class UserController {
                 return ResponseEntity.badRequest()
                         .body(Map.of("error", "Missing or invalid token"));
             }
-            
+
             String token = authHeader.substring(7);
             tokenBlacklistService.blacklistToken(token);
-            
+
             return ResponseEntity.ok(Map.of("message", "Logout successful. Token revoked."));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Map.of("error", "Logout failed"));
         }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable Long id) {
+
+        repository.deleteById(id);
+        return ResponseEntity.ok(Map.of("message", "User deleted successfully"));
+
     }
 
 }
