@@ -2,8 +2,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:tekachigeojit/prep/prepHome.dart';
 
-class AptitudeTopics extends StatelessWidget {
-  const AptitudeTopics({super.key});
+class ArithmeticAptitude extends StatelessWidget {
+  const ArithmeticAptitude({super.key});
 
   @override
   Widget build(BuildContext context) {

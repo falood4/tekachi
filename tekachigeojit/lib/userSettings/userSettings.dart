@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:tekachigeojit/home.dart';
 import 'package:tekachigeojit/prep/prepHome.dart';
 import 'package:tekachigeojit/services/AuthService.dart';
 
 class UserSettings extends StatefulWidget {
   const UserSettings({super.key});
-
   @override
   State<UserSettings> createState() => _UserSettingsState();
 }

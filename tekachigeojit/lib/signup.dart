@@ -1,3 +1,4 @@
+// ignore: unused_shown_name
 import 'dart:convert' show jsonEncode, jsonDecode;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -90,6 +91,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
     }
 
     FocusScope.of(context).unfocus();
+    // ignore: unused_local_variable
     final url = Uri.parse('http://10.0.2.2:8080/api/users/register');
 
     try {

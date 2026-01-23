@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import '../test/testHome.dart';
 import '../userSettings/userSettings.dart';
+import './Aptitude Training/AptitudeHome.dart';
 
 class PrepHome extends StatelessWidget {
   const PrepHome({super.key});
-
-  void onPressed() {}
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +37,9 @@ class PrepHome extends StatelessWidget {
                     title: 'Aptitude\nTraining',
                     i: 2,
                     onTap: () {
-                      // navigate to aptitude
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (_) => AptitudeHome()),
+                      );
                     },
                   ),
                 ),
@@ -211,7 +212,7 @@ class TrainChoice extends StatelessWidget {
                 ),
               ),
               IconButton(
-                onPressed: onPressed,
+                onPressed: onTap,
                 icon: Icon(
                   Icons.play_circle_fill_rounded,
                   size: 0.1 * screenWidth,

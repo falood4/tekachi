@@ -29,6 +29,7 @@ flutter:
   assets:
     - assets/
     - assets/nav_icons/
+    - assets/prepfigs/datafigs/
 
  
   fonts:
