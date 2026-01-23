@@ -1,10 +1,11 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:tekachigeojit/prep/Aptitude%20Training/AptitudeHome.dart';
-import 'package:tekachigeojit/prep/prepHome.dart';
+import 'package:tekachigeojit/components/NavBar.dart';import 'package:tekachigeojit/components/TopicPopup.dart';
 
-class VerbalReasoing extends StatelessWidget {
-  const VerbalReasoing({super.key});
+
+class VerbalReasoning extends StatelessWidget {
+  const VerbalReasoning({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -81,61 +82,8 @@ class VerbalReasoing extends StatelessWidget {
 
   Widget _topicButton(BuildContext context, String title) {
     final screenWidth = MediaQuery.of(context).size.width;
-    return ElevatedButton(
-      onPressed: () {
-        showGeneralDialog(
-          context: context,
-          barrierDismissible: true,
-          barrierLabel: 'Close',
-          barrierColor: Colors.black54,
-          transitionDuration: const Duration(milliseconds: 180),
-          pageBuilder: (context, animation, secondaryAnimation) {
-            return Center(child: TopicPopup(topicTitle: title));
-          },
-          transitionBuilder: (context, animation, secondaryAnimation, child) {
-            final curved = CurvedAnimation(
-              parent: animation,
-              curve: Curves.easeOutCubic,
-              reverseCurve: Curves.easeInCubic,
-            );
-            return FadeTransition(
-              opacity: curved,
-              child: ScaleTransition(
-                scale: Tween<double>(begin: 0.9, end: 1.0).animate(curved),
-                child: child,
-              ),
-            );
-          },
-        );
-      },
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Color(0xFFD9D9D9),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      ),
-      child: Text(
-        title,
-        style: TextStyle(
-          color: Colors.black,
-          fontSize: screenWidth * 0.04,
-          fontFamily: "Trebuchet",
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    );
-  }
-}
 
-class TopicPopup extends StatelessWidget {
-  final String topicTitle;
-
-  const TopicPopup({super.key, required this.topicTitle});
-
-  @override
-  Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
-
-    final TopicContents = {
+    final topicContents = {
       'Ordering of Words': '''
 Read each sentence to find out whether there is any grammatical error in it. The error, if any will be in one part of the sentence. The letter of that part is the answer.
 
@@ -422,66 +370,49 @@ Answer: Option B.
 ''',
     };
 
-    return BackdropFilter(
-      filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-      child: Dialog(
-        backgroundColor: Colors.transparent,
-        child: Container(
-          width: screenWidth * 0.8,
-          height: screenHeight * 0.6,
-          padding: EdgeInsets.all(screenWidth * 0.05),
-          decoration: BoxDecoration(
-            color: Color(0xFFD9D9D9),
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                topicTitle,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: screenWidth * 0.06,
-                  fontFamily: "DelaGothicOne",
-                ),
+    return ElevatedButton(
+      onPressed: () {
+        showGeneralDialog(
+          context: context,
+          barrierDismissible: true,
+          barrierLabel: 'Close',
+          barrierColor: Colors.black54,
+          transitionDuration: const Duration(milliseconds: 180),
+          pageBuilder: (context, animation, secondaryAnimation) {
+            return Center(
+              child: TopicPopup(
+                topicTitle: title,
+                topicContents: topicContents,
               ),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Center(
-                    child: Text(
-                      TopicContents[topicTitle] ?? 'Content not available',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,
-                        fontFamily: "Trebuchet",
-                      ),
-                    ),
-                  ),
-                ),
+            );
+          },
+          transitionBuilder: (context, animation, secondaryAnimation, child) {
+            final curved = CurvedAnimation(
+              parent: animation,
+              curve: Curves.easeOutCubic,
+              reverseCurve: Curves.easeInCubic,
+            );
+            return FadeTransition(
+              opacity: curved,
+              child: ScaleTransition(
+                scale: Tween<double>(begin: 0.9, end: 1.0).animate(curved),
+                child: child,
               ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF8DD300),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: screenWidth * 0.1,
-                    vertical: screenHeight * 0.02,
-                  ),
-                ),
-                child: Text(
-                  'Close',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: screenWidth * 0.04,
-                    fontFamily: "DelaGothicOne",
-                  ),
-                ),
-              ),
-            ],
-          ),
+            );
+          },
+        );
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Color(0xFFD9D9D9),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      ),
+      child: Text(
+        title,
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: screenWidth * 0.04,
+          fontFamily: "Trebuchet",
+          fontWeight: FontWeight.bold,
         ),
       ),
     );

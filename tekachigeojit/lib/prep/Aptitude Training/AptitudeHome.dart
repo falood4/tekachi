@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:tekachigeojit/prep/Aptitude%20Training/DataInterpretation.dart';
 import 'package:tekachigeojit/prep/Aptitude%20Training/LogicalReasoning.dart';
-import 'package:tekachigeojit/prep/Aptitude%20Training/VerbalReasoing.dart';
+import 'package:tekachigeojit/prep/Aptitude%20Training/VerbalReasoning.dart';
 import 'package:tekachigeojit/prep/prepHome.dart';
 import 'ArithmeticAptitude.dart';
+import 'package:tekachigeojit/components/NavBar.dart';
 
 class AptitudeHome extends StatelessWidget {
   const AptitudeHome({super.key});
@@ -104,7 +105,7 @@ class AptitudeHome extends StatelessWidget {
   void _loadVerbalReasoning(BuildContext context) {
     Navigator.of(
       context,
-    ).pushReplacement(MaterialPageRoute(builder: (_) => VerbalReasoing()));
+    ).pushReplacement(MaterialPageRoute(builder: (_) => VerbalReasoning()));
   }
   
   void _loadLogicalReasoning(BuildContext context) {

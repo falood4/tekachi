@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:tekachigeojit/prep/Aptitude%20Training/AptitudeHome.dart';
-import 'package:tekachigeojit/prep/prepHome.dart';
+import 'package:tekachigeojit/components/NavBar.dart';
 
 class DataInterpretation extends StatelessWidget {
   const DataInterpretation({super.key});

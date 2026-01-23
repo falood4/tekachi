@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tekachigeojit/prep/prepHome.dart';
+import 'package:tekachigeojit/components/NavBar.dart';
 
 class TestHome extends StatelessWidget {
   const TestHome({super.key});
