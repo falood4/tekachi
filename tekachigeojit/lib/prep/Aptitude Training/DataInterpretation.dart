@@ -1,6 +1,5 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:tekachigeojit/prep/Aptitude%20Training/AptitudeHome.dart';
 import 'package:tekachigeojit/components/NavBar.dart';
 
 class DataInterpretation extends StatelessWidget {
@@ -33,10 +32,7 @@ class DataInterpretation extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_rounded),
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const AptitudeHome()),
-            );
+            Navigator.pop(context);
           },
         ),
       ),

@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:tekachigeojit/components/TopicPopup.dart';
 import 'package:tekachigeojit/components/NavBar.dart';
@@ -10,16 +9,36 @@ class DBMS extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
 
-    final ArithmeticTopics = [
-      "Problems on Trains",
-      "Time and Distance",
-      // ...existing topics...
+    final DBMSTopics = [
+      "Database System Architecture",
+      "Three-Level Architecture",
+      "ER Model and Keys",
+      "Relational Algebra",
+      "DDL, DML, DCL",
+      "Joins and Subqueries",
+      "ACID",
+      "Deadlocks",
     ];
 
     return Scaffold(
       backgroundColor: const Color.fromRGBO(20, 20, 20, 1.0),
       appBar: AppBar(
-        // ...existing appBar code...
+        backgroundColor: const Color.fromRGBO(20, 20, 20, 1.0),
+        iconTheme: const IconThemeData(color: Color(0xFF8DD300)),
+        title: Text(
+          'Technical Training',
+          style: TextStyle(
+            color: const Color(0xFF8DD300),
+            fontFamily: "Trebuchet",
+            fontSize: 0.075 * screenWidth,
+          ),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_rounded),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       bottomNavigationBar: NavBar(),
       body: SafeArea(
@@ -30,7 +49,7 @@ class DBMS extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Arithmetic Aptitude',
+                  'Database Management System',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: screenWidth * 0.05,
@@ -45,8 +64,8 @@ class DBMS extends StatelessWidget {
                   crossAxisSpacing: screenWidth * 0.05,
                   mainAxisSpacing: screenWidth * 0.05,
                   childAspectRatio: 1.5,
-                  children: List.generate(ArithmeticTopics.length, (index) {
-                    final topic = ArithmeticTopics[index];
+                  children: List.generate(DBMSTopics.length, (index) {
+                    final topic = DBMSTopics[index];
                     return _topicButton(context, topic);
                   }),
                 ),
@@ -58,147 +77,151 @@ class DBMS extends StatelessWidget {
     );
   }
 
-
   Widget _topicButton(BuildContext context, String title) {
     final screenWidth = MediaQuery.of(context).size.width;
 
-    final topicContents = {
-      'Problems on Trains': '''
-• Speed = Distance / Time.
-• Convert km/hr to m/sec: (x km/hr) = (x × 5) / 18 m/sec
-• Convert m/sec to km/hr: (x m/sec) = (x × 18) / 5 km/hr
-• Time taken by a train of length L to pass a stationary object = L / speed (when speed in m/sec)
-• Time for train length L to pass object of length B = (L + B) / relative speed
-• Relative speed (same direction) = (u − v) m/s
-• Relative speed (opposite direction) = (u + v) m/s
-• Two trains lengths a & b moving opposite: time to cross = (a + b) / (u + v)
-• Two trains lengths a & b moving same direction: time faster overtakes slower = (a + b) / (u − v)
-• If two trains start towards each other from points A and B and after crossing take a & b seconds to reach B and A respectively,
-  then (Speed of A) : (Speed of B) = b : a
-''',
+    const topicContents = {
+  'Database System Architecture': '''Database System Architecture describes how a DBMS is structured and how different components interact.
 
-      "Time and Distance": '''
-• Speed = Distance / Time.
-• Time = Distance / Speed
-• Distance = Speed × Time
-• km/hr to m/sec: x km/hr = (x × 5) / 18 m/sec
-• m/sec to km/hr: x m/sec = (x × 18) / 5 km/hr
-• If speeds of A and B are in ratio a : b, then times taken for same distance are b : a
-• Average speed for equal distances at x and y = (2xy) / (x + y) km/hr
-''',
+Main Components
+• Query Processor: Interprets and executes SQL queries
+• Storage Manager: Manages data storage, indexing, and buffering
+• Transaction Manager: Ensures ACID properties
+• Authorization & Integrity Manager: Controls access and enforces constraints
 
-      "Time and Work": '''
-• If A can finish work in n days, then A’s 1 day’s work = 1/n
-• If A’s 1 day’s work is 1/n, then total days to finish work = n
-• If A is k times as efficient as B, then A:B work done ratio is k:1 and time ratio is 1:k
-''',
+Why it matters
+• Separates user applications from physical data storage
+• Improves data security and consistency
+• Enables efficient query execution''',
 
-      "Height and Distance": '''
-• In a right triangle:
-  sin θ = Opposite / Hypotenuse,
-  cos θ = Adjacent / Hypotenuse,
-  tan θ = Opposite / Adjacent
-• Cosec θ = 1 / sin θ, sec θ = 1 / cos θ, cot θ = 1 / tan θ
-• Trig identities: sin²θ + cos²θ = 1;
-  1 + tan²θ = sec²θ;
-  1 + cot²θ = cosec²θ
-• Standard T-ratio values for angles:  
-  sin 30° = 1/2; cos 30° = √3 / 2; tan 30° = 1/√3;  
-  sin 45° = √2 / 2; cos 45° = √2 / 2; tan 45° = 1;  
-  sin 60° = √3 / 2; cos 60° = 1/2; tan 60° = √3
-''',
+  'Three-Level Architecture': '''The three-level architecture separates database description into different levels to achieve data independence.
 
-      "Simple Interest": '''
-Let Principal = P, Rate = R% p.a., Time = T years
-• Simple Interest (S.I.) = (P × R × T) / 100
-• P = (100 × S.I.) / (R × T)
-• R = (100 × S.I.) / (P × T)
-• T = (100 × S.I.) / (P × R)
-''',
+Levels
+• Internal Level: Physical storage of data
+• Conceptual Level: Logical structure of the entire database
+• External Level: User-specific views
 
-      "Compound Interest": '''
-Let Principal = P, Rate = R% p.a., Number of periods = n
-• Amount (compounded annually) = P × (1 + R/100)^n
-• Compound Interest (C.I.) = Amount − P
-• If interest is compounded half yearly: Amount = P × (1 + (R/2)/100)^(2n)
-• If interest is compounded quarterly: Amount = P × (1 + (R/4)/100)^(4n)
-• For different annual rates R1, R2, …: Amount = P × Π (1 + Ri/100)
-''',
+Data Independence
+• Logical Data Independence: Change conceptual schema without affecting views
+• Physical Data Independence: Change storage without affecting logical schema
 
-      "Profit and Loss": '''
-Let C.P. = Cost Price, S.P. = Selling Price
-• Gain = S.P. − C.P.
-• Loss = C.P. − S.P.
-• Gain % = (Gain × 100) / C.P.
-• Loss % = (Loss × 100) / C.P.
-• S.P. = ((100 + Gain %) × C.P.) / 100
-• S.P. = ((100 − Loss %) × C.P.) / 100
-• C.P. = (100 × S.P.) / (100 + Gain %) or (100 × S.P.) / (100 − Loss %)
-      ''',
-      "Percentage": '''
-• x% means x/100  
-• To express x% as a fraction: x% = x / 100  
-• To express a fraction a/b as a percentage: (a/b) × 100%  
-• Percentage Increase/Decrease:  
-  Increase % = ((New − Old) / Old) × 100  
-  Decrease % = ((Old − New) / Old) × 100
-''',
-      "Problems on Ages": '''
-• If the current age is x, then n times the age is n×x  
-• Present age after n years = x + n  
-• Present age n years ago = x − n  
-• Ages in ratio a:b can be expressed as a×k and b×k  
-• Fraction of age (eg, 1/n of age) = x/n
-''',
-      "Average": '''
-• Average = (Sum of observations) / (Number of observations)  
-• Average Speed for equal distances at speeds x and y = (2xy)/(x + y)
-''',
-      "Area": '''
-• Area of rectangle = Length × Breadth  
-• Perimeter of rectangle = 2(Length + Breadth)  
-• Area of square = (side)^2  
-• Area of triangle = 1/2 × base × height;  
-  also = √[s(s − a)(s − b)(s − c)] (Heron’s formula)  
-• Area of parallelogram = base × height  
-• Area of trapezium = 1/2 × (sum of parallel sides) × distance between them  
-• Area of circle = πR^2  
-• Circumference of circle = 2πR
-''',
-      "Volume and Surface Area": '''
-• CUBOID: Volume = l×b×h, Surface area = 2(lb + bh + hl), Diagonal = √(l^2 + b^2 + h^2)  
-• CUBE: Volume = a^3, Surface area = 6a^2, Diagonal = √3×a  
-• CYLINDER: Volume = πr^2h, Curved surface area = 2πrh, Total surface area = 2πr(h + r)  
-• CONE: Slant height l = √(h^2 + r^2), Volume = (1/3)πr^2h, Curved surface area = πrl, Total surface area = πrl + πr^2  
-• SPHERE: Volume = (4/3)πr^3, Surface area = 4πr^2  
-• HEMISPHERE: Volume = (2/3)πr^3, Curved surface area = 2πr^2, Total surface area = 3πr^2
-''',
-      "Permutation and Combination": '''
-• Number of permutations of n items taken r at a time:  
-  nP r = n! / (n − r)!  
-• Number of permutations of n things all at a time = n!  
-• Permutations of n objects with duplicates: n! / (p1! p2! ... pr!)
-• Number of combinations of n items taken r at a time:  
-  nC r = n! / [r! (n − r)!]
-• Note: nC r = nC (n − r).
-''',
-      "Ratio and Proportion": '''
-• Ratio a:b is the fraction a / b
-• Proportion: If a:b = c:d then a:b::c:d and b×c = a×d
-• Fourth proportional to (a, b, c) is d where a:b = c:d
-• Mean proportional between a and b is √(ab)
-• Direct proportion: x ∝ y → x = k×y
-• Inverse proportion: x ∝ 1/y → x×y = k.
-''',
-      "Probability": '''
-• Probability of an event = Number of favourable outcomes / Total number of possible outcomes
-• For two independent events A and B:  
-  P(A and B) = P(A) × P(B)
-  P(A or B) = P(A) + P(B) − P(A and B)
-• For mutually exclusive events: P(A or B) = P(A) + P(B)
-• Complementary events: P(A') = 1 − P(A).
-  ''',
-    };
+Benefit
+• Easier database maintenance and scalability''',
+
+  'ER Model and Keys': '''The Entity-Relationship (ER) model is used for database design.
+
+ER Model Concepts
+• Entity: Real-world object
+• Attribute: Property of an entity
+• Relationship: Association between entities
+
+Types of Keys
+• Super Key: Any attribute set that uniquely identifies a record
+• Candidate Key: Minimal super key
+• Primary Key: Selected candidate key
+• Foreign Key: Refers to primary key of another table
+
+Usage
+• Forms the basis for relational schema design''',
+
+  'Relational Algebra': '''Relational Algebra is a procedural query language used to retrieve data from relations.
+
+Basic Operations
+• Selection (σ): Select rows
+• Projection (π): Select columns
+• Union (∪)
+• Set Difference (−)
+• Cartesian Product (×)
+• Rename (ρ)
+
+Derived Operations
+• Join
+• Intersection
+• Division
+
+Importance
+• Foundation of SQL query processing and optimization''',
+
+  'DDL, DML, DCL': '''SQL commands are categorized based on their functionality.
+
+DDL (Data Definition Language)
+• CREATE
+• ALTER
+• DROP
+• TRUNCATE
+
+DML (Data Manipulation Language)
+• SELECT
+• INSERT
+• UPDATE
+• DELETE
+
+DCL (Data Control Language)
+• GRANT
+• REVOKE
+
+Purpose
+• Defines, manipulates, and secures database objects''',
+
+  'Joins and Subqueries': '''Joins and subqueries allow retrieval of data from multiple tables.
+
+Types of Joins
+• Inner Join: Returns only matching rows from both tables
+• Left Outer Join: Returns all rows from left table, matching rows from right (NULL if no match)
+• Right Outer Join: Returns all rows from right table, matching rows from left (NULL if no match)
+• Full Outer Join: Returns all rows from both tables (NULL where no match)
+• Cross Join: Cartesian product of both tables
+• Self Join: Table joined with itself
+• Natural Join: Automatically joins on columns with same name
+
+Example
+```sql
+-- Inner Join
+SELECT * FROM Students S 
+INNER JOIN Enrollments E ON S.id = E.student_id;
+
+-- Left Join
+SELECT * FROM Students S 
+LEFT JOIN Enrollments E ON S.id = E.student_id;
+```
+
+Subqueries
+• Nested queries inside SELECT, FROM, or WHERE clauses
+• Can be correlated (references outer query) or non-correlated
+• Types: Scalar (single value), Row, Table
+
+Why important
+• Enables complex data retrieval across multiple tables
+• Provides flexible ways to combine and filter data''',
+
+  'ACID': '''ACID properties ensure reliable transaction processing.
+
+Properties
+• Atomicity: All or nothing execution
+• Consistency: Preserves database rules
+• Isolation: Concurrent transactions do not interfere
+• Durability: Committed changes persist
+
+Why ACID matters
+• Prevents data corruption
+• Ensures correctness in concurrent environments''',
+
+  'Deadlocks': '''A deadlock occurs when transactions wait indefinitely for resources.
+
+Conditions for Deadlock
+• Mutual Exclusion
+• Hold and Wait
+• No Preemption
+• Circular Wait
+
+Handling Deadlocks
+• Prevention: Break one of the conditions
+• Avoidance: Banker’s Algorithm
+• Detection and Recovery
+
+Impact
+• Can halt transaction processing if unresolved''',
+};
 
     return ElevatedButton(
       onPressed: () {
@@ -212,7 +235,9 @@ Let C.P. = Cost Price, S.P. = Selling Price
             return Center(
               child: TopicPopup(
                 topicTitle: title,
-                topicContents: topicContents,
+                topicContents: {
+                  title: topicContents[title] ?? 'Content not available',
+                },
               ),
             );
           },
@@ -233,7 +258,7 @@ Let C.P. = Cost Price, S.P. = Selling Price
         );
       },
       style: ElevatedButton.styleFrom(
-        backgroundColor: Color(0xFFD9D9D9),
+        backgroundColor: const Color(0xFFD9D9D9),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       ),
       child: Text(

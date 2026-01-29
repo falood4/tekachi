@@ -1,6 +1,4 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:tekachigeojit/prep/Aptitude%20Training/AptitudeHome.dart';
 import 'package:tekachigeojit/components/NavBar.dart';import 'package:tekachigeojit/components/TopicPopup.dart';
 
 
@@ -36,10 +34,7 @@ class VerbalReasoning extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_rounded),
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const AptitudeHome()),
-            );
+            Navigator.pop(context);
           },
         ),
       ),
@@ -382,7 +377,7 @@ Answer: Option B.
             return Center(
               child: TopicPopup(
                 topicTitle: title,
-                topicContents: topicContents,
+                topicContents: {title: topicContents[title]!},
               ),
             );
           },

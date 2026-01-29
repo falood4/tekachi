@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:tekachigeojit/components/TopicPopup.dart';
 import 'package:tekachigeojit/components/NavBar.dart';
@@ -10,16 +9,37 @@ class OStopics extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
 
-    final ArithmeticTopics = [
-      "Problems on Trains",
-      "Time and Distance",
-      // ...existing topics...
+    final OSTopics = [
+      "Functions of an Operating System",
+      "Types of Operating Systems",
+      "Processes",
+      "Multithreading",
+      "CPU Scheduling",
+      "Inter Process Communication",
+      "Memory Management",
+      "Disk Scheduling Algorithms",
+      "Deadlocks"
     ];
 
     return Scaffold(
       backgroundColor: const Color.fromRGBO(20, 20, 20, 1.0),
       appBar: AppBar(
-        // ...existing appBar code...
+        backgroundColor: const Color.fromRGBO(20, 20, 20, 1.0),
+        iconTheme: const IconThemeData(color: Color(0xFF8DD300)),
+        title: Text(
+          'Techincal Training',
+          style: TextStyle(
+            color: const Color(0xFF8DD300),
+            fontFamily: "Trebuchet",
+            fontSize: 0.075 * screenWidth,
+          ),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_rounded),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       bottomNavigationBar: NavBar(),
       body: SafeArea(
@@ -30,7 +50,7 @@ class OStopics extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Arithmetic Aptitude',
+                  'Operating Systems',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: screenWidth * 0.05,
@@ -45,8 +65,8 @@ class OStopics extends StatelessWidget {
                   crossAxisSpacing: screenWidth * 0.05,
                   mainAxisSpacing: screenWidth * 0.05,
                   childAspectRatio: 1.5,
-                  children: List.generate(ArithmeticTopics.length, (index) {
-                    final topic = ArithmeticTopics[index];
+                  children: List.generate(OSTopics.length, (index) {
+                    final topic = OSTopics[index];
                     return _topicButton(context, topic);
                   }),
                 ),
@@ -62,144 +82,329 @@ class OStopics extends StatelessWidget {
   Widget _topicButton(BuildContext context, String title) {
     final screenWidth = MediaQuery.of(context).size.width;
 
-    final topicContents = {
-      'Problems on Trains': '''
-• Speed = Distance / Time.
-• Convert km/hr to m/sec: (x km/hr) = (x × 5) / 18 m/sec
-• Convert m/sec to km/hr: (x m/sec) = (x × 18) / 5 km/hr
-• Time taken by a train of length L to pass a stationary object = L / speed (when speed in m/sec)
-• Time for train length L to pass object of length B = (L + B) / relative speed
-• Relative speed (same direction) = (u − v) m/s
-• Relative speed (opposite direction) = (u + v) m/s
-• Two trains lengths a & b moving opposite: time to cross = (a + b) / (u + v)
-• Two trains lengths a & b moving same direction: time faster overtakes slower = (a + b) / (u − v)
-• If two trains start towards each other from points A and B and after crossing take a & b seconds to reach B and A respectively,
-  then (Speed of A) : (Speed of B) = b : a
-''',
+    final  topicContents = {
+  'Functions of an Operating System': '''An Operating System (OS) acts as an interface between the user and computer hardware. It manages system resources and provides services for application programs.
 
-      "Time and Distance": '''
-• Speed = Distance / Time.
-• Time = Distance / Speed
-• Distance = Speed × Time
-• km/hr to m/sec: x km/hr = (x × 5) / 18 m/sec
-• m/sec to km/hr: x m/sec = (x × 18) / 5 km/hr
-• If speeds of A and B are in ratio a : b, then times taken for same distance are b : a
-• Average speed for equal distances at x and y = (2xy) / (x + y) km/hr
-''',
+Main Functions
+• Process Management: Creation, scheduling, and termination of processes
+• Memory Management: Allocation and deallocation of main memory
+• File Management: Creation, deletion, and access control of files
+• Device Management: Control of I/O devices via drivers
+• Security & Protection: Prevents unauthorized access
+• Resource Allocation: Ensures fair usage of CPU, memory, and I/O devices
 
-      "Time and Work": '''
-• If A can finish work in n days, then A’s 1 day’s work = 1/n
-• If A’s 1 day’s work is 1/n, then total days to finish work = n
-• If A is k times as efficient as B, then A:B work done ratio is k:1 and time ratio is 1:k
-''',
+Why it matters
+• Enables multitasking
+• Improves system efficiency
+• Ensures system stability and security''',
 
-      "Height and Distance": '''
-• In a right triangle:
-  sin θ = Opposite / Hypotenuse,
-  cos θ = Adjacent / Hypotenuse,
-  tan θ = Opposite / Adjacent
-• Cosec θ = 1 / sin θ, sec θ = 1 / cos θ, cot θ = 1 / tan θ
-• Trig identities: sin²θ + cos²θ = 1;
-  1 + tan²θ = sec²θ;
-  1 + cot²θ = cosec²θ
-• Standard T-ratio values for angles:  
-  sin 30° = 1/2; cos 30° = √3 / 2; tan 30° = 1/√3;  
-  sin 45° = √2 / 2; cos 45° = √2 / 2; tan 45° = 1;  
-  sin 60° = √3 / 2; cos 60° = 1/2; tan 60° = √3
-''',
+  'Types of Operating Systems': '''Operating Systems can be classified based on how they manage resources and users.
 
-      "Simple Interest": '''
-Let Principal = P, Rate = R% p.a., Time = T years
-• Simple Interest (S.I.) = (P × R × T) / 100
-• P = (100 × S.I.) / (R × T)
-• R = (100 × S.I.) / (P × T)
-• T = (100 × S.I.) / (P × R)
-''',
+Major Types
+• Batch OS: Executes jobs in batches with no user interaction
+• Time-Sharing OS: Multiple users share CPU time (e.g., UNIX)
+• Real-Time OS: Provides immediate response within deadlines
+• Distributed OS: Manages multiple systems as a single unit
+• Network OS: Provides services over a network
 
-      "Compound Interest": '''
-Let Principal = P, Rate = R% p.a., Number of periods = n
-• Amount (compounded annually) = P × (1 + R/100)^n
-• Compound Interest (C.I.) = Amount − P
-• If interest is compounded half yearly: Amount = P × (1 + (R/2)/100)^(2n)
-• If interest is compounded quarterly: Amount = P × (1 + (R/4)/100)^(4n)
-• For different annual rates R1, R2, …: Amount = P × Π (1 + Ri/100)
-''',
+Key Idea
+• Choice of OS depends on system requirements like speed, reliability, and scalability''',
 
-      "Profit and Loss": '''
-Let C.P. = Cost Price, S.P. = Selling Price
-• Gain = S.P. − C.P.
-• Loss = C.P. − S.P.
-• Gain % = (Gain × 100) / C.P.
-• Loss % = (Loss × 100) / C.P.
-• S.P. = ((100 + Gain %) × C.P.) / 100
-• S.P. = ((100 − Loss %) × C.P.) / 100
-• C.P. = (100 × S.P.) / (100 + Gain %) or (100 × S.P.) / (100 − Loss %)
-      ''',
-      "Percentage": '''
-• x% means x/100  
-• To express x% as a fraction: x% = x / 100  
-• To express a fraction a/b as a percentage: (a/b) × 100%  
-• Percentage Increase/Decrease:  
-  Increase % = ((New − Old) / Old) × 100  
-  Decrease % = ((Old − New) / Old) × 100
-''',
-      "Problems on Ages": '''
-• If the current age is x, then n times the age is n×x  
-• Present age after n years = x + n  
-• Present age n years ago = x − n  
-• Ages in ratio a:b can be expressed as a×k and b×k  
-• Fraction of age (eg, 1/n of age) = x/n
-''',
-      "Average": '''
-• Average = (Sum of observations) / (Number of observations)  
-• Average Speed for equal distances at speeds x and y = (2xy)/(x + y)
-''',
-      "Area": '''
-• Area of rectangle = Length × Breadth  
-• Perimeter of rectangle = 2(Length + Breadth)  
-• Area of square = (side)^2  
-• Area of triangle = 1/2 × base × height;  
-  also = √[s(s − a)(s − b)(s − c)] (Heron’s formula)  
-• Area of parallelogram = base × height  
-• Area of trapezium = 1/2 × (sum of parallel sides) × distance between them  
-• Area of circle = πR^2  
-• Circumference of circle = 2πR
-''',
-      "Volume and Surface Area": '''
-• CUBOID: Volume = l×b×h, Surface area = 2(lb + bh + hl), Diagonal = √(l^2 + b^2 + h^2)  
-• CUBE: Volume = a^3, Surface area = 6a^2, Diagonal = √3×a  
-• CYLINDER: Volume = πr^2h, Curved surface area = 2πrh, Total surface area = 2πr(h + r)  
-• CONE: Slant height l = √(h^2 + r^2), Volume = (1/3)πr^2h, Curved surface area = πrl, Total surface area = πrl + πr^2  
-• SPHERE: Volume = (4/3)πr^3, Surface area = 4πr^2  
-• HEMISPHERE: Volume = (2/3)πr^3, Curved surface area = 2πr^2, Total surface area = 3πr^2
-''',
-      "Permutation and Combination": '''
-• Number of permutations of n items taken r at a time:  
-  nP r = n! / (n − r)!  
-• Number of permutations of n things all at a time = n!  
-• Permutations of n objects with duplicates: n! / (p1! p2! ... pr!)
-• Number of combinations of n items taken r at a time:  
-  nC r = n! / [r! (n − r)!]
-• Note: nC r = nC (n − r).
-''',
-      "Ratio and Proportion": '''
-• Ratio a:b is the fraction a / b
-• Proportion: If a:b = c:d then a:b::c:d and b×c = a×d
-• Fourth proportional to (a, b, c) is d where a:b = c:d
-• Mean proportional between a and b is √(ab)
-• Direct proportion: x ∝ y → x = k×y
-• Inverse proportion: x ∝ 1/y → x×y = k.
-''',
-      "Probability": '''
-• Probability of an event = Number of favourable outcomes / Total number of possible outcomes
-• For two independent events A and B:  
-  P(A and B) = P(A) × P(B)
-  P(A or B) = P(A) + P(B) − P(A and B)
-• For mutually exclusive events: P(A or B) = P(A) + P(B)
-• Complementary events: P(A') = 1 − P(A).
-  ''',
-    };
+  'Processes': '''A process is a program in execution. It is an active entity with its own resources.
 
+Process States
+• New
+• Ready
+• Running
+• Waiting
+• Terminated
+
+Process Control Block (PCB)
+• Stores process ID
+• Process state
+• Program counter
+• CPU registers
+• Memory management info
+• I/O status
+
+Why PCB is important
+• Allows OS to manage and track processes efficiently''',
+
+  'Multithreading': '''Multithreading allows multiple threads to exist within a single process.
+
+Key Points
+• Threads share process resources
+• Each thread has its own stack and program counter
+
+Benefits
+• Better CPU utilization
+• Faster response time
+• Resource sharing
+• Improved scalability
+
+Challenges
+• Requires careful synchronization
+• Can cause race conditions if not handled properly''',
+
+  'CPU Scheduling': '''CPU Scheduling decides which process gets the CPU.
+
+Scheduling Types & Working Principles
+
+Non-Preemptive Scheduling
+Process runs until it completes or enters waiting state (cannot be interrupted)
+
+• FCFS (First Come First Serve)
+  - Processes executed in arrival order
+  - Simple queue implementation
+  - Suffers from convoy effect (short processes wait for long ones)
+
+• SJF (Shortest Job First)
+  - Selects process with smallest burst time
+  - Minimizes average waiting time
+  - Requires knowing burst time in advance (prediction needed)
+
+Preemptive Scheduling
+Running process can be interrupted and moved back to ready queue
+
+• Round Robin (RR)
+  - Each process gets fixed time quantum (e.g., 10ms)
+  - After quantum expires, process moves to end of queue
+  - Good for time-sharing systems
+  - Performance depends on quantum size
+
+• Priority Scheduling
+  - Each process assigned a priority number
+  - CPU allocated to highest priority process
+  - Can be preemptive or non-preemptive
+  - Risk: Starvation of low-priority processes (solved by aging)
+
+• Shortest Remaining Time First (SRTF)
+  - Preemptive version of SJF
+  - Switches to process with shortest remaining time
+  - Optimal but requires burst time prediction
+
+Scheduling Criteria
+• CPU utilization: Keep CPU busy
+• Throughput: Number of processes completed per unit time
+• Turnaround time: Total time from submission to completion
+• Waiting time: Time spent in ready queue
+• Response time: Time from submission to first response
+
+Dispatcher
+• Performs context switching
+• Switches CPU to user mode
+• Jumps to proper location in user program
+• Dispatch latency: Time to stop one process and start another''',
+
+  'Inter Process Communication': '''Inter Process Communication (IPC) allows processes to communicate and synchronize.
+
+IPC Methods
+• Shared Memory: Processes share a common memory area
+• Message Passing: Processes communicate via messages
+• Pipes: Unidirectional communication
+• Sockets: Communication over a network
+
+Why IPC is needed
+• Data sharing
+• Synchronization
+• Modular system design''',
+
+  'Memory Management': '''Memory Management handles allocation and deallocation of memory.
+
+Memory Management Techniques
+
+Fixed Partitioning
+• Memory divided into fixed-size partitions at boot time
+• Each process allocated to smallest sufficient partition
+• Advantages: Simple implementation, fast allocation
+• Disadvantages: Internal fragmentation, limits number of processes
+
+Variable Partitioning
+• Partitions created dynamically based on process size
+• OS maintains free memory list
+• Allocation strategies:
+  - First Fit: Allocate first sufficient block
+  - Best Fit: Allocate smallest sufficient block (minimizes waste)
+  - Worst Fit: Allocate largest available block
+• Advantage: No internal fragmentation
+• Disadvantage: External fragmentation over time
+
+Paging
+• Physical memory divided into fixed-size frames
+• Logical memory divided into same-size pages
+• Page table maps logical pages to physical frames
+• Eliminates external fragmentation
+• Page table contains:
+  - Page number
+  - Frame number
+  - Valid/invalid bit
+  - Protection bits
+• Address translation: Page number + Offset
+• May suffer from internal fragmentation in last page
+
+Segmentation
+• Memory divided into logical segments (code, data, stack)
+• Each segment has base address and limit
+• Segment table stores base and limit for each segment
+• Supports different-sized logical units
+• Better matches program structure
+• May suffer from external fragmentation
+
+Key Concepts
+• Logical Address: Generated by CPU (program's view)
+• Physical Address: Actual location in RAM
+• Memory Management Unit (MMU): Hardware that translates logical to physical addresses
+• Swapping: Moving entire process between main memory and disk
+  - Swap Out: Move process to disk
+  - Swap In: Move process back to memory
+• Fragmentation:
+  - Internal: Allocated memory larger than requested
+  - External: Free memory scattered in small blocks
+
+Virtual Memory (Advanced)
+• Allows execution of processes larger than physical memory
+• Uses demand paging or demand segmentation
+• Page replacement algorithms when memory full
+
+Goal
+• Efficient utilization of main memory
+• Provide illusion of larger memory
+• Protect processes from each other''',
+
+  'Disk Scheduling Algorithms': '''Disk Scheduling determines the order of disk access requests to minimize seek time.
+
+Disk Access Components
+• Seek Time: Time to move read/write head to correct track (dominant factor)
+• Rotational Latency: Time for desired sector to rotate under head
+• Transfer Time: Time to read/write data
+• Total Access Time = Seek Time + Rotational Latency + Transfer Time
+
+Disk Scheduling Algorithms
+
+FCFS (First Come First Serve)
+• Services requests in arrival order
+• No starvation - all requests eventually served
+• Advantages: Simple, fair
+• Disadvantages: High seek time, poor performance
+• Example: Queue [98, 183, 37, 122, 14, 124, 65, 67]
+  Head moves: 98→183→37→122→14→124→65→67
+
+SSTF (Shortest Seek Time First)
+• Selects request closest to current head position
+• Greedy approach - minimizes immediate seek time
+• Advantages: Better than FCFS, reduces seek time
+• Disadvantages: May cause starvation of distant requests
+• Example: From position 53, picks 65 (closest) then 67, etc.
+
+SCAN (Elevator Algorithm)
+• Head moves in one direction, services all requests until end
+• Then reverses direction
+• Like elevator moving up/down floors
+• Advantages: No starvation, uniform wait time
+• Disadvantages: Long waiting time for recently visited locations
+• Example: If moving right from 53→199, services 65,67,98,122...
+  Then reverses: 183,122,98...
+
+C-SCAN (Circular SCAN)
+• Head moves in one direction only
+• After reaching end, jumps back to beginning (no servicing during return)
+• More uniform wait time than SCAN
+• Treats disk as circular list
+• Advantages: Better response time uniformity
+• Disadvantages: More seek distance than SCAN
+
+LOOK
+• Similar to SCAN but reverses at last request, not disk end
+• More efficient than SCAN (doesn't go to physical end)
+• Head "looks" ahead for more requests
+
+C-LOOK (Circular LOOK)
+• Circular version of LOOK
+• Returns to first request after last request in direction
+• Most commonly used in modern systems
+
+Performance Metrics
+• Average Seek Time: Total head movement / Number of requests
+• Throughput: Number of requests completed per unit time
+• Variance: Consistency of response times
+• Fairness: Avoidance of starvation
+
+Why it matters
+• Disk I/O is often bottleneck in system performance
+• Proper scheduling reduces mechanical movement
+• Improves overall system responsiveness''',
+
+  'Deadlocks': '''A deadlock occurs when processes wait indefinitely for resources held by each other, creating a circular dependency.
+
+Necessary Conditions (All 4 must hold simultaneously)
+
+1. Mutual Exclusion
+• At least one resource must be held in non-sharable mode
+• Only one process can use the resource at a time
+• Other processes must wait until resource is released
+• Example: Printer, disk drive
+• If resources can be shared, no deadlock occurs
+
+2. Hold and Wait
+• Process holding at least one resource is waiting to acquire additional resources
+• Process doesn't release currently held resources while waiting
+• Example: Process P1 holds Resource A and waits for Resource B
+
+3. No Preemption
+• Resources cannot be forcibly taken away from a process
+• Resource released only voluntarily by process holding it
+• Process must explicitly release resource after completion
+• Example: Cannot take CPU from process mid-execution
+
+4. Circular Wait
+• Set of processes {P0, P1, ..., Pn} where:
+  - P0 waits for resource held by P1
+  - P1 waits for resource held by P2
+  - Pn waits for resource held by P0
+• Forms a circular chain of dependencies
+• Can be represented as Resource Allocation Graph (RAG) with cycle
+
+Handling Deadlocks
+
+Prevention (Ensure at least one condition never holds)
+• Mutual Exclusion: Make resources sharable (not always possible)
+• Hold and Wait: Require process to request all resources at once, or release held resources before requesting new ones
+• No Preemption: Allow resource preemption - if process requests unavailable resource, release currently held resources
+• Circular Wait: Impose ordering on resource types - process can only request resources in increasing order
+
+Avoidance (Use Safe State)
+• Banker's Algorithm: Check if allocation leads to safe state
+• Safe State: System can allocate resources to processes in some order avoiding deadlock
+• Requires advance knowledge of maximum resource needs
+• More flexible than prevention but has overhead
+
+Detection (Allow deadlock, then detect)
+• Periodically run detection algorithm
+• Check for cycles in Resource Allocation Graph
+• Wait-for graph approach
+• Recovery needed once detected
+
+Recovery (After detection)
+• Process Termination:
+  - Abort all deadlocked processes
+  - Abort one process at a time until deadlock cycle is eliminated
+• Resource Preemption:
+  - Select victim process
+  - Rollback process to safe state
+  - Preempt resources from victim
+  - Risk of starvation if same process repeatedly selected
+
+Real-World Example
+Process P1: Holds Printer, Needs Scanner
+Process P2: Holds Scanner, Needs Printer
+→ Circular wait → Deadlock
+
+Impact
+• System halt - no progress
+• Resource wastage
+• Requires intervention
+• Can bring entire system down if not handled''',
+};
     return ElevatedButton(
       onPressed: () {
         showGeneralDialog(
@@ -212,7 +417,7 @@ Let C.P. = Cost Price, S.P. = Selling Price
             return Center(
               child: TopicPopup(
                 topicTitle: title,
-                topicContents: topicContents,
+                topicContents: {title: topicContents[title]!},
               ),
             );
           },

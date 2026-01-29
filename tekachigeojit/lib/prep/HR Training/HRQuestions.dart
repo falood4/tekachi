@@ -80,8 +80,7 @@ class HrTrainingScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.black,
-
-      /// AppBar
+      
       appBar: AppBar(
         backgroundColor: Colors.black,
         elevation: 0,

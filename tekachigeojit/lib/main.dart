@@ -2,7 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tekachigeojit/prep/Techincal%20Training/OOPtopics.dart';
+import 'package:tekachigeojit/home.dart';
+import 'package:tekachigeojit/prep/Techincal%20Training/DBMS.dart';
+import 'package:tekachigeojit/prep/Techincal%20Training/TechnicalHome.dart';
+import 'package:tekachigeojit/prep/prepHome.dart';
 import 'login.dart';
 import 'signup.dart';
 
@@ -22,7 +25,7 @@ class TekachiGeo extends StatelessWidget {
     
     return MaterialApp(
         title: 'Tekachi',
-        home: const TechnicalTopics()
+        home: const HomeScreen()
     );
   }
 }

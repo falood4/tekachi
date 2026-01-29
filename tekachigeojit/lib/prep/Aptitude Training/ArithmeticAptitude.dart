@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:tekachigeojit/components/TopicPopup.dart';
 import 'package:tekachigeojit/components/NavBar.dart';
@@ -9,17 +8,44 @@ class ArithmeticAptitude extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-
+    
     final ArithmeticTopics = [
       "Problems on Trains",
       "Time and Distance",
-      // ...existing topics...
+      "Time and Work",
+      "Height and Distance",
+      "Simple Interest",
+      "Compound Interest",
+      "Profit and Loss",
+      "Percentage",
+      "Problems on Ages",
+      "Average",
+      "Area",
+      "Volume and Surface Area",
+      "Permutation and Combination",
+      "Ratio and Proportion",
+      "Probability",
     ];
 
     return Scaffold(
       backgroundColor: const Color.fromRGBO(20, 20, 20, 1.0),
       appBar: AppBar(
-        // ...existing appBar code...
+        backgroundColor: const Color.fromRGBO(20, 20, 20, 1.0),
+        iconTheme: const IconThemeData(color: Color(0xFF8DD300)),
+        title: Text(
+          'Aptitude Training',
+          style: TextStyle(
+            color: const Color(0xFF8DD300),
+            fontFamily: "Trebuchet",
+            fontSize: 0.075 * screenWidth,
+          ),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_rounded),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       bottomNavigationBar: NavBar(),
       body: SafeArea(
@@ -212,7 +238,7 @@ Let C.P. = Cost Price, S.P. = Selling Price
             return Center(
               child: TopicPopup(
                 topicTitle: title,
-                topicContents: topicContents,
+                topicContents: {title: topicContents[title]!},
               ),
             );
           },

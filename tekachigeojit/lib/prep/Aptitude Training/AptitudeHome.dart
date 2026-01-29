@@ -30,10 +30,14 @@ class AptitudeHome extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_rounded),
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const PrepHome()),
-            );
+            if (Navigator.canPop(context)) {
+              Navigator.pop(context);
+            } else {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => const PrepHome()),
+              );
+            }
           },
         ),
       ),
@@ -93,26 +97,25 @@ class AptitudeHome extends StatelessWidget {
   void _loadArithmetic(BuildContext context) {
     Navigator.of(
       context,
-    ).pushReplacement(MaterialPageRoute(builder: (_) => ArithmeticAptitude()));
+    ).push(MaterialPageRoute(builder: (_) => ArithmeticAptitude()));
   }
 
   void _loadDataInterpretation(BuildContext context) {
     Navigator.of(
       context,
-    ).pushReplacement(MaterialPageRoute(builder: (_) => DataInterpretation()));
+    ).push(MaterialPageRoute(builder: (_) => DataInterpretation()));
   }
 
   void _loadVerbalReasoning(BuildContext context) {
     Navigator.of(
       context,
-    ).pushReplacement(MaterialPageRoute(builder: (_) => VerbalReasoning()));
+    ).push(MaterialPageRoute(builder: (_) => VerbalReasoning()));
   }
   
   void _loadLogicalReasoning(BuildContext context) {
     Navigator.of(
       context,
-    ).pushReplacement(MaterialPageRoute(builder: (_) => LogicalReasoning()));
+    ).push(MaterialPageRoute(builder: (_) => LogicalReasoning()));
   }
-
 
 }

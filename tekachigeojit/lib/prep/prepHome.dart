@@ -38,7 +38,7 @@ class PrepHome extends StatelessWidget {
                     title: 'Aptitude\nTraining',
                     i: 2,
                     onTap: () {
-                      Navigator.of(context).pushReplacement(
+                      Navigator.of(context).push(
                         MaterialPageRoute(builder: (_) => AptitudeHome()),
                       );
                     },
@@ -49,7 +49,7 @@ class PrepHome extends StatelessWidget {
                     title: 'Technical\nTraining',
                     i: 2,
                     onTap: () {
-                      Navigator.of(context).pushReplacement(
+                      Navigator.of(context).push(
                         MaterialPageRoute(builder: (_) => TechnicalHome()),
                       );
                     },
@@ -60,7 +60,7 @@ class PrepHome extends StatelessWidget {
                     title: 'HR\nTraining',
                     i: 2,
                     onTap: () {
-                      Navigator.of(context).pushReplacement(
+                      Navigator.of(context).push(
                         MaterialPageRoute(builder: (_) => HrTrainingScreen()),
                       );
                     },

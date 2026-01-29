@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:tekachigeojit/components/TopicPopup.dart';
 import 'package:tekachigeojit/components/NavBar.dart';
@@ -10,16 +9,35 @@ class DStopics extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
 
-    final ArithmeticTopics = [
-      "Problems on Trains",
-      "Time and Distance",
-      // ...existing topics...
+    final DSTopics = [
+      "Sorting",
+      "Sorting Techniques",
+      "Trees",
+      "Graphs",
+      "Graph Traversal and Algorithms",
+      "Stack",
+      "Queue",
     ];
 
     return Scaffold(
       backgroundColor: const Color.fromRGBO(20, 20, 20, 1.0),
       appBar: AppBar(
-        // ...existing appBar code...
+        backgroundColor: const Color.fromRGBO(20, 20, 20, 1.0),
+        iconTheme: const IconThemeData(color: Color(0xFF8DD300)),
+        title: Text(
+          'Techincal Training',
+          style: TextStyle(
+            color: const Color(0xFF8DD300),
+            fontFamily: "Trebuchet",
+            fontSize: 0.075 * screenWidth,
+          ),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_rounded),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       bottomNavigationBar: NavBar(),
       body: SafeArea(
@@ -30,7 +48,7 @@ class DStopics extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Arithmetic Aptitude',
+                  'Data Structures',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: screenWidth * 0.05,
@@ -45,8 +63,8 @@ class DStopics extends StatelessWidget {
                   crossAxisSpacing: screenWidth * 0.05,
                   mainAxisSpacing: screenWidth * 0.05,
                   childAspectRatio: 1.5,
-                  children: List.generate(ArithmeticTopics.length, (index) {
-                    final topic = ArithmeticTopics[index];
+                  children: List.generate(DSTopics.length, (index) {
+                    final topic = DSTopics[index];
                     return _topicButton(context, topic);
                   }),
                 ),
@@ -58,146 +76,232 @@ class DStopics extends StatelessWidget {
     );
   }
 
-
   Widget _topicButton(BuildContext context, String title) {
     final screenWidth = MediaQuery.of(context).size.width;
 
     final topicContents = {
-      'Problems on Trains': '''
-• Speed = Distance / Time.
-• Convert km/hr to m/sec: (x km/hr) = (x × 5) / 18 m/sec
-• Convert m/sec to km/hr: (x m/sec) = (x × 18) / 5 km/hr
-• Time taken by a train of length L to pass a stationary object = L / speed (when speed in m/sec)
-• Time for train length L to pass object of length B = (L + B) / relative speed
-• Relative speed (same direction) = (u − v) m/s
-• Relative speed (opposite direction) = (u + v) m/s
-• Two trains lengths a & b moving opposite: time to cross = (a + b) / (u + v)
-• Two trains lengths a & b moving same direction: time faster overtakes slower = (a + b) / (u − v)
-• If two trains start towards each other from points A and B and after crossing take a & b seconds to reach B and A respectively,
-  then (Speed of A) : (Speed of B) = b : a
+      'Sorting':
+          '''Sorting is the process of arranging data in a specific order, typically in ascending or descending order. Common sorting algorithms include Bubble Sort, Selection Sort, and Insertion Sort.
+Why sorting matters
+• Faster searching (binary search needs sorted data)
+• Easier data analysis
+• Used internally by databases, operating systems, compilers
+
+Classification of Sorting Algorithms
+
+A. Based on Memory Usage
+• Internal Sorting: Entire data fits in main memory
+Example: Bubble, Quick, Merge
+
+• External Sorting: Data too large for memory, uses disk
+Example: External Merge Sort
+
+B. Based on Method
+• Comparison-based: Compare elements
+Example: Bubble, Selection, Merge, Quick
+
+• Non-comparison-based: Use value properties
+Example: Counting, Radix, Bucket''',
+
+      'Sorting Techniques': '''1. Bubble Sort
+• Repeatedly steps through the list, compares adjacent elements and swaps them if they are in the wrong order.
+
+Algoritcom
+
+• Compare adjacent elements
+• Swap if needed
+• Repeat for all passes
+
+2.Selection Sort
+
+Select the smallest element and place it at the correct position.
+
+Algorithm
+
+• Find minimum element
+• Swap with first unsorted position
+• Repeat
+
+3. Insertion Sort: 
+Insert each element into its correct position in a sorted subarray.
+
+Algorithm
+• Assume the first element in the array is already sorted (a single-element list is inherently sorted).
+• Pick the next element from the unsorted part. This element is often referred to as the key.
+• Compare the key with the elements in the sorted part, moving from right to left.
+• Shift any elements that are greater than the key one position to the right to create space.
+• Insert the key into the position where all elements to its left are smaller than it, and all elements to its right are greater.
+
+4. Merge Sort:
+An efficient and general purpose comparison-based sorting algorithm. Most implementations of merge sort are stable, which means that the relative order of equal elements is the same between the input and output. Merge sort is a divide-and-conquer algorithm that was invented by John von Neumann in 1945.
+
+Algorithm
+
+• Divide the unsorted list into n sub-lists, each containing one element (a list of one element is considered sorted).
+• Repeatedly merge sublists to produce new sorted sublists until there is only one sublist remaining. This will be the sorted list.
+
+
+5. Quicksort
+
+Quicksort is a divide-and-conquer algorithm. It works by selecting a "pivot" element from the array and partitioning the other elements into two sub-arrays, according to whether they are less than or greater than the pivot. For this reason, it is sometimes called partition-exchange sort. The sub-arrays are then sorted recursively.
+
+• Choose a Pivot: Select a "pivot" element from the array
+• Partition the Array: Rearrange the other elements into two sub-arrays: those smaller than the pivot go to its left, and those greater than the pivot go to its right
+• Recursively Sort Sub-arrays: Apply the entire quicksort process recursively to the left and right sub-arrays until the sub-arrays are too small to be sorted, at which point the entire array is sorted. 
+
+6. Heap Sort
+
+Heapsort is an efficient, comparison-based sorting algorithm that reorganizes an input array into a heap (a data structure where each node is greater than its children) and then repeatedly removes the largest node from that heap, placing it at the end of the array in a similar manner to Selection sort.
+ ''',
+
+      'Trees':
+          '''A tree is a hierarchical data structure consisting of nodes, where each node contains a value and references to its child nodes. The topmost node is called the root, and nodes without children are called leaves. Trees are used to represent hierarchical relationships and enable efficient searching, insertion, and deletion operations.
+
+Key Properties
+• A tree has a root node
+• Every node (except root) has exactly one parent
+• A node can have zero or more children
+• Nodes with no children are called leaf nodes
+• Depth: Maximum number of edges from root to a leaf
+• Order: Maximum number of children a node can have
+
+Tree Types
+
+1. Balanced and Unbalanced Trees
+
+Balanced Tree
+
+• All leaf nodes are at the same depth
+• Every internal node has the same order
+• Guarantees uniform access time
+
+Unbalanced Tree
+
+• Leaf nodes may be at different depths
+• Search time can degrade significantly
+
+2. General Tree
+
+• No restriction on the number of children
+• Used to represent hierarchical data
+
+
+3. Binary Tree
+
+A binary tree is a tree where each node has at most two children:
+• Left child
+• Right child
+Binary trees form the foundation for more advanced search trees used in databases
+
+4. Binary Search Tree (BST)
+
+A Binary Search Tree is a binary tree with an ordering property:
+
+Properties:
+• Left subtree contains values ≤ parent
+• Right subtree contains values ≥ parent
+• Enables efficient searching
 ''',
 
-      "Time and Distance": '''
-• Speed = Distance / Time.
-• Time = Distance / Speed
-• Distance = Speed × Time
-• km/hr to m/sec: x km/hr = (x × 5) / 18 m/sec
-• m/sec to km/hr: x m/sec = (x × 18) / 5 km/hr
-• If speeds of A and B are in ratio a : b, then times taken for same distance are b : a
-• Average speed for equal distances at x and y = (2xy) / (x + y) km/hr
-''',
+      'Graphs':
+          '''A graph is a non-linear data structure used to represent relationships between entities.
 
-      "Time and Work": '''
-• If A can finish work in n days, then A’s 1 day’s work = 1/n
-• If A’s 1 day’s work is 1/n, then total days to finish work = n
-• If A is k times as efficient as B, then A:B work done ratio is k:1 and time ratio is 1:k
-''',
+A graph G is defined as:
 
-      "Height and Distance": '''
-• In a right triangle:
-  sin θ = Opposite / Hypotenuse,
-  cos θ = Adjacent / Hypotenuse,
-  tan θ = Opposite / Adjacent
-• Cosec θ = 1 / sin θ, sec θ = 1 / cos θ, cot θ = 1 / tan θ
-• Trig identities: sin²θ + cos²θ = 1;
-  1 + tan²θ = sec²θ;
-  1 + cot²θ = cosec²θ
-• Standard T-ratio values for angles:  
-  sin 30° = 1/2; cos 30° = √3 / 2; tan 30° = 1/√3;  
-  sin 45° = √2 / 2; cos 45° = √2 / 2; tan 45° = 1;  
-  sin 60° = √3 / 2; cos 60° = 1/2; tan 60° = √3
-''',
+𝐺=(𝑉,𝐸);
+V (Vertices / Nodes): Set of points
+E (Edges): Set of connections between vertices
 
-      "Simple Interest": '''
-Let Principal = P, Rate = R% p.a., Time = T years
-• Simple Interest (S.I.) = (P × R × T) / 100
-• P = (100 × S.I.) / (R × T)
-• R = (100 × S.I.) / (P × T)
-• T = (100 × S.I.) / (P × R)
-''',
+Types of Graphs
 
-      "Compound Interest": '''
-Let Principal = P, Rate = R% p.a., Number of periods = n
-• Amount (compounded annually) = P × (1 + R/100)^n
-• Compound Interest (C.I.) = Amount − P
-• If interest is compounded half yearly: Amount = P × (1 + (R/2)/100)^(2n)
-• If interest is compounded quarterly: Amount = P × (1 + (R/4)/100)^(4n)
-• For different annual rates R1, R2, …: Amount = P × Π (1 + Ri/100)
-''',
+3.1 Undirected Graph
+Edges have no direction
+(u, v) = (v, u)
 
-      "Profit and Loss": '''
-Let C.P. = Cost Price, S.P. = Selling Price
-• Gain = S.P. − C.P.
-• Loss = C.P. − S.P.
-• Gain % = (Gain × 100) / C.P.
-• Loss % = (Loss × 100) / C.P.
-• S.P. = ((100 + Gain %) × C.P.) / 100
-• S.P. = ((100 − Loss %) × C.P.) / 100
-• C.P. = (100 × S.P.) / (100 + Gain %) or (100 × S.P.) / (100 − Loss %)
-      ''',
-      "Percentage": '''
-• x% means x/100  
-• To express x% as a fraction: x% = x / 100  
-• To express a fraction a/b as a percentage: (a/b) × 100%  
-• Percentage Increase/Decrease:  
-  Increase % = ((New − Old) / Old) × 100  
-  Decrease % = ((Old − New) / Old) × 100
-''',
-      "Problems on Ages": '''
-• If the current age is x, then n times the age is n×x  
-• Present age after n years = x + n  
-• Present age n years ago = x − n  
-• Ages in ratio a:b can be expressed as a×k and b×k  
-• Fraction of age (eg, 1/n of age) = x/n
-''',
-      "Average": '''
-• Average = (Sum of observations) / (Number of observations)  
-• Average Speed for equal distances at speeds x and y = (2xy)/(x + y)
-''',
-      "Area": '''
-• Area of rectangle = Length × Breadth  
-• Perimeter of rectangle = 2(Length + Breadth)  
-• Area of square = (side)^2  
-• Area of triangle = 1/2 × base × height;  
-  also = √[s(s − a)(s − b)(s − c)] (Heron’s formula)  
-• Area of parallelogram = base × height  
-• Area of trapezium = 1/2 × (sum of parallel sides) × distance between them  
-• Area of circle = πR^2  
-• Circumference of circle = 2πR
-''',
-      "Volume and Surface Area": '''
-• CUBOID: Volume = l×b×h, Surface area = 2(lb + bh + hl), Diagonal = √(l^2 + b^2 + h^2)  
-• CUBE: Volume = a^3, Surface area = 6a^2, Diagonal = √3×a  
-• CYLINDER: Volume = πr^2h, Curved surface area = 2πrh, Total surface area = 2πr(h + r)  
-• CONE: Slant height l = √(h^2 + r^2), Volume = (1/3)πr^2h, Curved surface area = πrl, Total surface area = πrl + πr^2  
-• SPHERE: Volume = (4/3)πr^3, Surface area = 4πr^2  
-• HEMISPHERE: Volume = (2/3)πr^3, Curved surface area = 2πr^2, Total surface area = 3πr^2
-''',
-      "Permutation and Combination": '''
-• Number of permutations of n items taken r at a time:  
-  nP r = n! / (n − r)!  
-• Number of permutations of n things all at a time = n!  
-• Permutations of n objects with duplicates: n! / (p1! p2! ... pr!)
-• Number of combinations of n items taken r at a time:  
-  nC r = n! / [r! (n − r)!]
-• Note: nC r = nC (n − r).
-''',
-      "Ratio and Proportion": '''
-• Ratio a:b is the fraction a / b
-• Proportion: If a:b = c:d then a:b::c:d and b×c = a×d
-• Fourth proportional to (a, b, c) is d where a:b = c:d
-• Mean proportional between a and b is √(ab)
-• Direct proportion: x ∝ y → x = k×y
-• Inverse proportion: x ∝ 1/y → x×y = k.
-''',
-      "Probability": '''
-• Probability of an event = Number of favourable outcomes / Total number of possible outcomes
-• For two independent events A and B:  
-  P(A and B) = P(A) × P(B)
-  P(A or B) = P(A) + P(B) − P(A and B)
-• For mutually exclusive events: P(A or B) = P(A) + P(B)
-• Complementary events: P(A') = 1 − P(A).
-  ''',
+3.2 Directed Graph (Digraph)
+Edges have direction
+(u → v) ≠ (v → u)
+
+3.3 Weighted Graph
+Each edge has a weight/cost
+Used in shortest path problems
+
+3.4 Unweighted Graph
+All edges have equal weight
+Only connectivity matters
+
+3.5 Simple Graph
+No self-loop
+No multiple edges between same vertices
+
+3.6 Multigraph
+Multiple edges allowed between same vertices
+
+3.7 Complete Graph
+Every vertex connected to every other vertex
+For n vertices, edges = n(n−1)/2
+
+3.8 Cyclic Graph
+Contains at least one cycle
+
+3.9 Acyclic Graph
+No cycles
+Directed Acyclic Graph (DAG) is very important''',
+
+      'Graph Traversal and Algorithms': '''1. Breadth First Search (BFS)
+
+• Traverses level by level
+• Uses Queue
+
+Time Complexity: O(V + E)
+
+2. Depth First Search (DFS)
+
+• Traverses depth-wise
+• Uses Stack / Recursion
+
+
+Important Graph Algorithms
+
+1. Shortest Path Algorithms
+
+• Dijkstra’s Algorithm: Weighted graphs (no negative weights)
+• Bellman–Ford: Handles negative weights
+• Floyd–Warshall: All-pairs shortest paths
+
+2. Minimum Spanning Tree (MST)
+
+• Connects all vertices with minimum total edge weight
+• Algorithms:
+    Prim’s Algorithm
+    Kruskal’s Algorithm
+
+3. Topological Sorting
+• Linear ordering of vertices in a DAG
+• Used in task scheduling''',
+
+      'Stack':
+          '''A stack is a linear data structure that follows the Last-In, First-Out (LIFO) principle, meaning the last element added is the first one to be removed. Operations on a stack occur at only one end, called the "top. Stacks are usually implemented using arrays or linked lists."
+Stack Operations
+
+•Push Operation: Adds an element at the top of the stack.
+•Pop Operation: Removes the topmost element.
+•Peek Operation:Returns the top element without deletion.
+          ''',
+
+      'Queue':
+          '''A queue is a linear data structure that follows the First-In, First-Out (FIFO) principle, meaning the first element added is the first one to be removed. Operations on a queue occur at two ends: the "front" for removal and the "rear" for addition. Queues are typically implemented using arrays or linked lists.
+
+Queue Operations
+• Enqueue Operation: Adds an element at the rear of the queue.
+• Dequeue Operation: Removes the frontmost element.
+• Peek Operation: Returns the front element without deletion.
+
+Double-Ended Queue (Deque)
+A deque allows insertion and deletion from both ends (front and rear).
+
+Circular Queue
+A circular queue connects the end of the queue back to the front, forming a circle. This allows for efficient use of space by reusing empty slots.'''
     };
 
     return ElevatedButton(
@@ -212,7 +316,7 @@ Let C.P. = Cost Price, S.P. = Selling Price
             return Center(
               child: TopicPopup(
                 topicTitle: title,
-                topicContents: topicContents,
+                topicContents: {title: topicContents[title]!},
               ),
             );
           },
