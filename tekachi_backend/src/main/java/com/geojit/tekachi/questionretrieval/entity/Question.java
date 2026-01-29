@@ -1,5 +1,9 @@
 package com.geojit.tekachi.questionretrieval.entity;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,12 +14,18 @@ import lombok.*;
 public class Question {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int q_id;
+    @Column(name = "q_id")
+    private Integer qId;
 
-    @Column(name = "qsn")
-    private String question;
+    @Column(name = "qsn", length = 1000)
+    private String qsn;
 
     @Column(name = "q_correct_option")
-    private int q_correct_option;
+    private Integer qCorrectOption;
+
+    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Option> options;
+
+    // getters & setters
 }

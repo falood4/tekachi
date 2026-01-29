@@ -1,7 +1,12 @@
 package com.geojit.tekachi.questionretrieval.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +18,16 @@ import lombok.Setter;
 public class Option {
 
     @Id
-    private int op_id;
+    @Column(name = "op_id")
+    private Integer opId;
+
+    @Column(name = "op")
     private String op;
-    private int q_id;
+
+    @ManyToOne
+    @JoinColumn(name = "q_id")
+    @JsonBackReference
+    private Question question;
+
+    // getters & setters
 }
