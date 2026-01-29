@@ -6,14 +6,14 @@ import 'package:tekachigeojit/home.dart';
 import 'package:tekachigeojit/prep/Techincal%20Training/DBMS.dart';
 import 'package:tekachigeojit/prep/Techincal%20Training/TechnicalHome.dart';
 import 'package:tekachigeojit/prep/prepHome.dart';
+import 'package:tekachigeojit/test/AptitudeTest.dart';
+import 'package:tekachigeojit/test/testHome.dart';
 import 'login.dart';
 import 'signup.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-  ]);
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(const TekachiGeo());
 }
 
@@ -21,11 +21,7 @@ class TekachiGeo extends StatelessWidget {
   const TekachiGeo({super.key});
 
   @override
-  Widget build(BuildContext context) {  
-    
-    return MaterialApp(
-        title: 'Tekachi',
-        home: const HomeScreen()
-    );
+  Widget build(BuildContext context) {
+    return MaterialApp(title: 'Tekachi', home: const HomeScreen());
   }
 }

@@ -41,7 +41,7 @@ class _NavBarState extends State<NavBar> {
               size: screenHeight * 0.1,
             ),
             onPressed: () {
-              Navigator.of(context).push(
+              Navigator.of(context).pushReplacement(
                 MaterialPageRoute(builder: (context) => const TestHome()),
               );
             },
@@ -49,7 +49,7 @@ class _NavBarState extends State<NavBar> {
           IconButton(
             icon: Icon(Icons.account_circle, color: Colors.black, size: screenHeight * 0.045,),
             onPressed: () {
-              Navigator.of(context).push(
+              Navigator.of(context).pushReplacement(
                 MaterialPageRoute(builder: (context) => const UserSettings()),
               );
             },

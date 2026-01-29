@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tekachigeojit/prep/prepHome.dart';
 import 'package:tekachigeojit/components/NavBar.dart';
+import 'package:tekachigeojit/test/AptitudeTest.dart';
 
 class TestHome extends StatelessWidget {
   const TestHome({super.key});
@@ -38,7 +39,9 @@ class TestHome extends StatelessWidget {
                     title: 'Aptitude\nTest',
                     i: 2,
                     onTap: () {
-                      // navigate to aptitude
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (_) => AptitudeTest()),
+                      );
                     },
                   ),
                 ),
