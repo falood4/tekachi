@@ -50,7 +50,7 @@ class AptitudeTest extends StatelessWidget {
                 style: TextStyle(
                   color: const Color.fromARGB(255, 255, 255, 255),
                   fontFamily: "Trebuchet",
-                  fontSize: 0.035 * screenWidth,
+                  fontSize: 0.045 * screenWidth,
                 ),
               ),
 
@@ -74,10 +74,7 @@ class AptitudeTest extends StatelessWidget {
                       padding: EdgeInsets.all(12),
                       backgroundColor: Color(0xFF8DD300),
                     ),
-                    child: Text(
-                      "Start",
-                      style: TextStyle(color: Colors.black),
-                    ),
+                    child: Text("Start", style: TextStyle(color: Colors.black)),
                   ),
                 ),
               ),
@@ -88,4 +85,3 @@ class AptitudeTest extends StatelessWidget {
     );
   }
 }
-
