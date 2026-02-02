@@ -72,7 +72,7 @@ class _UserSettingsState extends State<UserSettings> {
                         ),
                         SizedBox(width: screenWidth * 0.04),
                         Text(
-                          "Username",
+                          AuthService().shareEmail() ?? '',
                           style: TextStyle(
                             fontSize: baseFontSize,
                             fontWeight: FontWeight.w500,
@@ -105,7 +105,7 @@ class _UserSettingsState extends State<UserSettings> {
                         _settingsItem(
                           "Log Out",
                           fontSize: baseFontSize,
-                          onPressed: _handleLogOut,
+                          onPressed: _confirmLogout,
                         ),
                         _settingsItem(
                           "Delete account",
@@ -167,6 +167,47 @@ class _UserSettingsState extends State<UserSettings> {
     debugPrint('Clear conversations initiated');
   }
 
+  void _confirmLogout() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Log Out', style: TextStyle(color: Colors.white)),
+          backgroundColor: const Color.fromRGBO(20, 20, 20, 1.0),
+          content: Text(
+            'Are you sure you want to log out?',
+            style: TextStyle(color: Colors.white),
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF8DD300),
+              ),
+              child: Text('CANCEL', style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0))),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _handleLogOut();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(255, 252, 88, 88),
+              ),
+              child: Text(
+                'ACCEPT',
+                style: TextStyle(
+                  color: const Color.fromARGB(255, 255, 255, 255),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Future<void> _handleLogOut() async {
     try {
       final response = await AuthService().logout();
@@ -177,8 +218,7 @@ class _UserSettingsState extends State<UserSettings> {
         ).pushReplacement(MaterialPageRoute(builder: (_) => HomeScreen()));
 
         debugPrint('Log out initiated');
-      }
-      else if(response.statusCode == 403) {
+      } else if (response.statusCode == 403) {
         debugPrint('Token not received');
       }
     } catch (e) {

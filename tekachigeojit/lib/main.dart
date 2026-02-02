@@ -3,11 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tekachigeojit/home.dart';
-import 'package:tekachigeojit/prep/Techincal%20Training/DBMS.dart';
-import 'package:tekachigeojit/prep/Techincal%20Training/TechnicalHome.dart';
-import 'package:tekachigeojit/prep/prepHome.dart';
-import 'package:tekachigeojit/test/AptitudeTest.dart';
-import 'package:tekachigeojit/test/testHome.dart';
+import 'package:tekachigeojit/test/QuizPage.dart';
+import 'package:tekachigeojit/test/QuizResult.dart';
 import 'login.dart';
 import 'signup.dart';
 

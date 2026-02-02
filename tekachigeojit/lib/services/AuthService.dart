@@ -37,6 +37,9 @@ class AuthService {
   String? shareToken() {
     return _token;
   }
+  String? shareEmail() {
+    return _email;
+  }
 
   /// Build headers with Content-Type and Authorization
   Map<String, String> _headers() {

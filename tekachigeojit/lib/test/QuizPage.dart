@@ -17,6 +17,7 @@ class _QuizPageState extends State<QuizPage> {
   int totalScore = 0;
   int totalQsns = 0;
   List<int> indices = List.generate(40, (index) => index + 1);
+  Map<String, (String, String)> wrongAnswers = <String, (String, String)>{};
 
   QuestionModel? currentQuestion;
   bool isLoading = true;
@@ -72,70 +73,74 @@ class _QuizPageState extends State<QuizPage> {
         ),
       ),
       body: isLoading || currentQuestion == null
-          ? const Center(
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF8DD300)),
+          ? SafeArea(
+              child: const Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF8DD300)),
+                ),
               ),
             )
-          : Padding(
-              padding: EdgeInsets.all(screenWidth * 0.05),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    currentQuestion!.questionText,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: currentQuestion!.options.length,
-                      itemBuilder: (context, optionIndex) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 4),
-                          child: RadioListTile<int>(
-                            value: optionIndex,
-                            groupValue: _selectedOptionIndex,
-                            onChanged: (val) {
-                              debugPrint('Selected option index: $val');
-                              debugPrint(
-                                'Selected option text: ${currentQuestion!.options[val!]}',
-                              );
-                              setState(() => _selectedOptionIndex = val);
-                            },
-                            title: Text(
-                              currentQuestion!.options[optionIndex],
-                              style: const TextStyle(fontFamily: 'Trebuchet'),
-                            ),
-                            activeColor: const Color(0xFF8DD300),
-                            controlAffinity: ListTileControlAffinity.leading,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: _selectedOptionIndex != null
-                        ? () => _handleNext(currentQuestion!)
-                        : null,
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.all(12),
-                      backgroundColor: const Color(0xFF8DD300),
-                    ),
-                    child: const Text(
-                      'Next',
-                      style: TextStyle(
-                        fontFamily: 'DelaGothicOne',
-                        color: Colors.black,
-                        fontSize: 16,
+          : SafeArea(
+              child: Padding(
+                padding: EdgeInsets.all(screenWidth * 0.05),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      currentQuestion!.questionText,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 16),
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: currentQuestion!.options.length,
+                        itemBuilder: (context, optionIndex) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 4),
+                            child: RadioListTile<int>(
+                              value: optionIndex,
+                              groupValue: _selectedOptionIndex,
+                              onChanged: (val) {
+                                debugPrint('Selected option index: $val');
+                                debugPrint(
+                                  'Selected option text: ${currentQuestion!.options[val!]}',
+                                );
+                                setState(() => _selectedOptionIndex = val);
+                              },
+                              title: Text(
+                                currentQuestion!.options[optionIndex],
+                                style: const TextStyle(fontFamily: 'Trebuchet'),
+                              ),
+                              activeColor: const Color(0xFF8DD300),
+                              controlAffinity: ListTileControlAffinity.leading,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: _selectedOptionIndex != null
+                          ? () => _handleNext(currentQuestion!)
+                          : null,
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.all(12),
+                        backgroundColor: const Color(0xFF8DD300),
+                      ),
+                      child: const Text(
+                        'Next',
+                        style: TextStyle(
+                          fontFamily: 'DelaGothicOne',
+                          color: Colors.black,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
     );
@@ -148,8 +153,14 @@ class _QuizPageState extends State<QuizPage> {
 
     if (question.correctAnswerIndex == _selectedOptionIndex) {
       totalScore++;
+      totalQsns++;
+    } else {
+      totalQsns++;
+      wrongAnswers[question.questionText] = (
+        question.options[_selectedOptionIndex!],
+        question.options[question.correctAnswerIndex],
+      );
     }
-    totalQsns++;
 
     if (totalQsns <= 15) {
       debugPrint('Score: $totalScore / $totalQsns');
@@ -161,7 +172,7 @@ class _QuizPageState extends State<QuizPage> {
         context,
         MaterialPageRoute(
           builder: (context) =>
-              QuizResult(score: totalScore, totalQuestions: totalQsns),
+              QuizResult(score: totalScore, reviewAnswers: wrongAnswers),
         ),
       );
     }

@@ -34,51 +34,55 @@ class AptitudeTest extends StatelessWidget {
           },
         ),
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: screenWidth * 0.06,
-          vertical: screenHeight * 0.02,
-        ),
-        child: Container(
-          margin: EdgeInsets.all(10),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'This aptitude test will measure and determine your abilities in problem-solving, logic, and reasoning in arithmetic and language',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: const Color.fromARGB(255, 255, 255, 255),
-                  fontFamily: "Trebuchet",
-                  fontSize: 0.045 * screenWidth,
-                ),
-              ),
-
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Container(
-                  margin: EdgeInsets.symmetric(vertical: 20),
-                  width: screenWidth * 0.45,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (_) => QuizPage()),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      textStyle: TextStyle(
-                        fontSize: 0.06 * screenWidth,
-                        fontFamily: "DelaGothicOne",
-                        color: Colors.black,
-                      ),
-                      padding: EdgeInsets.all(12),
-                      backgroundColor: Color(0xFF8DD300),
-                    ),
-                    child: Text("Start", style: TextStyle(color: Colors.black)),
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: screenWidth * 0.06,
+            vertical: screenHeight * 0.02,
+          ),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'This aptitude test will measure and determine your abilities in problem-solving, logic, and reasoning in arithmetic and language',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: const Color.fromARGB(255, 255, 255, 255),
+                    fontFamily: "Trebuchet",
+                    fontSize: 0.05 * screenWidth,
                   ),
                 ),
-              ),
-            ],
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  child: Container(
+                    margin: EdgeInsets.symmetric(vertical: 20),
+                    width: screenWidth * 0.45,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(builder: (_) => QuizPage()),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        textStyle: TextStyle(
+                          fontSize: 0.06 * screenWidth,
+                          fontFamily: "DelaGothicOne",
+                          color: Colors.black,
+                        ),
+                        padding: EdgeInsets.all(12),
+                        backgroundColor: Color(0xFF8DD300),
+                      ),
+                      child: Text(
+                        "Start",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
