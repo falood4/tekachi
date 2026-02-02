@@ -48,11 +48,13 @@ public class UserController {
             user.setPassword(password);
 
             User registeredUser = userService.register(user);
+            String token = jwtService.generateToken(email, Map.of("userId", registeredUser.getId()));
 
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(Map.of(
                             "id", registeredUser.getId(),
                             "email", registeredUser.getEmail(),
+                            "token", token,
                             "message", "User registered successfully"));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.CONFLICT)
@@ -137,11 +139,19 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable Long id) {
-
-        repository.deleteById(id);
-        return ResponseEntity.ok(Map.of("message", "User deleted successfully"));
-
+    @DeleteMapping("/delete/{email}")
+    public ResponseEntity<?> deleteUser(@PathVariable String email) {
+        try {
+            User user = repository.findByEmail(email);
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(Map.of("error", "User not found"));
+            }
+            repository.deleteById(user.getId());
+            return ResponseEntity.ok(Map.of("message", "User deleted successfully"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Delete failed"));
+        }
     }
 }

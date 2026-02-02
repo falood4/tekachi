@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 class AuthService {
   static const String _baseUrl = 'http://10.0.2.2:8080/api/users';
 
-  // Singleton instance
   static final AuthService _instance = AuthService._internal();
 
   factory AuthService() {
@@ -37,6 +36,7 @@ class AuthService {
   String? shareToken() {
     return _token;
   }
+
   String? shareEmail() {
     return _email;
   }
@@ -61,6 +61,26 @@ class AuthService {
     );
   }
 
+  Future<http.Response> loginUser({
+    required String email,
+    required String password,
+  }) async {
+    final url = Uri.parse("http://10.0.2.2:8080/api/users/login");
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({"email": email.trim(), "password": password.trim()}),
+      );
+
+      return response;
+    } catch (e) {
+      debugPrintStack(label: 'Login error: $e');
+      rethrow;
+    }
+  }
+
   Future<http.Response> logout() async {
     try {
       final response = await http.post(
@@ -77,6 +97,26 @@ class AuthService {
       return response;
     } catch (e) {
       debugPrint('Logout error: $e');
+      rethrow;
+    }
+  }
+
+  Future<http.Response> deleteUser() async {
+    try {
+      final response = await http.delete(
+        Uri.parse('$_baseUrl/delete/$_email'),
+        headers: _headers(),
+        body: jsonEncode({'email': _email, 'password': _password}),
+      );
+
+      if (response.statusCode == 200) {
+        clearCredentials();
+        debugPrint('Account Deleted Successfully');
+      }
+
+      return response;
+    } catch (e) {
+      debugPrint('Deletion error: $e');
       rethrow;
     }
   }

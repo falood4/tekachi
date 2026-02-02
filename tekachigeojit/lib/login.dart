@@ -23,7 +23,7 @@ class _LoginState extends State<Login> {
     return emailRegex.hasMatch(email);
   }
 
-  void _handleLogin() {
+  Future<void> _handleLogin() async {
     if (_emailCtrl.text.isEmpty) {
       ScaffoldMessenger.of(
         context,
@@ -45,21 +45,10 @@ class _LoginState extends State<Login> {
       return;
     }
 
-    loginUser();
-  }
-
-  Future<void> loginUser() async {
-    final url = Uri.parse("http://10.0.2.2:8080/api/users/login");
-
     try {
-      final response = await http.post(
-        url,
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode({
-          "email": _emailCtrl.text.trim(),
-          "password": _passwordCtrl.text.trim(),
-        }),
-      );
+      final response = await AuthService()
+          .loginUser(email: _emailCtrl.text, password: _passwordCtrl.text)
+          .timeout(const Duration(seconds: 10));
 
       if (response.statusCode == 200) {
         AuthService().setCredentials(
@@ -78,10 +67,19 @@ class _LoginState extends State<Login> {
           const SnackBar(content: Text("Invalid email or password")),
         );
       }
+    } on http.ClientException catch (_) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Network error. Please check your connection and try again.',
+          ),
+        ),
+      );
     } catch (e) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text("Network error: $e")));
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('An unexpected error occurred: $e')),
+      );
     }
   }
 
@@ -189,6 +187,20 @@ class _LoginState extends State<Login> {
                         fontSize: screenWidth * 0.04,
                       ),
                     ),
+                  ),
+                ),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5),
+                child: SizedBox(
+                  width: 50,
+                  height: 50,
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: const Icon(Icons.arrow_back, color: Colors.white),
                   ),
                 ),
               ),

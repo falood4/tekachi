@@ -112,7 +112,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
         if (token != null) {
           AuthService().setToken(token);
         }
-        
+
         setState(() => _signedUp = true);
 
         _circleController.value = 0;
@@ -252,6 +252,20 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                           fontSize: screenWidth * 0.04,
                         ),
                       ),
+                    ),
+                  ),
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  child: SizedBox(
+                    width: 50,
+                    height: 50,
+                    child: IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(Icons.arrow_back, color: Colors.white),
                     ),
                   ),
                 ),

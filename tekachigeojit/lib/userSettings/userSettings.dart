@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tekachigeojit/home.dart';
 import 'package:tekachigeojit/components/NavBar.dart';
+import 'package:tekachigeojit/home.dart';
 import 'package:tekachigeojit/services/AuthService.dart';
 
 class UserSettings extends StatefulWidget {
@@ -111,7 +111,7 @@ class _UserSettingsState extends State<UserSettings> {
                           "Delete account",
                           fontSize: baseFontSize,
                           isDestructive: true,
-                          onPressed: _handleDeleteAccount,
+                          onPressed: _confirmDeleteAccount,
                         ),
                       ],
                     ),
@@ -167,6 +167,74 @@ class _UserSettingsState extends State<UserSettings> {
     debugPrint('Clear conversations initiated');
   }
 
+  void _confirmDeleteAccount() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Delete Account', style: TextStyle(color: Colors.white)),
+          backgroundColor: const Color.fromRGBO(20, 20, 20, 1.0),
+          content: Text(
+            'Are you sure you want to delete your account?',
+            style: TextStyle(color: Colors.white),
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF8DD300),
+              ),
+              child: Text(
+                'CANCEL',
+                style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _handleDeleteAccount();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(255, 252, 88, 88),
+              ),
+              child: Text(
+                'DELETE',
+                style: TextStyle(
+                  color: const Color.fromARGB(255, 255, 255, 255),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _handleDeleteAccount() async {
+    try {
+      final response = await AuthService().deleteUser();
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        // Source - https://stackoverflow.com/a/57030299
+        // Posted by Paul Iluhin, modified by community. See post 'Timeline' for change history
+        // Retrieved 2026-02-02, License - CC BY-SA 4.0
+
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (_) => const HomeScreen()),
+          (route) => false,
+        );
+
+        debugPrint('Account Deleted');
+      } else if (response.statusCode == 403) {
+        debugPrint('Token not received');
+      }
+    } catch (e) {
+      debugPrint('Error during Deletion: $e');
+    }
+  }
+
   void _confirmLogout() {
     showDialog(
       context: context,
@@ -186,7 +254,10 @@ class _UserSettingsState extends State<UserSettings> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF8DD300),
               ),
-              child: Text('CANCEL', style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0))),
+              child: Text(
+                'CANCEL',
+                style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)),
+              ),
             ),
             ElevatedButton(
               onPressed: () {
@@ -213,9 +284,15 @@ class _UserSettingsState extends State<UserSettings> {
       final response = await AuthService().logout();
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        Navigator.of(
+        // Source - https://stackoverflow.com/a/57030299
+        // Posted by Paul Iluhin, modified by community. See post 'Timeline' for change history
+        // Retrieved 2026-02-02, License - CC BY-SA 4.0
+
+        Navigator.pushAndRemoveUntil(
           context,
-        ).pushReplacement(MaterialPageRoute(builder: (_) => HomeScreen()));
+          MaterialPageRoute(builder: (_) => const HomeScreen()),
+          (route) => false,
+        );
 
         debugPrint('Log out initiated');
       } else if (response.statusCode == 403) {
@@ -224,9 +301,5 @@ class _UserSettingsState extends State<UserSettings> {
     } catch (e) {
       debugPrint('Error during logout: $e');
     }
-  }
-
-  void _handleDeleteAccount() {
-    debugPrint('Delete account initiated');
   }
 }
