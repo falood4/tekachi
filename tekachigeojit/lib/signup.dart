@@ -124,9 +124,11 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
         await _checkController.forward();
         if (!mounted) return;
 
-        Navigator.of(
+        Navigator.pushAndRemoveUntil(
           context,
-        ).pushReplacement(MaterialPageRoute(builder: (_) => PrepHome()));
+          MaterialPageRoute(builder: (_) => const PrepHome()),
+          (route) => false,
+        );
       } else if (response.statusCode == 409) {
         ScaffoldMessenger.of(
           context,

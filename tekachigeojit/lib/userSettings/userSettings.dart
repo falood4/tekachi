@@ -95,7 +95,7 @@ class _UserSettingsState extends State<UserSettings> {
                         _settingsItem(
                           "Change password",
                           fontSize: baseFontSize,
-                          onPressed: _handleChangePassword,
+                          onPressed: _setChangePassword,
                         ),
                         _settingsItem(
                           "Clear conversations",
@@ -159,8 +159,125 @@ class _UserSettingsState extends State<UserSettings> {
     );
   }
 
-  void _handleChangePassword() {
+  void _setChangePassword() {
     debugPrint('Change password initiated');
+
+    final currentController = TextEditingController();
+    final newController = TextEditingController();
+    final confirmController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Change Password', style: TextStyle(color: Colors.white)),
+          backgroundColor: const Color.fromRGBO(20, 20, 20, 1.0),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: currentController,
+                obscureText: true,
+                style: TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  labelText: 'Current Password',
+                  labelStyle: TextStyle(
+                    color: const Color.fromARGB(255, 132, 132, 132),
+                    fontFamily: "Trebuchet",
+                  ),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFF8DD300)),
+                  ),
+                ),
+              ),
+              TextField(
+                controller: newController,
+                obscureText: true,
+                style: TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  labelText: 'New Password',
+                  labelStyle: TextStyle(
+                    color: Color.fromARGB(255, 132, 132, 132),
+                    fontFamily: "Trebuchet",
+                  ),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFF8DD300)),
+                  ),
+                ),
+              ),
+              TextField(
+                controller: confirmController,
+                obscureText: true,
+                style: TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  labelText: 'Confirm New Password',
+                  labelStyle: TextStyle(
+                    color: Color.fromARGB(255, 132, 132, 132),
+                    fontFamily: "Trebuchet",
+                  ),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFF8DD300)),
+                  ),
+                ),
+              ),
+              SizedBox.fromSize(size: const Size.fromHeight(10)),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF8DD300),
+                ),
+                child: Text(
+                  'CANCEL',
+                  style: TextStyle(
+                    color: const Color.fromARGB(255, 0, 0, 0),
+                    fontFamily: "DelaGothicOne",
+                  ),
+                ),
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: const Color(0xFF8DD300)),
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                width: 120,
+                height: 40,
+                child: ElevatedButton(
+                  onPressed: () {
+                    _handleChangePassword(newController.text);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+                  ),
+                  child: Text(
+                    'OK',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: const Color.fromARGB(255, 255, 255, 255),
+                      fontFamily: "DelaGothicOne",
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _handleChangePassword(String newPassword) async {
+    final response = await AuthService().changePassword(
+      newPassword: newPassword,
+    );
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      Navigator.pop(context);
+      debugPrint('Password changed successfully');
+    } else {
+      debugPrint('Failed to change password');
+    }
   }
 
   void _handleClearConversations() {
@@ -176,7 +293,7 @@ class _UserSettingsState extends State<UserSettings> {
           backgroundColor: const Color.fromRGBO(20, 20, 20, 1.0),
           content: Text(
             'Are you sure you want to delete your account?',
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.white, fontFamily: "Trebuchet"),
           ),
           actions: [
             ElevatedButton(
@@ -188,7 +305,10 @@ class _UserSettingsState extends State<UserSettings> {
               ),
               child: Text(
                 'CANCEL',
-                style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)),
+                style: TextStyle(
+                  color: const Color.fromARGB(255, 0, 0, 0),
+                  fontFamily: "DelaGothicOne",
+                ),
               ),
             ),
             ElevatedButton(
@@ -202,6 +322,7 @@ class _UserSettingsState extends State<UserSettings> {
                 'DELETE',
                 style: TextStyle(
                   color: const Color.fromARGB(255, 255, 255, 255),
+                  fontFamily: "DelaGothicOne",
                 ),
               ),
             ),
@@ -244,7 +365,7 @@ class _UserSettingsState extends State<UserSettings> {
           backgroundColor: const Color.fromRGBO(20, 20, 20, 1.0),
           content: Text(
             'Are you sure you want to log out?',
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.white, fontFamily: "Trebuchet"),
           ),
           actions: [
             ElevatedButton(
@@ -256,7 +377,10 @@ class _UserSettingsState extends State<UserSettings> {
               ),
               child: Text(
                 'CANCEL',
-                style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)),
+                style: TextStyle(
+                  color: const Color.fromARGB(255, 0, 0, 0),
+                  fontFamily: "DelaGothicOne",
+                ),
               ),
             ),
             ElevatedButton(
@@ -270,6 +394,7 @@ class _UserSettingsState extends State<UserSettings> {
                 'ACCEPT',
                 style: TextStyle(
                   color: const Color.fromARGB(255, 255, 255, 255),
+                  fontFamily: "DelaGothicOne",
                 ),
               ),
             ),

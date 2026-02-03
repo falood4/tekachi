@@ -17,109 +17,100 @@ class TestHome extends StatelessWidget {
       backgroundColor: const Color.fromRGBO(20, 20, 20, 1.0),
       bottomNavigationBar: const NavBar(),
       body: SafeArea(
-        child: Center(
-          child: Container(
-            margin: EdgeInsets.all(screenWidth * 0.05),
-            child: Column(
-              children: [
-                Expanded(
-                  child: Text(
-                    'Test',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Color(0xFF8DD300),
-                      fontFamily: "DelaGothicOne",
-                      fontSize: 0.15 * screenWidth,
+        child: Padding(
+          padding: EdgeInsets.all(screenWidth * 0.05),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                'Test',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Color(0xFF8DD300),
+                  fontFamily: "DelaGothicOne",
+                  fontSize: 0.15 * screenWidth,
+                ),
+              ),
+              const SizedBox(height: 10),
+
+              TrainingCard(
+                title: 'Aptitude Test',
+                icon: Icons.calculate_rounded,
+                onTap: () {
+                  Navigator.of(
+                    context,
+                  ).push(MaterialPageRoute(builder: (_) => AptitudeTest()));
+                },
+              ),
+
+              TrainingCard(
+                title: 'Tech Interview',
+                icon: Icons.code_rounded,
+                onTap: () {
+                  // navigate to aptitude
+                },
+              ),
+
+              TrainingCard(
+                title: 'HR Interview',
+                icon: Icons.groups_rounded,
+                onTap: () {
+                  // navigate to aptitude
+                },
+              ),
+
+              const SizedBox(height: 20),
+
+              Container(
+                height: screenHeight * 0.18,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(18),
+                  color: Color(0xFF8DD300),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      '3 Step Interview',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'DelaGothicOne',
+                        fontSize: screenWidth * 0.07,
+                      ),
                     ),
-                  ),
-                ),
-
-                Expanded(
-                  child: TrainChoice(
-                    title: 'Aptitude\nTest',
-                    i: 2,
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => AptitudeTest()),
-                      );
-                    },
-                  ),
-                ),
-
-                Expanded(
-                  child: TrainChoice(
-                    title: 'Technical\nInterview',
-                    i: 2,
-                    onTap: () {
-                      // navigate to aptitude
-                    },
-                  ),
-                ),
-
-                Expanded(
-                  child: TrainChoice(
-                    title: 'HR\nInterview',
-                    i: 2,
-                    onTap: () {
-                      // navigate to aptitude
-                    },
-                  ),
-                ),
-
-                Container(
-                  height: screenHeight * 0.15,
-                  margin: EdgeInsets.only(top: 3),
-                  decoration: BoxDecoration(
-                    color: Color(0xFFD9D9D9),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text(
-                          '3 Step Placement',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: "DelaGothicOne",
-                            fontSize: 0.075 * screenWidth,
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 5),
-                          child: SizedBox(
-                            width: 150,
-                            height: 50,
-                            child: ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                textStyle: TextStyle(
-                                  fontSize: 15,
-                                  fontFamily: "DelaGothicOne",
-                                  color: Colors.black,
-                                ),
-                                padding: EdgeInsets.all(16),
-                                backgroundColor: Colors.black,
-                              ),
-                              child: Text(
-                                "Start",
-                                style: TextStyle(color: Color(0xFF8DD300)),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
+                    const SizedBox(height: 6),
+                    const Text(
+                      'Comprehensive Mock Interview',
+                      style: TextStyle(color: Colors.black87),
                     ),
-                  ),
+                    const SizedBox(height: 12),
+                    ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.black,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 36,
+                          vertical: 14,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                      child: const Text(
+                        'Start',
+                        style: TextStyle(
+                          fontFamily: "DelaGothicOne",
+                          color: Color(0xFF8DD300),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
     );
   }
 }
-
-

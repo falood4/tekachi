@@ -41,6 +41,10 @@ class AuthService {
     return _email;
   }
 
+  bool isLoggedIn() {
+    return _token != null && _token!.isNotEmpty && _email != null && _email!.isNotEmpty;
+  }
+
   /// Build headers with Content-Type and Authorization
   Map<String, String> _headers() {
     final headers = {'Content-Type': 'application/json'};
@@ -81,12 +85,31 @@ class AuthService {
     }
   }
 
+  Future<http.Response> changePassword({required String newPassword}) async {
+    final url = Uri.parse("http://10.0.2.2:8080/api/users/change-password");
+
+    try {
+      final response = await http.post(
+        url,
+        headers: _headers(),
+        body: jsonEncode({
+          "oldPassword": _password,
+          "newPassword": newPassword,
+        }),
+      );
+
+      return response;
+    } catch (e) {
+      debugPrintStack(label: 'Password not changed due to error: $e');
+      rethrow;
+    }
+  }
+
   Future<http.Response> logout() async {
     try {
       final response = await http.post(
         Uri.parse('$_baseUrl/logout'),
         headers: _headers(),
-        body: jsonEncode({'email': _email, 'password': _password}),
       );
 
       if (response.statusCode == 200) {
@@ -104,9 +127,8 @@ class AuthService {
   Future<http.Response> deleteUser() async {
     try {
       final response = await http.delete(
-        Uri.parse('$_baseUrl/delete/$_email'),
+        Uri.parse('$_baseUrl/delete'),
         headers: _headers(),
-        body: jsonEncode({'email': _email, 'password': _password}),
       );
 
       if (response.statusCode == 200) {

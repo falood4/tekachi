@@ -58,10 +58,12 @@ class _LoginState extends State<Login> {
         final data = jsonDecode(response.body);
         final token = data['token'];
         AuthService().setToken(token);
-
-        Navigator.of(
+        
+        Navigator.pushAndRemoveUntil(
           context,
-        ).pushReplacement(MaterialPageRoute(builder: (_) => PrepHome()));
+          MaterialPageRoute(builder: (_) => const PrepHome()),
+          (route) => false,
+        );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Invalid email or password")),

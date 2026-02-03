@@ -1,7 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 
-
 class TopicPopup extends StatelessWidget {
   final String topicTitle;
   final Map<String, String> topicContents;
@@ -23,7 +22,7 @@ class TopicPopup extends StatelessWidget {
         backgroundColor: Colors.transparent,
         child: Container(
           width: screenWidth * 0.8,
-          height: screenHeight * 0.6,
+          height: screenHeight * 0.8,
           padding: EdgeInsets.all(screenWidth * 0.05),
           decoration: BoxDecoration(
             color: Color(0xFFD9D9D9),

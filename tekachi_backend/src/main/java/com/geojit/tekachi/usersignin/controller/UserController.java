@@ -139,19 +139,62 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/delete/{email}")
-    public ResponseEntity<?> deleteUser(@PathVariable String email) {
+    @PostMapping("/change-password")
+    public ResponseEntity<?> changePassword(@RequestBody Map<String, String> request) {
         try {
+            String oldPassword = request.get("oldPassword");
+            String newPassword = request.get("newPassword");
+
+            if (oldPassword == null || oldPassword.isEmpty() || newPassword == null || newPassword.isEmpty()) {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("error", "Old password and new password are required"));
+            }
+
+            // Get current authenticated user
+            String email = SecurityContextHolder.getContext().getAuthentication().getName();
             User user = repository.findByEmail(email);
+
             if (user == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
                         .body(Map.of("error", "User not found"));
             }
+
+            // Change password (validates old password)
+            User updatedUser = userService.changePassword(user.getId(), oldPassword, newPassword);
+            updatedUser.setPassword(null);
+
+            return ResponseEntity.ok(Map.of(
+                    "message", "Password changed successfully",
+                    "user", updatedUser));
+        } catch (Exception e) {
+            if (e.getMessage().contains("Old password is incorrect")) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(Map.of("error", e.getMessage()));
+            }
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    // Delete user account
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteUser() {
+        try {
+            // Get current authenticated user
+            String email = SecurityContextHolder.getContext().getAuthentication().getName();
+            User user = repository.findByEmail(email);
+
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(Map.of("error", "User not found"));
+            }
+
+            // Delete user account
             repository.deleteById(user.getId());
-            return ResponseEntity.ok(Map.of("message", "User deleted successfully"));
+            return ResponseEntity.ok(Map.of("message", "User account deleted successfully"));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("error", "Delete failed"));
+                    .body(Map.of("error", "Delete failed: " + e.getMessage()));
         }
     }
 }
