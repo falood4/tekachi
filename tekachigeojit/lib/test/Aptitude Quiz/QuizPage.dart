@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:tekachigeojit/models/QuestionModel.dart';
-import 'package:tekachigeojit/test/QuizResult.dart';
+import 'package:tekachigeojit/test/Aptitude%20Quiz/QuizResult.dart';
 import 'package:tekachigeojit/services/QsnService.dart';
 
 class QuizPage extends StatefulWidget {

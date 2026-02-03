@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tekachigeojit/home.dart';
-import 'package:tekachigeojit/test/QuizPage.dart';
-import 'package:tekachigeojit/test/QuizResult.dart';
+import 'package:tekachigeojit/test/Aptitude%20Quiz/QuizPage.dart';
+import 'package:tekachigeojit/test/Aptitude%20Quiz/QuizResult.dart';
 import 'login.dart';
 import 'signup.dart';
 

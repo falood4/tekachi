@@ -32,7 +32,7 @@ class OOPtopics extends StatelessWidget {
           'Techincal Training',
           style: TextStyle(
             color: const Color(0xFF8DD300),
-            fontFamily: "Trebuchet",
+            fontFamily: "RussoOne",
             fontSize: 0.075 * screenWidth,
           ),
         ),

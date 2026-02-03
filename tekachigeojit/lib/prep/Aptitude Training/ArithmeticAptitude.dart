@@ -8,7 +8,7 @@ class ArithmeticAptitude extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    
+
     final ArithmeticTopics = [
       "Problems on Trains",
       "Time and Distance",
@@ -36,7 +36,7 @@ class ArithmeticAptitude extends StatelessWidget {
           'Aptitude Training',
           style: TextStyle(
             color: const Color(0xFF8DD300),
-            fontFamily: "Trebuchet",
+            fontFamily: "RussoOne",
             fontSize: 0.075 * screenWidth,
           ),
         ),
@@ -83,7 +83,6 @@ class ArithmeticAptitude extends StatelessWidget {
       ),
     );
   }
-
 
   Widget _topicButton(BuildContext context, String title) {
     final screenWidth = MediaQuery.of(context).size.width;

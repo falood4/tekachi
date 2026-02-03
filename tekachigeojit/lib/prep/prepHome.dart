@@ -72,7 +72,7 @@ class PrepHome extends StatelessWidget {
                       'AI Mentor',
                       style: TextStyle(
                         color: Colors.black,
-                        fontFamily: 'DelaGothicOne',
+                        fontFamily: 'Rostex',
                         fontSize: screenWidth * 0.07,
                       ),
                     ),
@@ -149,7 +149,7 @@ class TrainingCard extends StatelessWidget {
                   child: Text(
                     title,
                     style: TextStyle(
-                      fontFamily: 'DelaGothicOne',
+                      fontFamily: 'RussoOne',
                       fontSize: screenWidth * 0.055,
                       color: Colors.black,
                     ),

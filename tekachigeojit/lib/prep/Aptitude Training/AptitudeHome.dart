@@ -23,7 +23,7 @@ class AptitudeHome extends StatelessWidget {
           'Aptitude Training',
           style: TextStyle(
             color: const Color(0xFF8DD300),
-            fontFamily: "Trebuchet",
+            fontFamily: "RussoOne",
             fontSize: 0.075 * screenWidth,
           ),
         ),
@@ -51,10 +51,26 @@ class AptitudeHome extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                _trainingMenuItem(context, "Arithmetic Aptitude", () => _loadArithmetic(context)),
-                _trainingMenuItem(context, "Data Interpretation", () => _loadDataInterpretation(context)),
-                _trainingMenuItem(context, "Verbal Reasoning", () => _loadVerbalReasoning(context)),
-                _trainingMenuItem(context, "Logical Reasoning", () => _loadLogicalReasoning(context)),
+                _trainingMenuItem(
+                  context,
+                  "Arithmetic Aptitude",
+                  () => _loadArithmetic(context),
+                ),
+                _trainingMenuItem(
+                  context,
+                  "Data Interpretation",
+                  () => _loadDataInterpretation(context),
+                ),
+                _trainingMenuItem(
+                  context,
+                  "Verbal Reasoning",
+                  () => _loadVerbalReasoning(context),
+                ),
+                _trainingMenuItem(
+                  context,
+                  "Logical Reasoning",
+                  () => _loadLogicalReasoning(context),
+                ),
               ],
             ),
           ),
@@ -63,7 +79,11 @@ class AptitudeHome extends StatelessWidget {
     );
   }
 
-  Widget _trainingMenuItem(BuildContext context, String title, Function()? onPressed) {
+  Widget _trainingMenuItem(
+    BuildContext context,
+    String title,
+    Function()? onPressed,
+  ) {
     final screenWidth = MediaQuery.of(context).size.width;
     return Container(
       margin: EdgeInsets.symmetric(vertical: screenWidth * 0.015),
@@ -111,11 +131,10 @@ class AptitudeHome extends StatelessWidget {
       context,
     ).push(MaterialPageRoute(builder: (_) => VerbalReasoning()));
   }
-  
+
   void _loadLogicalReasoning(BuildContext context) {
     Navigator.of(
       context,
     ).push(MaterialPageRoute(builder: (_) => LogicalReasoning()));
   }
-
 }

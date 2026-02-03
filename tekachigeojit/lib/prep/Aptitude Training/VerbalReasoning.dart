@@ -27,7 +27,7 @@ class VerbalReasoning extends StatelessWidget {
           'Aptitude Training',
           style: TextStyle(
             color: const Color(0xFF8DD300),
-            fontFamily: "Trebuchet",
+            fontFamily: "RussoOne",
             fontSize: 0.075 * screenWidth,
           ),
         ),

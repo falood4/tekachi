@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tekachigeojit/prep/prepHome.dart';
 import 'package:tekachigeojit/components/NavBar.dart';
-import 'package:tekachigeojit/test/AptitudeTest.dart';
+import 'package:tekachigeojit/test/Aptitude%20Quiz/AptitudeTest.dart';
 
 class TestHome extends StatelessWidget {
   const TestHome({super.key});
@@ -74,8 +74,8 @@ class TestHome extends StatelessWidget {
                       '3 Step Interview',
                       style: TextStyle(
                         color: Colors.black,
-                        fontFamily: 'DelaGothicOne',
-                        fontSize: screenWidth * 0.07,
+                        fontFamily: 'Rostex',
+                        fontSize: screenWidth * 0.06,
                       ),
                     ),
                     const SizedBox(height: 6),

@@ -29,7 +29,7 @@ class DBMS extends StatelessWidget {
           'Technical Training',
           style: TextStyle(
             color: const Color(0xFF8DD300),
-            fontFamily: "Trebuchet",
+            fontFamily: "RussoOne",
             fontSize: 0.075 * screenWidth,
           ),
         ),

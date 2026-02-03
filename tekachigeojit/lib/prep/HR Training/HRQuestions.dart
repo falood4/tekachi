@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tekachigeojit/components/NavBar.dart';
+
 class HrTrainingScreen extends StatelessWidget {
   const HrTrainingScreen({super.key});
 
@@ -80,7 +81,7 @@ class HrTrainingScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.black,
-      
+
       appBar: AppBar(
         backgroundColor: Colors.black,
         elevation: 0,
@@ -92,7 +93,7 @@ class HrTrainingScreen extends StatelessWidget {
           "HR Training",
           style: TextStyle(
             color: Color(0xFF8DD300),
-            fontFamily: "Trebuchet",
+            fontFamily: "RussoOne",
             fontSize: 0.075 * screenWidth,
           ),
         ),
@@ -108,9 +109,11 @@ class HrTrainingScreen extends StatelessWidget {
           child: ListView.builder(
             itemCount: categorizedQuestions.length,
             itemBuilder: (context, categoryIndex) {
-              final category = categorizedQuestions.keys.elementAt(categoryIndex);
+              final category = categorizedQuestions.keys.elementAt(
+                categoryIndex,
+              );
               final questions = categorizedQuestions[category]!;
-              
+
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -128,7 +131,10 @@ class HrTrainingScreen extends StatelessWidget {
                   ),
                   ...List.generate(questions.length, (questionIndex) {
                     return Padding(
-                      padding: EdgeInsets.only(bottom: verticalPadding, left: size.width * 0.03),
+                      padding: EdgeInsets.only(
+                        bottom: verticalPadding,
+                        left: size.width * 0.03,
+                      ),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

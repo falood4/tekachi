@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tekachigeojit/components/NavBar.dart';
-import 'package:tekachigeojit/test/QuizPage.dart';
+import 'package:tekachigeojit/test/Aptitude%20Quiz/QuizPage.dart';
 
 class AptitudeTest extends StatelessWidget {
   const AptitudeTest({super.key});

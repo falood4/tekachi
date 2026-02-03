@@ -44,3 +44,7 @@ flutter:
     - family: Trebuchet
       fonts:
       - asset: assets/TREBUCBD.TTF 
+
+    - family: Rostex
+      fonts:
+        - asset: assets/Rostex-Regular.ttf

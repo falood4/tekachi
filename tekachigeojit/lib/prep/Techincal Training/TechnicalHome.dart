@@ -12,18 +12,21 @@ class TechnicalHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    
-    return Scaffold(  
+
+    return Scaffold(
       backgroundColor: const Color.fromRGBO(20, 20, 20, 1.0),
       bottomNavigationBar: NavBar(),
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(20, 20, 20, 1.0),
-        iconTheme: const IconThemeData(
-          color: Color(0xFF8DD300),
+        iconTheme: const IconThemeData(color: Color(0xFF8DD300)),
+        title: Text(
+          'Technical Training',
+          style: TextStyle(
+            color: const Color(0xFF8DD300),
+            fontFamily: "RussoOne",
+            fontSize: 0.075 * screenWidth,
+          ),
         ),
-        title: Text('Technical Training', style: TextStyle(color: const Color(0xFF8DD300),
-                      fontFamily: "Trebuchet",
-                      fontSize: 0.075 * screenWidth),),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_rounded),
           onPressed: () {
@@ -48,10 +51,26 @@ class TechnicalHome extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                _trainingMenuItem(context, "Object Oriented Programming", () => _loadOOP(context)),
-                _trainingMenuItem(context, "Data Structures", () =>_loadDS(context)),
-                _trainingMenuItem(context, "Database Management", () =>_loadDBMS(context)),
-                _trainingMenuItem(context, "Operating Systems", () =>_loadOS(context))
+                _trainingMenuItem(
+                  context,
+                  "Object Oriented Programming",
+                  () => _loadOOP(context),
+                ),
+                _trainingMenuItem(
+                  context,
+                  "Data Structures",
+                  () => _loadDS(context),
+                ),
+                _trainingMenuItem(
+                  context,
+                  "Database Management",
+                  () => _loadDBMS(context),
+                ),
+                _trainingMenuItem(
+                  context,
+                  "Operating Systems",
+                  () => _loadOS(context),
+                ),
               ],
             ),
           ),
@@ -60,27 +79,33 @@ class TechnicalHome extends StatelessWidget {
     );
   }
 
-Widget _trainingMenuItem(BuildContext context, String title, Function()? onPressed) {
+  Widget _trainingMenuItem(
+    BuildContext context,
+    String title,
+    Function()? onPressed,
+  ) {
     final screenWidth = MediaQuery.of(context).size.width;
     return Container(
-      margin: EdgeInsets.symmetric(vertical: screenWidth*0.015),
+      margin: EdgeInsets.symmetric(vertical: screenWidth * 0.015),
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor: Color(0xFFD9D9D9),
           shadowColor: Colors.transparent,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25),
+          ),
         ),
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: screenWidth *  0.05),
+          padding: EdgeInsets.symmetric(vertical: screenWidth * 0.05),
           child: Align(
             alignment: Alignment.centerLeft,
             child: Text(
               title,
               style: TextStyle(
                 color: Colors.black,
-                fontSize: screenWidth*0.05,
-                fontFamily: "Trebuchet"
+                fontSize: screenWidth * 0.05,
+                fontFamily: "Trebuchet",
               ),
             ),
           ),
@@ -90,28 +115,18 @@ Widget _trainingMenuItem(BuildContext context, String title, Function()? onPress
   }
 
   void _loadDBMS(BuildContext context) {
-    Navigator.of(
-      context,
-    ).push(MaterialPageRoute(builder: (_) => DBMS()));
+    Navigator.of(context).push(MaterialPageRoute(builder: (_) => DBMS()));
   }
 
   void _loadDS(BuildContext context) {
-    Navigator.of(
-      context,
-    ).push(MaterialPageRoute(builder: (_) => DStopics()));
+    Navigator.of(context).push(MaterialPageRoute(builder: (_) => DStopics()));
   }
 
   void _loadOOP(BuildContext context) {
-    Navigator.of(
-      context,
-    ).push(MaterialPageRoute(builder: (_) => OOPtopics()));
+    Navigator.of(context).push(MaterialPageRoute(builder: (_) => OOPtopics()));
   }
-  
+
   void _loadOS(BuildContext context) {
-    Navigator.of(
-      context,
-    ).push(MaterialPageRoute(builder: (_) => OStopics()));
+    Navigator.of(context).push(MaterialPageRoute(builder: (_) => OStopics()));
   }
 }
-
-
