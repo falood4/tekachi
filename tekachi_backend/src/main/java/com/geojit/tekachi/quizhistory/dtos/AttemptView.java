@@ -1,22 +1,14 @@
 package com.geojit.tekachi.quizhistory.dtos;
 
+import java.time.LocalDateTime;
+
 public interface AttemptView {
 
         Long getAttemptId();
 
         Long getUserId();
 
-        Long getAnswerId();
+        LocalDateTime getAttemptedOn();
 
-        Integer getQId();
-
-        String getQString();
-
-        Integer getOpId();
-
-        String getOp();
-
-        Integer getQCorrectOption();
-
-        Integer getIsSelected();
+        String getScore();
 }

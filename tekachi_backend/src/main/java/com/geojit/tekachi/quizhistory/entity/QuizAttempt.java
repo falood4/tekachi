@@ -9,6 +9,7 @@ import com.geojit.tekachi.usersignin.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Formula;
 
 @Entity
 @Table(name = "aptitude_attempts")
@@ -22,7 +23,7 @@ public class QuizAttempt {
     private Long attemptId;
 
     @ManyToOne
-    @JoinColumn(name = "id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false) // FIX: was "id"
     private User user;
 
     @Column(name = "attempted_on", nullable = false)
@@ -34,8 +35,8 @@ public class QuizAttempt {
     @Column(name = "correct_answers", nullable = false)
     private int correctAnswers;
 
-    @Column(name = "score")
-    private int score;
+    @Formula("score")
+    private String score;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "attempt", cascade = CascadeType.ALL)

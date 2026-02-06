@@ -16,7 +16,7 @@ public class QuizAttemptService {
         this.attemptedRepo = attemptedRepo;
     }
 
-    public List<AttemptView> getAttemptReview(Long userId) {
-        return attemptedRepo.findAttemptAnswersByUserId(userId);
+    public List<AttemptView> getAttemptHistory(Long userId) {
+        return attemptedRepo.findAttemptByUserId(userId);
     }
 }

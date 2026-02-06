@@ -24,18 +24,6 @@ public class QuizAttemptController {
                     java.util.Map.of("error", "userId must be a positive number"));
         }
 
-        return ResponseEntity.ok(quizAttemptService.getAttemptReview(userId));
+        return ResponseEntity.ok(quizAttemptService.getAttemptHistory(userId));
     }
-
-    @GetMapping("/history/{userId}/attempts/{attemptId}")
-    public ResponseEntity<?> getUserAttemptAnswers(@PathVariable Long userId,
-            @PathVariable Long attemptId) {
-        if (userId == null || userId <= 0 || attemptId == null || attemptId <= 0) {
-            return ResponseEntity.badRequest().body(
-                    java.util.Map.of("error", "userId or attemptId must be a positive number"));
-        }
-
-        return ResponseEntity.ok(quizAttemptService.getAttemptReview(userId));
-    }
-
 }
