@@ -75,7 +75,6 @@ public class UserController {
 
             User user = userService.login(email, password);
 
-            // Generate JWT token
             String token = jwtService.generateToken(email, Map.of("userId", user.getId()));
 
             return ResponseEntity.ok(Map.of(

@@ -17,6 +17,7 @@ class _QuizPageState extends State<QuizPage> {
   int totalScore = 0;
   int totalQsns = 0;
   List<int> indices = List.generate(40, (index) => index + 1);
+  Map<String, (String, String)> allAnswers = <String, (String, String)>{};
   Map<String, (String, String)> wrongAnswers = <String, (String, String)>{};
 
   QuestionModel? currentQuestion;
@@ -156,14 +157,20 @@ class _QuizPageState extends State<QuizPage> {
       totalQsns++;
     } else {
       totalQsns++;
+      //adding wrong answer for post-result review
       wrongAnswers[question.questionText] = (
         question.options[_selectedOptionIndex!],
         question.options[question.correctAnswerIndex],
       );
     }
+    //adding all answers for later review
+    allAnswers[question.questionText] = (
+      question.options[_selectedOptionIndex!],
+      question.options[question.correctAnswerIndex],
+    );
 
     if (totalQsns <= 15) {
-      debugPrint('Score: $totalScore / $totalQsns');
+      debugPrint('Score: $totalScore / 15');
       _loadRandomQuestion();
     } else {
       indices = List.generate(40, (index) => index + 1);

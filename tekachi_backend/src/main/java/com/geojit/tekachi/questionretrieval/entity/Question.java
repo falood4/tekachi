@@ -23,9 +23,8 @@ public class Question {
     @Column(name = "q_correct_option")
     private Integer qCorrectOption;
 
-    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "question", fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<Option> options;
 
-    // getters & setters
 }
