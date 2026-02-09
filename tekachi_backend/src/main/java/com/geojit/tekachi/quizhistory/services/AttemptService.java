@@ -8,11 +8,10 @@ import com.geojit.tekachi.quizhistory.dtos.AttemptView;
 import com.geojit.tekachi.quizhistory.repository.AttemptRepo;
 
 @Service
-public class QuizAttemptService {
-
+public class AttemptService {
     private final AttemptRepo attemptedRepo;
 
-    public QuizAttemptService(AttemptRepo attemptedRepo) {
+    public AttemptService (AttemptRepo attemptedRepo) {
         this.attemptedRepo = attemptedRepo;
     }
 

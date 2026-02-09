@@ -15,7 +15,7 @@ import org.hibernate.annotations.Formula;
 @Table(name = "aptitude_attempts")
 @Getter
 @Setter
-public class QuizAttempt {
+public class Attempt {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,5 +40,5 @@ public class QuizAttempt {
 
     @JsonManagedReference
     @OneToMany(mappedBy = "attempt", cascade = CascadeType.ALL)
-    private List<AttemptedAnswer> answers;
+    private List<Answer> answers;
 }

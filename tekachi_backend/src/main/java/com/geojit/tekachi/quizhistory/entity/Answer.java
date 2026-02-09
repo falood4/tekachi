@@ -12,7 +12,7 @@ import lombok.Setter;
 @Table(name = "aptitude_answers")
 @Getter
 @Setter
-public class AttemptedAnswer {
+public class Answer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,11 +22,11 @@ public class AttemptedAnswer {
     @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "attempt_id", nullable = false)
-    private QuizAttempt attempt;
+    private Attempt attempt;
 
     @ManyToOne
     @JoinColumn(name = "q_id", nullable = false)
-    private Question question;
+    private Question question; // Renamed to 'question' for clarity
 
     @ManyToOne
     @JoinColumn(name = "selected_op_id")

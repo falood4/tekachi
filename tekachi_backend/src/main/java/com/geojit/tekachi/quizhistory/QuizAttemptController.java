@@ -6,15 +6,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
-import com.geojit.tekachi.quizhistory.services.QuizAttemptService;
+import com.geojit.tekachi.quizhistory.services.AnswerService;
+import com.geojit.tekachi.quizhistory.services.AttemptService;
 
 @RestController
 @CrossOrigin
 public class QuizAttemptController {
-    private final QuizAttemptService quizAttemptService;
+    private final AttemptService quizAttemptService;
+    private final AnswerService quizAnswerService;
 
-    QuizAttemptController(QuizAttemptService quizAttemptService) {
+    QuizAttemptController(AttemptService quizAttemptService, AnswerService quizAnswerService) {
         this.quizAttemptService = quizAttemptService;
+        this.quizAnswerService = quizAnswerService;
     }
 
     @GetMapping("/history/{userId}/attempts")
@@ -26,4 +29,15 @@ public class QuizAttemptController {
 
         return ResponseEntity.ok(quizAttemptService.getAttemptHistory(userId));
     }
+
+    @GetMapping("/history/{attemptId}")
+    public ResponseEntity<?> getAttemptAnswers(@PathVariable Long attemptId) {
+        if (attemptId == null || attemptId <= 0) {
+            return ResponseEntity.badRequest().body(
+                    java.util.Map.of("error", "attemptId must be a positive number"));
+        }
+
+        return ResponseEntity.ok(quizAnswerService.getAnswers(attemptId));
+    }
+
 }
