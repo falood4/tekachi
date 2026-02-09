@@ -1,5 +1,9 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:tekachigeojit/components/NavBar.dart';
+import 'package:tekachigeojit/services/HistoryService.dart';
+import 'package:tekachigeojit/services/AuthService.dart';
 
 class QuizResult extends StatelessWidget {
   final int score;
@@ -15,6 +19,9 @@ class QuizResult extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+
+    int? user_id = AuthService().shareUserId();
+    HistoryService().saveAttempt(user_id!, score);
 
     return Scaffold(
       bottomNavigationBar: const NavBar(),
@@ -160,7 +167,7 @@ class QuizResult extends StatelessWidget {
     );
   }
 
-  dynamic scoreRemark(int score, double fontSize) {
+  Text scoreRemark(int score, double fontSize) {
     if (score > 12) {
       return Text(
         'Excellent',

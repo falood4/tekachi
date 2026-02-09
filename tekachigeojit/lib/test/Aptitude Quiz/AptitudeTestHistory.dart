@@ -111,7 +111,7 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
                     borderRadius: BorderRadius.circular(5),
                   ),
                   child: Text(
-                    '#${attempt['attemptId']}',
+                    '#${index + 1}',
                     style: const TextStyle(
                       fontFamily: 'DelaGothicOne',
                       color: Color.fromRGBO(20, 20, 20, 1.0),

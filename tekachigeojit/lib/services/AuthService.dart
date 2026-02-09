@@ -30,7 +30,7 @@ class AuthService {
     _token = null;
   }
 
-  void setToken(String token, int? userID) {
+  void setToken(String token, int userID) {
     _token = token;
     _userId = userID;
   }

@@ -54,4 +54,19 @@ class HistoryService {
       rethrow;
     }
   }
+
+  Future<http.Response> saveAttempt(int user_id, int score) async {
+    try {
+      final response = await http.post(
+        Uri.parse('$_baseUrl/newattempt'),
+        headers: _headers(),
+        body: jsonEncode({"user": user_id, "correctAnswers": score}),
+      );
+
+      return response;
+    } catch (e) {
+      debugPrintStack(label: 'Attempt could not be saved: $e');
+      rethrow;
+    }
+  }
 }
