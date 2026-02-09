@@ -22,7 +22,7 @@ public interface AttemptRepo extends JpaRepository<Attempt, Long> {
 
                 FROM aptitude_attempts
                 WHERE user_id = :userId
-                ORDER BY attempt_id
+                ORDER BY attempted_on
             """, nativeQuery = true)
     List<AttemptView> findAttemptByUserId(@Param("userId") Long userId);
 

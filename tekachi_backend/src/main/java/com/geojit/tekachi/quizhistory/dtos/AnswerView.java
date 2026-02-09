@@ -1,14 +1,19 @@
 package com.geojit.tekachi.quizhistory.dtos;
 
 public interface AnswerView {
+    Long getAnswerId();
 
-    Integer getAnswerId();
+    Long getAttemptId();
 
-    Integer getAttemptId();
-
-    Integer getQId();
+    Long getQId();
 
     String getQString();
 
-    Integer getSelectedOption();
+    Long getSelectedOption();
+
+    String getSelectedOptionText();
+
+    Long getCorrectOption();
+
+    String getCorrectOptionText();
 }

@@ -31,4 +31,6 @@ public class Answer {
     @ManyToOne
     @JoinColumn(name = "selected_op_id")
     private Option selectedOption;
+
+    
 }

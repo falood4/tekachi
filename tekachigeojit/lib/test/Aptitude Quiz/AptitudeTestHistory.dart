@@ -82,6 +82,8 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
       );
     }
 
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return ListView.builder(
       padding: const EdgeInsets.all(16),
       itemCount: _attempts.length,
@@ -91,7 +93,7 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
           padding: const EdgeInsets.only(bottom: 12),
           child: ElevatedButton(
             onPressed: () {
-              // TODO: Navigate to attempt details if needed
+              showAnswers(attempt['attemptId'], screenHeight);
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color.fromRGBO(35, 35, 35, 1.0),
@@ -150,6 +152,81 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
           ),
         );
       },
+    );
+  }
+
+  Future<void> showAnswers(int attemptId, double screenheight) async {
+    final List<Map<String, dynamic>> reviewAnswers = await HistoryService()
+        .getAttemptAnswers(attemptId);
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: const Color.fromRGBO(20, 20, 20, 1.0),
+      isScrollControlled: true,
+      builder: (context) {
+        return Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: const Color(0xFF8DD300)),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(25),
+              topRight: Radius.circular(25),
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: SizedBox(
+              height: screenheight * 0.6,
+              child: ListView.builder(
+                itemCount: reviewAnswers.length,
+                itemBuilder: (context, index) {
+                  final entry = reviewAnswers[index];
+                  return _answerReviewCard(entry['qsn'] as String, (
+                    entry['userChoice'] as String,
+                    entry['correctAnswer'] as String,
+                  ));
+                },
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _answerReviewCard(String questionText, (String, String) answers) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            questionText,
+            style: TextStyle(
+              color: Colors.white,
+              fontFamily: "Trebuchet",
+              fontSize: 16,
+            ),
+          ),
+          const SizedBox(height: 5),
+          Text(
+            'Your Answer: ${answers.$1}',
+            style: TextStyle(
+              color: const Color.fromARGB(255, 248, 108, 98),
+              fontFamily: "Trebuchet",
+              fontSize: 14,
+            ),
+          ),
+          const SizedBox(height: 5),
+          Text(
+            'Correct Answer: ${answers.$2}',
+            style: TextStyle(
+              color: const Color.fromARGB(255, 113, 254, 118),
+              fontFamily: "Trebuchet",
+              fontSize: 14,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

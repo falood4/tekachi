@@ -13,14 +13,32 @@ import java.util.List;
 public interface AnswerRepo extends JpaRepository<Answer, Long> {
 
     @Query(value = """
-            SELECT a.answer_id as answerId,
-                   a.attempt_id as attemptId,
-                   q.q_id as qId,
-                   q.qsn as qString,
-                   a.selected_op_id as selectedOption
-              FROM aptitude_answers a
-              JOIN questions q ON a.q_id = q.q_id
-             WHERE a.attempt_id = :attemptId
+             SELECT
+                a.answer_id        AS answerId,
+                a.attempt_id       AS attemptId,
+                q.q_id             AS qId,
+                q.qsn              AS qString,
+
+                a.selected_op_id   AS selectedOption,
+                sel.op             AS selectedOptionText,
+
+                q.correct_op_id    AS correctOption,
+                cor.op             AS correctOptionText
+
+            FROM aptitude_answers a
+            JOIN questions q
+                ON a.q_id = q.q_id
+
+            -- selected option
+            LEFT JOIN options sel
+                ON sel.op_id = a.selected_op_id
+
+            -- correct option
+            LEFT JOIN options cor
+                ON cor.op_id = q.correct_op_id
+
+            WHERE a.attempt_id = :attemptId
+
             """, nativeQuery = true)
     List<AnswerView> findAnswersByAttemptId(@Param("attemptId") Long attemptId);
 }

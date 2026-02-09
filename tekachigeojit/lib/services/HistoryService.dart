@@ -69,4 +69,39 @@ class HistoryService {
       rethrow;
     }
   }
+
+  Future<List<Map<String, dynamic>>> getAttemptAnswers(int? attempt_id) async {
+    if (attempt_id == null) {
+      throw Exception('Attempt ID not available');
+    }
+
+    try {
+      final response = await http.get(
+        Uri.parse('$_baseUrl/$attempt_id'),
+        headers: _headers(),
+      );
+
+      if (response.statusCode == 200) {
+        debugPrint('Attempt history retrieved');
+        final List<dynamic> data = jsonDecode(response.body);
+        return data
+            .map(
+              (item) => {
+                'qid': item['QId'],
+                'qsn': item['QString'],
+                'a_id': item['answerId'],
+                'attemptId': item['attemptId'],
+                'userChoice': item['selectedOptionText'],
+                'correctAnswer': item['correctOptionText'],
+              },
+            )
+            .toList();
+      } else {
+        throw Exception('${response.statusCode}');
+      }
+    } catch (e) {
+      debugPrint('Could not get attempt history: $e');
+      rethrow;
+    }
+  }
 }
