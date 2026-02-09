@@ -109,9 +109,8 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
         );
         final data = jsonDecode(response.body);
         final token = data['token'];
-        if (token != null) {
-          AuthService().setToken(token);
-        }
+        final userID = data['id'];
+        AuthService().setToken(token, userID);
 
         setState(() => _signedUp = true);
 

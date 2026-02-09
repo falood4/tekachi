@@ -57,8 +57,10 @@ class _LoginState extends State<Login> {
         );
         final data = jsonDecode(response.body);
         final token = data['token'];
-        AuthService().setToken(token);
-        
+        final userID = data['id'];
+        AuthService().setToken(token, userID);
+        debugPrint('Login successful userID: $userID');
+
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (_) => const PrepHome()),

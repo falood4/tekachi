@@ -22,34 +22,36 @@ class HistoryService {
     return headers;
   }
 
-  Future<http.Response> storeqsn(
-    int q_id,
-    int _selectedOptionIndex,
-    int attempt,
-  ) async {
+  Future<List<Map<String, dynamic>>> getAttemptHistory([int? user_id]) async {
+    final uid = user_id ?? AuthService().shareUserId();
+    if (uid == null) {
+      throw Exception('User ID not available');
+    }
+
     try {
-      final response = await http.post(
-        Uri.parse('$_baseUrl/aptitude/answers'),
+      final response = await http.get(
+        Uri.parse('$_baseUrl/$uid/attempts'),
         headers: _headers(),
-        body: jsonEncode({
-          'question': q_id,
-          'selectedOption': _selectedOptionIndex,
-          'attempt': attempt,
-        }),
       );
 
       if (response.statusCode == 200) {
-        return response;
+        final List<dynamic> data = jsonDecode(response.body);
+        return data
+            .map(
+              (item) => {
+                'attemptId': item['attemptId'],
+                'attemptedOn': item['attemptedOn'],
+                'score': item['score'],
+                'userId': item['userId'],
+              },
+            )
+            .toList();
       } else {
         throw Exception('${response.statusCode}');
       }
     } catch (e) {
-      debugPrint('Could not store question $e');
+      debugPrint('Could not get attempt history: $e');
       rethrow;
     }
-  }
-
-  storeAttempt() {
-    //to be implemented later
   }
 }

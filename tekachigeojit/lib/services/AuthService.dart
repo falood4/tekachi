@@ -17,6 +17,7 @@ class AuthService {
   String? _email;
   String? _password;
   String? _token;
+  int? _userId;
 
   void setCredentials(String email, String password) {
     _email = email;
@@ -29,8 +30,13 @@ class AuthService {
     _token = null;
   }
 
-  void setToken(String token) {
+  void setToken(String token, int? userID) {
     _token = token;
+    _userId = userID;
+  }
+
+  int? shareUserId() {
+    return _userId;
   }
 
   String? shareToken() {
@@ -42,7 +48,10 @@ class AuthService {
   }
 
   bool isLoggedIn() {
-    return _token != null && _token!.isNotEmpty && _email != null && _email!.isNotEmpty;
+    return _token != null &&
+        _token!.isNotEmpty &&
+        _email != null &&
+        _email!.isNotEmpty;
   }
 
   /// Build headers with Content-Type and Authorization

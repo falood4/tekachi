@@ -1,5 +1,8 @@
 package com.geojit.tekachi.quizhistory;
 
+import java.util.List;
+import java.util.Map;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,10 +27,16 @@ public class QuizAttemptController {
     public ResponseEntity<?> getUserAttemptHistory(@PathVariable Long userId) {
         if (userId == null || userId <= 0) {
             return ResponseEntity.badRequest().body(
-                    java.util.Map.of("error", "userId must be a positive number"));
+                    Map.of("error", "userId must be a positive number"));
         }
 
-        return ResponseEntity.ok(quizAttemptService.getAttemptHistory(userId));
+        List<?> history = quizAttemptService.getAttemptHistory(userId);
+        if (history == null || history.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("message", "No attempts found for userId", "userId", userId));
+        }
+
+        return ResponseEntity.ok(history);
     }
 
     @GetMapping("/history/{attemptId}")
@@ -37,7 +46,13 @@ public class QuizAttemptController {
                     java.util.Map.of("error", "attemptId must be a positive number"));
         }
 
-        return ResponseEntity.ok(quizAnswerService.getAnswers(attemptId));
+        List<?> answers = quizAnswerService.getAnswers(attemptId);
+        if (answers == null || answers.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("message", "No answers found for attemptId", "attemptId", attemptId));
+        }
+
+        return ResponseEntity.ok(answers);
     }
 
 }
