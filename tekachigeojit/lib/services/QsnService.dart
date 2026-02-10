@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'AuthService.dart';
+import '../models/QuestionModel.dart';
 
 class QsnService {
   static const String _baseUrl = 'http://10.0.2.2:8080/questions';
@@ -23,7 +24,7 @@ class QsnService {
     return headers;
   }
 
-  Future<Map<String, dynamic>> getqsn(int q_id) async {
+  Future<QuestionModel> getQuestion(int q_id) async {
     try {
       final response = await http.get(
         Uri.parse('$_baseUrl/$q_id'),
@@ -32,15 +33,12 @@ class QsnService {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        final options = (data['options'] as List)
-            .map((option) => option['op'] as String)
-            .toList();
-        return {
+        return QuestionModel.fromJson({
+          'qId': data['qId'],
           'questionText': data['qsn'],
-          'correctAnswerIndex': data['qCorrectOption'],
+          'options': data['options'],
           'correctOptionId': data['correctOpId'],
-          'options': options,
-        };
+        });
       } else {
         throw Exception('Failed to load question: ${response.statusCode}');
       }
@@ -49,5 +47,4 @@ class QsnService {
       rethrow;
     }
   }
-
 }

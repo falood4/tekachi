@@ -70,6 +70,28 @@ class HistoryService {
     }
   }
 
+  Future<http.Response> saveAnswer({
+    required int attemptId,
+    required int questionId,
+    required int selectedOptionId,
+  }) async {
+    try {
+      final response = await http.post(
+        Uri.parse('$_baseUrl/newanswer'),
+        headers: _headers(),
+        body: jsonEncode({
+          "attemptId": attemptId,
+          "QId": questionId,
+          "selectedOption": selectedOptionId,
+        }),
+      );
+      return response;
+    } catch (e) {
+      debugPrint('Answer could not be saved: $e');
+      rethrow;
+    }
+  }
+
   Future<List<Map<String, dynamic>>> getAttemptAnswers(int? attempt_id) async {
     if (attempt_id == null) {
       throw Exception('Attempt ID not available');

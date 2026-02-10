@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:tekachigeojit/models/QuestionModel.dart';
+import 'package:tekachigeojit/models/AnswerSelection.dart';
 import 'package:tekachigeojit/test/Aptitude%20Quiz/QuizResult.dart';
 import 'package:tekachigeojit/services/QsnService.dart';
 
@@ -13,13 +14,11 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
-  int? _selectedOptionIndex;
-  String? _selectedOptionText;
+  int? _selectedOptionId;
   int totalScore = 0;
   int totalQsns = 0;
   List<int> indices = List.generate(40, (index) => index + 1);
-  Map<String, (String, String)> allAnswers = <String, (String, String)>{};
-  Map<String, (String, String)> wrongAnswers = <String, (String, String)>{};
+  final List<AnswerSelection> _answers = <AnswerSelection>[];
 
   QuestionModel? currentQuestion;
   bool isLoading = true;
@@ -38,16 +37,10 @@ class _QuizPageState extends State<QuizPage> {
       final randomIndex = indices[pickIndex];
       indices.removeAt(pickIndex);
 
-      final questionData = await QsnService().getqsn(randomIndex);
+      final questionData = await QsnService().getQuestion(randomIndex);
       setState(() {
-        currentQuestion = QuestionModel(
-          questionText: questionData['questionText'],
-          options: List<String>.from(questionData['options']),
-          correctAnswerIndex: questionData['correctAnswerIndex'],
-          correctOptionId: questionData['correctOptionId'],
-        );
-        _selectedOptionIndex = null;
-        _selectedOptionText = null;
+        currentQuestion = questionData;
+        _selectedOptionId = null;
         isLoading = false;
       });
     } catch (e) {
@@ -102,24 +95,25 @@ class _QuizPageState extends State<QuizPage> {
                       child: ListView.builder(
                         itemCount: currentQuestion!.options.length,
                         itemBuilder: (context, optionIndex) {
+                          final option = currentQuestion!.options[optionIndex];
                           return Padding(
                             padding: const EdgeInsets.symmetric(vertical: 4),
                             child: RadioListTile<int>(
-                              value: optionIndex,
-                              groupValue: _selectedOptionIndex,
+                              value: option.id,
+                              groupValue: _selectedOptionId,
                               onChanged: (val) {
-                                debugPrint('Selected option index: $val');
+                                final selected = currentQuestion!.options
+                                    .firstWhere((element) => element.id == val);
+                                debugPrint('Selected option id: $val');
                                 debugPrint(
-                                  'Selected option text: ${currentQuestion!.options[val!]}',
+                                  'Selected option text: ${selected.text}',
                                 );
                                 setState(() {
-                                  _selectedOptionIndex = val;
-                                  _selectedOptionText =
-                                      currentQuestion!.options[val];
+                                  _selectedOptionId = val;
                                 });
                               },
                               title: Text(
-                                currentQuestion!.options[optionIndex],
+                                option.text,
                                 style: const TextStyle(fontFamily: 'Trebuchet'),
                               ),
                               activeColor: const Color(0xFF8DD300),
@@ -131,7 +125,7 @@ class _QuizPageState extends State<QuizPage> {
                     ),
                     const SizedBox(height: 16),
                     ElevatedButton(
-                      onPressed: _selectedOptionIndex != null
+                      onPressed: _selectedOptionId != null
                           ? () => _handleNext(currentQuestion!)
                           : null,
                       style: ElevatedButton.styleFrom(
@@ -155,31 +149,36 @@ class _QuizPageState extends State<QuizPage> {
   }
 
   void _handleNext(QuestionModel question) {
-    if (_selectedOptionIndex == null) {
+    if (_selectedOptionId == null) {
       return;
     }
 
-    if (question.correctAnswerIndex == _selectedOptionIndex) {
-      totalScore++;
-      totalQsns++;
-    } else {
-      totalQsns++;
-      //adding wrong answer for post-result review. these uses indices of currentquestion
-      wrongAnswers[question.questionText] = (
-        question.options[_selectedOptionIndex!],
-        question.options[question.correctAnswerIndex],
-      );
-    }
-
-    //retrieve op_id of selected option at _selectedOptionIndex
-
-    //adding all answers for later review. these use op_ids in order to be stored in db
-    allAnswers[question.questionText] = (
-      question.options[_selectedOptionIndex!],
-      question.options[question.correctOptionId],
+    final selectedOption = question.options.firstWhere(
+      (option) => option.id == _selectedOptionId,
+    );
+    final correctOption = question.options.firstWhere(
+      (option) => option.id == question.correctOptionId,
     );
 
-    if (totalQsns <= 15) {
+    final bool isCorrect = selectedOption.id == question.correctOptionId;
+    if (isCorrect) {
+      totalScore++;
+    }
+    totalQsns++;
+
+    _answers.add(
+      AnswerSelection(
+        questionId: question.questionId,
+        questionText: question.questionText,
+        selectedOptionId: selectedOption.id,
+        selectedOptionText: selectedOption.text,
+        correctOptionId: correctOption.id,
+        correctOptionText: correctOption.text,
+        isCorrect: isCorrect,
+      ),
+    );
+
+    if (totalQsns < 15) {
       debugPrint('Score: $totalScore / 15');
       _loadRandomQuestion();
     } else {
@@ -188,11 +187,8 @@ class _QuizPageState extends State<QuizPage> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => QuizResult(
-            score: totalScore,
-            reviewAnswers: wrongAnswers,
-            allAnswers: allAnswers,
-          ),
+          builder: (context) =>
+              QuizResult(score: totalScore, answers: _answers),
         ),
       );
     }

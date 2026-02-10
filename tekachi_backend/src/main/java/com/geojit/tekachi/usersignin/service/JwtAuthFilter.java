@@ -26,7 +26,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final TokenBlacklistService tokenBlacklistService;
 
-    public JwtAuthFilter(JwtService jwtService, CustomUserDetailsService customUserDetailsService, TokenBlacklistService tokenBlacklistService) {
+    public JwtAuthFilter(JwtService jwtService, CustomUserDetailsService customUserDetailsService,
+            TokenBlacklistService tokenBlacklistService) {
         this.jwtService = jwtService;
         this.customUserDetailsService = customUserDetailsService;
         this.tokenBlacklistService = tokenBlacklistService;
@@ -64,32 +65,16 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         if (StringUtils.hasText(token)) {
             UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
 
-            UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(
-                            userDetails,
-                            null,
-                            userDetails.getAuthorities()
-                    );
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                    userDetails,
+                    null,
+                    userDetails.getAuthorities());
 
             authentication.setDetails(
-                    new WebAuthenticationDetailsSource().buildDetails(request)
-            );
+                    new WebAuthenticationDetailsSource().buildDetails(request));
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         filterChain.doFilter(request, response);
-    }
-
-    /**
-     * Extract JWT token from Authorization header
-     */
-    private String extractJwtFromRequest(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
-
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
-        }
-
-        return null;
     }
 }

@@ -1,36 +1,69 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:tekachigeojit/components/NavBar.dart';
+import 'package:tekachigeojit/models/AnswerSelection.dart';
 import 'package:tekachigeojit/services/HistoryService.dart';
 import 'package:tekachigeojit/services/AuthService.dart';
 
-class QuizResult extends StatelessWidget {
+class QuizResult extends StatefulWidget {
   final int score;
-  final Map<String, (String, String)> reviewAnswers;
-  final Map<String, (String, String)> allAnswers;
+  final List<AnswerSelection> answers;
 
-  const QuizResult({
-    super.key,
-    required this.score,
-    required this.reviewAnswers,
-    required this.allAnswers,
-  });
+  const QuizResult({super.key, required this.score, required this.answers});
+
+  @override
+  State<QuizResult> createState() => _QuizResultState();
+}
+
+class _QuizResultState extends State<QuizResult> {
+  bool _attemptSaved = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _persistAttemptAndAnswers();
+  }
+
+  Future<void> _persistAttemptAndAnswers() async {
+    final userId = AuthService().shareUserId();
+    if (userId == null) {
+      debugPrint('No user id available, skipping save.');
+      return;
+    }
+
+    try {
+      final response = await HistoryService().saveAttempt(userId, widget.score);
+      if (response.statusCode != 201) {
+        debugPrint(
+          'Attempt save failed ${response.statusCode}: ${response.body}',
+        );
+        return;
+      }
+
+      final decoded = jsonDecode(response.body) as Map<String, dynamic>;
+      final int attemptId = decoded['attempt_id'] as int;
+
+      for (final answer in widget.answers) {
+        await HistoryService().saveAnswer(
+          attemptId: attemptId,
+          questionId: answer.questionId,
+          selectedOptionId: answer.selectedOptionId,
+        );
+      }
+
+      setState(() => _attemptSaved = true);
+      debugPrint(
+        'Attempt $attemptId saved with ${widget.answers.length} answers',
+      );
+    } catch (e) {
+      debugPrint('Failed to persist attempt/answers: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-
-    saveAttempt(user, score) async {
-      final response = await HistoryService().saveAttempt(user!, score);
-      Map<String, dynamic> getter = jsonDecode(response.body);
-      int att_id = getter['attempt_id'] as int;
-      debugPrint('Saved Attempt ID: $att_id');
-    }
-
-    int? user_id = AuthService().shareUserId();
-    saveAttempt(user_id, score);
-    //debugPrint('Saved Attempt ID: $attemptId');
 
     return Scaffold(
       bottomNavigationBar: const NavBar(),
@@ -46,7 +79,7 @@ class QuizResult extends StatelessWidget {
                   width: screenWidth * 0.6,
                   height: screenWidth * 0.6,
                   child: CircularProgressIndicator(
-                    value: score / 15,
+                    value: widget.score / 15,
                     strokeWidth: screenWidth * 0.075,
                     backgroundColor: const Color.fromARGB(255, 51, 51, 51),
                     valueColor: const AlwaysStoppedAnimation<Color>(
@@ -56,14 +89,14 @@ class QuizResult extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '$score/15',
+                  '${widget.score}/15',
                   style: TextStyle(
                     fontSize: screenWidth * 0.1,
                     fontFamily: "DelaGothicOne",
                     color: Colors.white,
                   ),
                 ),
-                scoreRemark(score, screenWidth * 0.05),
+                scoreRemark(widget.score, screenWidth * 0.05),
                 SizedBox(height: screenWidth * 0.05),
                 ElevatedButton(
                   onPressed: () => startReview(context),
@@ -86,6 +119,18 @@ class QuizResult extends StatelessWidget {
                     ),
                   ),
                 ),
+                if (!_attemptSaved)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 12),
+                    child: Text(
+                      'Saving result...',
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontFamily: "Trebuchet",
+                        fontSize: screenWidth * 0.035,
+                      ),
+                    ),
+                  ),
               ],
             ),
           ),
@@ -94,15 +139,15 @@ class QuizResult extends StatelessWidget {
     );
   }
 
-  Widget _answerReviewCard(String questionText, (String, String) answers) {
+  Widget _answerReviewCard(AnswerSelection answer) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            questionText,
-            style: TextStyle(
+            answer.questionText,
+            style: const TextStyle(
               color: Colors.white,
               fontFamily: "Trebuchet",
               fontSize: 16,
@@ -110,18 +155,18 @@ class QuizResult extends StatelessWidget {
           ),
           const SizedBox(height: 5),
           Text(
-            'Your Answer: ${answers.$1}',
-            style: TextStyle(
-              color: const Color.fromARGB(255, 248, 108, 98),
+            'Your Answer: ${answer.selectedOptionText}',
+            style: const TextStyle(
+              color: Color.fromARGB(255, 248, 108, 98),
               fontFamily: "Trebuchet",
               fontSize: 14,
             ),
           ),
           const SizedBox(height: 5),
           Text(
-            'Correct Answer: ${answers.$2}',
-            style: TextStyle(
-              color: const Color(0xFF8DD300),
+            'Correct Answer: ${answer.correctOptionText}',
+            style: const TextStyle(
+              color: Color(0xFF8DD300),
               fontFamily: "Trebuchet",
               fontSize: 14,
             ),
@@ -135,7 +180,11 @@ class QuizResult extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
-    if (reviewAnswers.isEmpty) {
+    final wrongAnswers = widget.answers
+        .where((element) => !element.isCorrect)
+        .toList();
+
+    if (wrongAnswers.isEmpty) {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(const SnackBar(content: Text('No answers to review.')));
@@ -163,10 +212,9 @@ class QuizResult extends StatelessWidget {
             child: SizedBox(
               height: screenHeight * 0.8,
               child: ListView.builder(
-                itemCount: reviewAnswers.length,
+                itemCount: wrongAnswers.length,
                 itemBuilder: (context, index) {
-                  final entry = reviewAnswers.entries.elementAt(index);
-                  return _answerReviewCard(entry.key, entry.value);
+                  return _answerReviewCard(wrongAnswers[index]);
                 },
               ),
             ),
