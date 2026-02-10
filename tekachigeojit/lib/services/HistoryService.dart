@@ -126,4 +126,19 @@ class HistoryService {
       rethrow;
     }
   }
+
+  Future<http.Response> deleteAttempt() async {
+    try {
+      final user_id = AuthService().shareUserId();
+      final response = await http.delete(
+        Uri.parse('$_baseUrl/$user_id'),
+        headers: _headers(),
+      );
+
+      return response;
+    } catch (e) {
+      debugPrint('Could not delete attempt: $e');
+      rethrow;
+    }
+  }
 }

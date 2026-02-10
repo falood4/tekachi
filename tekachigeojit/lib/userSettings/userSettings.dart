@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tekachigeojit/components/NavBar.dart';
 import 'package:tekachigeojit/home.dart';
 import 'package:tekachigeojit/services/AuthService.dart';
+import 'package:tekachigeojit/services/HistoryService.dart';
 
 class UserSettings extends StatefulWidget {
   const UserSettings({super.key});
@@ -100,7 +101,7 @@ class _UserSettingsState extends State<UserSettings> {
                         _settingsItem(
                           "Clear conversations",
                           fontSize: baseFontSize,
-                          onPressed: _handleClearConversations,
+                          onPressed: _confirmClearConversations,
                         ),
                         _settingsItem(
                           "Log Out",
@@ -280,8 +281,71 @@ class _UserSettingsState extends State<UserSettings> {
     }
   }
 
-  void _handleClearConversations() {
-    debugPrint('Clear conversations initiated');
+  void _confirmClearConversations() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'ClearConversations',
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: const Color.fromRGBO(20, 20, 20, 1.0),
+          content: Text(
+            'Are you sure you want to clear conversations?',
+            style: TextStyle(color: Colors.white, fontFamily: "Trebuchet"),
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF8DD300),
+              ),
+              child: Text(
+                'CANCEL',
+                style: TextStyle(
+                  color: const Color.fromARGB(255, 0, 0, 0),
+                  fontFamily: "DelaGothicOne",
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _handleClearConversations();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(255, 252, 88, 88),
+              ),
+              child: Text(
+                'CLEAR',
+                style: TextStyle(
+                  color: const Color.fromARGB(255, 255, 255, 255),
+                  fontFamily: "DelaGothicOne",
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _handleClearConversations() async {
+    final response = await HistoryService().deleteAttempt();
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      Navigator.pop(context);
+      debugPrint('Conversations cleared successfully');
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to clear conversations'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   void _confirmDeleteAccount() {
@@ -337,10 +401,6 @@ class _UserSettingsState extends State<UserSettings> {
       final response = await AuthService().deleteUser();
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        // Source - https://stackoverflow.com/a/57030299
-        // Posted by Paul Iluhin, modified by community. See post 'Timeline' for change history
-        // Retrieved 2026-02-02, License - CC BY-SA 4.0
-
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (_) => const HomeScreen()),

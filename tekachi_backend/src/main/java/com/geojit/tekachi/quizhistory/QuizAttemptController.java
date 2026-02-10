@@ -146,4 +146,16 @@ public class QuizAttemptController {
         }
     }
 
+    @DeleteMapping("/history/{userId}")
+    public String deleteAttemptHistory(@PathVariable Long userId) {
+        quizAttemptService.deleteAttemptHistory(userId);
+        return "User quiz history deleted successfully.";
+    }
+
+    @DeleteMapping("/history/answer/{attemptId}")
+    public String deleteAnswersByAttemptId(@PathVariable Long attemptId) {
+        quizAnswerService.deleteAnswerHistory(attemptId);
+        return "Answers for the attempt deleted successfully.";
+    }
+
 }

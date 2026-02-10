@@ -23,4 +23,9 @@ public class AnswerService {
     public Answer newAnswer(Answer attempt) {
         return answerRepo.save(attempt);
     }
+
+    public void deleteAnswerHistory(Long attemptId) {
+        List<Answer> answers = answerRepo.findByAttemptId(attemptId);
+        answerRepo.deleteAll(answers);
+    }
 }

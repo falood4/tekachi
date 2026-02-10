@@ -41,4 +41,7 @@ public interface AnswerRepo extends JpaRepository<Answer, Long> {
             ORDER BY a.answer_id
             """, nativeQuery = true)
     List<AnswerView> findAnswersByAttemptId(@Param("attemptId") Long attemptId);
+
+    @Query("SELECT a FROM Answer a WHERE a.attempt.attemptId = :attemptId")
+    List<Answer> findByAttemptId(@Param("attemptId") Long attemptId);
 }

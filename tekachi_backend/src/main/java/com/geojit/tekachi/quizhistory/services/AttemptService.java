@@ -13,9 +13,11 @@ import com.geojit.tekachi.quizhistory.repository.AttemptRepo;
 @Service
 public class AttemptService {
     private final AttemptRepo attemptedRepo;
+    private final AnswerService answerService;
 
-    public AttemptService(AttemptRepo attemptedRepo) {
+    public AttemptService(AttemptRepo attemptedRepo, AnswerService answerService) {
         this.attemptedRepo = attemptedRepo;
+        this.answerService = answerService;
     }
 
     public List<AttemptView> getAttemptHistory(Long userId) {
@@ -30,5 +32,15 @@ public class AttemptService {
     public Attempt newAttempt(Attempt attempt) {
         return attemptedRepo.save(attempt);
     }
-    
+
+    public void deleteAttemptHistory(Long userId) {
+        List<Attempt> attempts = attemptedRepo.findByUserId(userId);
+        // delete answers for each attempt first
+        for (Attempt a : attempts) {
+            if (a != null && a.getAttemptId() != null) {
+                answerService.deleteAnswerHistory(a.getAttemptId());
+            }
+        }
+        attemptedRepo.deleteAll(attempts);
+    }
 }

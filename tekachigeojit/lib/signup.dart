@@ -16,6 +16,7 @@ class Signup extends StatefulWidget {
 class _SignupState extends State<Signup> with TickerProviderStateMixin {
   final TextEditingController _emailCtrl = TextEditingController();
   final TextEditingController _passwordCtrl = TextEditingController();
+  final FocusNode _emailFocus = FocusNode();
 
   bool _signedUp = false;
 
@@ -49,6 +50,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
   void dispose() {
     _emailCtrl.dispose();
     _passwordCtrl.dispose();
+    _emailFocus.dispose();
     _circleController.dispose();
     _checkController.dispose();
     super.dispose();
@@ -162,153 +164,159 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
 
     return Scaffold(
       backgroundColor: const Color.fromRGBO(20, 20, 20, 1.0),
+      resizeToAvoidBottomInset: true,
       body: SafeArea(
-        child: Center(
-          child: Column(
-            children: [
-              Container(
-                width: double.infinity,
-                margin: EdgeInsets.symmetric(
-                  vertical: screenWidth * 0.25,
-                  horizontal: screenHeight * 0.05,
+        child: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              children: [
+                Container(
+                  width: double.infinity,
+                  margin: EdgeInsets.symmetric(
+                    vertical: screenWidth * 0.25,
+                    horizontal: screenHeight * 0.05,
+                  ),
+                  child: const Column(children: [AppTitle(), AppSubtitle()]),
                 ),
-                child: const Column(children: [AppTitle(), AppSubtitle()]),
-              ),
 
-              if (!_signedUp) ...[
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: SizedBox(
-                    width: screenWidth * 0.6,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFD1D1D1),
-                        borderRadius: BorderRadius.circular(50),
+                if (!_signedUp) ...[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    child: SizedBox(
+                      width: screenWidth * 0.6,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFD1D1D1),
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        child: TextField(
+                          focusNode: _emailFocus,
+                          keyboardType: TextInputType.emailAddress,
+                          textInputAction: TextInputAction.next,
+                          controller: _emailCtrl,
+                          decoration: InputDecoration(
+                            hintText: "E-mail",
+                            hintStyle: TextStyle(
+                              color: Colors.black,
+                              fontSize: screenWidth * 0.04,
+                              fontFamily: "DelaGothicOne",
+                              letterSpacing: 0.1,
+                            ),
+                            border: InputBorder.none,
+                          ),
+                        ),
                       ),
-                      child: TextField(
-                        controller: _emailCtrl,
-                        decoration: InputDecoration(
-                          hintText: "E-mail",
-                          hintStyle: TextStyle(
+                    ),
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    child: SizedBox(
+                      width: screenWidth * 0.6,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFD1D1D1),
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        child: TextField(
+                          controller: _passwordCtrl,
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            hintText: "Password",
+                            hintStyle: TextStyle(
+                              color: Colors.black,
+                              fontSize: screenWidth * 0.04,
+                              fontFamily: "DelaGothicOne",
+                              letterSpacing: 0.1,
+                            ),
+                            border: InputBorder.none,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    child: SizedBox(
+                      width: 150,
+                      child: ElevatedButton(
+                        onPressed: handleSignup,
+                        style: ElevatedButton.styleFrom(
+                          textStyle: const TextStyle(
+                            fontSize: 15,
+                            fontFamily: "DelaGothicOne",
+                            color: Colors.black,
+                          ),
+                          padding: const EdgeInsets.all(16),
+                          backgroundColor: const Color(0xFF8DD300),
+                        ),
+                        child: Text(
+                          "Sign Up",
+                          style: TextStyle(
                             color: Colors.black,
                             fontSize: screenWidth * 0.04,
-                            fontFamily: "DelaGothicOne",
-                            letterSpacing: 0.1,
                           ),
-                          border: InputBorder.none,
                         ),
                       ),
                     ),
                   ),
-                ),
 
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: SizedBox(
-                    width: screenWidth * 0.6,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFD1D1D1),
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      child: TextField(
-                        controller: _passwordCtrl,
-                        obscureText: true,
-                        decoration: InputDecoration(
-                          hintText: "Password",
-                          hintStyle: TextStyle(
-                            color: Colors.black,
-                            fontSize: screenWidth * 0.04,
-                            fontFamily: "DelaGothicOne",
-                            letterSpacing: 0.1,
-                          ),
-                          border: InputBorder.none,
-                        ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    child: SizedBox(
+                      width: 50,
+                      height: 50,
+                      child: IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: const Icon(Icons.arrow_back, color: Colors.white),
                       ),
                     ),
                   ),
-                ),
-
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: SizedBox(
-                    width: 150,
-                    child: ElevatedButton(
-                      onPressed: handleSignup,
-                      style: ElevatedButton.styleFrom(
-                        textStyle: const TextStyle(
-                          fontSize: 15,
-                          fontFamily: "DelaGothicOne",
-                          color: Colors.black,
-                        ),
-                        padding: const EdgeInsets.all(16),
-                        backgroundColor: const Color(0xFF8DD300),
-                      ),
-                      child: Text(
-                        "Sign Up",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: screenWidth * 0.04,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: SizedBox(
-                    width: 50,
-                    height: 50,
-                    child: IconButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: const Icon(Icons.arrow_back, color: Colors.white),
-                    ),
-                  ),
-                ),
-              ] else ...[
-                AnimatedBuilder(
-                  animation: _circleSize,
-                  builder: (context, child) {
-                    final size = _circleSize.value;
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 5),
-                      child: SizedBox(
-                        width: size,
-                        height: size,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF8DD300),
-                            borderRadius: BorderRadius.circular(999),
-                          ),
-                          child: Center(
-                            child: ScaleTransition(
-                              scale: _checkScale,
-                              child: const Icon(
-                                Icons.check,
-                                size: 72,
-                                color: Colors.black,
+                ] else ...[
+                  AnimatedBuilder(
+                    animation: _circleSize,
+                    builder: (context, child) {
+                      final size = _circleSize.value;
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5),
+                        child: SizedBox(
+                          width: size,
+                          height: size,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF8DD300),
+                              borderRadius: BorderRadius.circular(999),
+                            ),
+                            child: Center(
+                              child: ScaleTransition(
+                                scale: _checkScale,
+                                child: const Icon(
+                                  Icons.check,
+                                  size: 72,
+                                  color: Colors.black,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    );
-                  },
-                ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 15),
-                  child: Text(
-                    "Account Created Successfully!",
-                    style: TextStyle(color: Colors.white),
+                      );
+                    },
                   ),
-                ),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 15),
+                    child: Text(
+                      "Account Created Successfully!",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ],
               ],
-            ],
+            ),
           ),
         ),
       ),

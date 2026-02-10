@@ -26,4 +26,6 @@ public interface AttemptRepo extends JpaRepository<Attempt, Long> {
             """, nativeQuery = true)
     List<AttemptView> findAttemptByUserId(@Param("userId") Long userId);
 
+    List<Attempt> findByUserId(Long userId);
+
 }
