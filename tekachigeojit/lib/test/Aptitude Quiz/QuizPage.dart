@@ -14,6 +14,7 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   int? _selectedOptionIndex;
+  String? _selectedOptionText;
   int totalScore = 0;
   int totalQsns = 0;
   List<int> indices = List.generate(40, (index) => index + 1);
@@ -43,8 +44,10 @@ class _QuizPageState extends State<QuizPage> {
           questionText: questionData['questionText'],
           options: List<String>.from(questionData['options']),
           correctAnswerIndex: questionData['correctAnswerIndex'],
+          correctOptionId: questionData['correctOptionId'],
         );
         _selectedOptionIndex = null;
+        _selectedOptionText = null;
         isLoading = false;
       });
     } catch (e) {
@@ -109,7 +112,11 @@ class _QuizPageState extends State<QuizPage> {
                                 debugPrint(
                                   'Selected option text: ${currentQuestion!.options[val!]}',
                                 );
-                                setState(() => _selectedOptionIndex = val);
+                                setState(() {
+                                  _selectedOptionIndex = val;
+                                  _selectedOptionText =
+                                      currentQuestion!.options[val];
+                                });
                               },
                               title: Text(
                                 currentQuestion!.options[optionIndex],
@@ -157,16 +164,19 @@ class _QuizPageState extends State<QuizPage> {
       totalQsns++;
     } else {
       totalQsns++;
-      //adding wrong answer for post-result review
+      //adding wrong answer for post-result review. these uses indices of currentquestion
       wrongAnswers[question.questionText] = (
         question.options[_selectedOptionIndex!],
         question.options[question.correctAnswerIndex],
       );
     }
-    //adding all answers for later review
+
+    //retrieve op_id of selected option at _selectedOptionIndex
+
+    //adding all answers for later review. these use op_ids in order to be stored in db
     allAnswers[question.questionText] = (
       question.options[_selectedOptionIndex!],
-      question.options[question.correctAnswerIndex],
+      question.options[question.correctOptionId],
     );
 
     if (totalQsns <= 15) {
@@ -178,8 +188,11 @@ class _QuizPageState extends State<QuizPage> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) =>
-              QuizResult(score: totalScore, reviewAnswers: wrongAnswers),
+          builder: (context) => QuizResult(
+            score: totalScore,
+            reviewAnswers: wrongAnswers,
+            allAnswers: allAnswers,
+          ),
         ),
       );
     }

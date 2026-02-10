@@ -38,7 +38,7 @@ public interface AnswerRepo extends JpaRepository<Answer, Long> {
                 ON cor.op_id = q.correct_op_id
 
             WHERE a.attempt_id = :attemptId
-
+            ORDER BY a.answer_id
             """, nativeQuery = true)
     List<AnswerView> findAnswersByAttemptId(@Param("attemptId") Long attemptId);
 }

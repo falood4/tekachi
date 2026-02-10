@@ -38,6 +38,7 @@ class QsnService {
         return {
           'questionText': data['qsn'],
           'correctAnswerIndex': data['qCorrectOption'],
+          'correctOptionId': data['correctOpId'],
           'options': options,
         };
       } else {

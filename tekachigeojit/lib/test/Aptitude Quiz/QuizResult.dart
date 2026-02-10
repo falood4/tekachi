@@ -1,5 +1,4 @@
-import 'dart:ffi';
-
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:tekachigeojit/components/NavBar.dart';
 import 'package:tekachigeojit/services/HistoryService.dart';
@@ -8,11 +7,13 @@ import 'package:tekachigeojit/services/AuthService.dart';
 class QuizResult extends StatelessWidget {
   final int score;
   final Map<String, (String, String)> reviewAnswers;
+  final Map<String, (String, String)> allAnswers;
 
   const QuizResult({
     super.key,
     required this.score,
     required this.reviewAnswers,
+    required this.allAnswers,
   });
 
   @override
@@ -20,8 +21,16 @@ class QuizResult extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
+    saveAttempt(user, score) async {
+      final response = await HistoryService().saveAttempt(user!, score);
+      Map<String, dynamic> getter = jsonDecode(response.body);
+      int att_id = getter['attempt_id'] as int;
+      debugPrint('Saved Attempt ID: $att_id');
+    }
+
     int? user_id = AuthService().shareUserId();
-    HistoryService().saveAttempt(user_id!, score);
+    saveAttempt(user_id, score);
+    //debugPrint('Saved Attempt ID: $attemptId');
 
     return Scaffold(
       bottomNavigationBar: const NavBar(),
@@ -112,7 +121,7 @@ class QuizResult extends StatelessWidget {
           Text(
             'Correct Answer: ${answers.$2}',
             style: TextStyle(
-              color: const Color.fromARGB(255, 113, 254, 118),
+              color: const Color(0xFF8DD300),
               fontFamily: "Trebuchet",
               fontSize: 14,
             ),

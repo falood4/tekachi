@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.geojit.tekachi.quizhistory.dtos.AnswerView;
+import com.geojit.tekachi.quizhistory.entity.Answer;
 import com.geojit.tekachi.quizhistory.repository.AnswerRepo;
 
 @Service
@@ -17,5 +18,9 @@ public class AnswerService {
 
     public List<AnswerView> getAnswers(Long attemptId) {
         return answerRepo.findAnswersByAttemptId(attemptId);
+    }
+
+    public Answer newAnswer(Answer attempt) {
+        return answerRepo.save(attempt);
     }
 }
