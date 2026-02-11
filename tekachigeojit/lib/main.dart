@@ -3,8 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tekachigeojit/home.dart';
-import 'package:tekachigeojit/test/Aptitude%20Quiz/QuizPage.dart';
-import 'package:tekachigeojit/test/Aptitude%20Quiz/QuizResult.dart';
+import 'package:tekachigeojit/prep/HR%20Training/HRQuestions.dart';
 import 'login.dart';
 import 'signup.dart';
 
@@ -19,6 +18,6 @@ class TekachiGeo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(title: 'Tekachi', home: const HomeScreen());
+    return MaterialApp(title: 'Tekachi', home: const HrTrainingScreen());
   }
 }
