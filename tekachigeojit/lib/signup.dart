@@ -1,5 +1,3 @@
-// ignore: unused_shown_name
-import 'dart:convert' show jsonEncode, jsonDecode;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:tekachigeojit/home.dart';
@@ -93,9 +91,6 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
     }
 
     FocusScope.of(context).unfocus();
-    // ignore: unused_local_variable
-    final url = Uri.parse('http://10.0.2.2:8080/api/users/register');
-
     try {
       final response = await AuthService.signup(
         email: _emailCtrl.text,
@@ -109,10 +104,6 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
           _emailCtrl.text.trim(),
           _passwordCtrl.text.trim(),
         );
-        final data = jsonDecode(response.body);
-        final token = data['token'];
-        final userID = data['id'];
-        AuthService().setToken(token, userID);
 
         setState(() => _signedUp = true);
 

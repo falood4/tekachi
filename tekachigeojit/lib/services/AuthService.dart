@@ -66,12 +66,23 @@ class AuthService {
   static Future<http.Response> signup({
     required String email,
     required String password,
-  }) {
-    return http.post(
-      Uri.parse('$_baseUrl/register'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'email': email, 'password': password}),
-    );
+  }) async {
+    try {
+      final response = await http.post(
+        Uri.parse('$_baseUrl/register'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'email': email, 'password': password}),
+      );
+
+      final data = jsonDecode(response.body);
+      final token = data['token'];
+      final userID = data['id'];
+      AuthService().setToken(token, userID);
+
+      return response;
+    } catch (e) {
+      return http.Response('{"error": "Signup failed"}', 500);
+    }
   }
 
   Future<http.Response> loginUser({
@@ -86,6 +97,11 @@ class AuthService {
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({"email": email.trim(), "password": password.trim()}),
       );
+
+      final data = jsonDecode(response.body);
+      final token = data['token'];
+      final userID = data['id'];
+      setToken(token, userID);
 
       return response;
     } catch (e) {

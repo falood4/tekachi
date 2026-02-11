@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tekachigeojit/home.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:tekachigeojit/prep/prepHome.dart';
 import 'package:tekachigeojit/services/AuthService.dart';
 
@@ -56,35 +54,19 @@ class _LoginState extends State<Login> {
           _emailCtrl.text.trim(),
           _passwordCtrl.text.trim(),
         );
-        final data = jsonDecode(response.body);
-        final token = data['token'];
-        final userID = data['id'];
-        AuthService().setToken(token, userID);
-        debugPrint('Login successful userID: $userID');
+        debugPrint('Login successful');
 
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (_) => const PrepHome()),
           (route) => false,
         );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Invalid email or password")),
-        );
       }
-    } on http.ClientException catch (_) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            'Network error. Please check your connection and try again.',
-          ),
-        ),
-      );
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('An unexpected error occurred: $e')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Invalid email or password")));
     }
   }
 
