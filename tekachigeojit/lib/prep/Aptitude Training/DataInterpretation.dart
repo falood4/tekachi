@@ -310,7 +310,7 @@ Average annual exports of Company Z during the given period
     return BackdropFilter(
       filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
       child: Dialog(
-        backgroundColor: Colors.transparent,
+        backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
         child: Container(
           width: screenWidth * 0.8,
           height: screenHeight * 0.6,

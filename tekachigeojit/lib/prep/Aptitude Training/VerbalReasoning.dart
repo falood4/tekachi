@@ -19,10 +19,31 @@ class _VerbalReasoningState extends State<VerbalReasoning> {
     _topicsFuture = Topicservice().fetchTopicsMap(301, 307);
   }
 
+  double get screenWidth => MediaQuery.of(context).size.width;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(20, 20, 20, 1.0),
       bottomNavigationBar: NavBar(),
+      appBar: AppBar(
+        backgroundColor: const Color.fromRGBO(20, 20, 20, 1.0),
+        iconTheme: const IconThemeData(color: Color(0xFF8DD300)),
+        title: Text(
+          'Aptitude Training',
+          style: TextStyle(
+            color: const Color(0xFF8DD300),
+            fontFamily: "RussoOne",
+            fontSize: 0.075 * screenWidth,
+          ),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_rounded),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
       body: FutureBuilder<Map<String, int>>(
         future: _topicsFuture,
         builder: (context, snapshot) {
@@ -36,11 +57,36 @@ class _VerbalReasoningState extends State<VerbalReasoning> {
 
           final topics = snapshot.data!;
 
-          return GridView.count(
-            crossAxisCount: 2,
-            children: topics.entries.map((entry) {
-              return _topicButton(context, entry.key, entry.value);
-            }).toList(),
+          return Container(
+            margin: EdgeInsets.all(screenWidth * 0.05),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Verbal Reasoning',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: screenWidth * 0.05,
+                    fontFamily: "Trebuchet",
+                  ),
+                ),
+                SizedBox(height: screenWidth * 0.05),
+
+                Expanded(
+                  child: GridView.count(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    crossAxisCount: 2,
+                    crossAxisSpacing: screenWidth * 0.05,
+                    mainAxisSpacing: screenWidth * 0.05,
+                    childAspectRatio: 1.5,
+                    children: topics.entries.map((entry) {
+                      return _topicButton(context, entry.key, entry.value);
+                    }).toList(),
+                  ),
+                ),
+              ],
+            ),
           );
         },
       ),
