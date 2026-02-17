@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tekachigeojit/components/NavBar.dart';
-import 'package:tekachigeojit/components/TopicPopup2.dart';
+import 'package:tekachigeojit/components/TopicPopup.dart';
 import 'package:tekachigeojit/services/TopicService.dart';
 
 class OStopics extends StatefulWidget {
