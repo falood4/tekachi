@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Do not track local application properties containing secrets
+src/main/resources/application.properties
