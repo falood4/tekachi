@@ -22,6 +22,9 @@ public class Conversation {
     @JoinColumn(name = "persona_id", nullable = false)
     private Persona persona;
 
+    @Column(name = "current_topic")
+    private String currentTopic; // 🔥 ADD THIS
+
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 }

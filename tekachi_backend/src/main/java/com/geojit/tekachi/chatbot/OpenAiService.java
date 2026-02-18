@@ -27,7 +27,8 @@ public class OpenAiService {
                 .build();
     }
 
-    public String getChatResponse(List<OpenAiMsg> messages) {
+    @SuppressWarnings("rawtypes")
+public String getChatResponse(List<OpenAiMsg> messages) {
 
         ChatRequest request = new ChatRequest(model, messages);
 

@@ -1,5 +1,7 @@
 package com.geojit.tekachi.chatbot;
 
+import com.geojit.tekachi.chatbot.RAG.entity.DocumentChunk;
+import com.geojit.tekachi.chatbot.RAG.repo.ChunkRepository;
 import com.geojit.tekachi.chatbot.dtos.*;
 import com.geojit.tekachi.chatbot.entity.*;
 import com.geojit.tekachi.chatbot.repo.ConvoRepo;
@@ -16,19 +18,17 @@ User presses start
 ↓
 Create conversation row
 ↓
-Call LLM with persona + greeting instruction
+Call LLM with persona + greeting instruction + relevant chunks for random topic
 ↓
-Store assistant greeting
+Return LLM response and first question
 ↓
-Return LLM response
-↓
-User sends response message
+User sends response message 
 ↓
 Store user message
 ↓
 Load last N messages
 ↓
-Build payload (persona + history + new msg)
+Build payload (persona + history + new msg + chunks for follow-up question)
 ↓
 Call LLM and deliver prompt payload
 ↓
@@ -45,44 +45,88 @@ public class ChatController {
     private final ConvoRepo convoRepo;
     private final MsgRepo msgRepo;
     private final PersonaRepo personaRepo;
+    private final ChunkRepository chunkRepository;
+
+    private final List<String> topicArray = List.of(
+            "Database System Architecture",
+            "Three-Level Architecture",
+            "ER Model and Keys",
+            "Relational Algebra",
+            "DDL, DML, DCL",
+            "Joins and Subqueries",
+            "ACID",
+            "Deadlocks",
+            "Sorting",
+            "Sorting Techniques",
+            "Trees",
+            "Graphs",
+            "Graph Traversal and Algorithms",
+            "Stack",
+            "Queue",
+            "Object-Oriented Concepts",
+            "Overloading and Overriding",
+            "Inheritance and Multilevel Hierarchy",
+            "Packages and Interfaces",
+            "Exception Handling",
+            "Multithreaded Programming",
+            "Event Handling",
+            "AWT",
+            "UML",
+            "Data Abstraction",
+            "Encapsulation and Data Hiding",
+            "Functions of an Operating System",
+            "Types of Operating Systems",
+            "Processes",
+            "Multithreading",
+            "CPU Scheduling",
+            "Inter Process Communication",
+            "Memory Management",
+            "Disk Scheduling Algorithms",
+            "Deadlocks");
 
     public ChatController(OpenAiService openAiService,
             ConvoRepo convoRepo,
             MsgRepo msgRepo,
-            PersonaRepo personaRepo) {
+            PersonaRepo personaRepo, ChunkRepository chunkRepository) {
         this.openAiService = openAiService;
         this.convoRepo = convoRepo;
         this.msgRepo = msgRepo;
         this.personaRepo = personaRepo;
+        this.chunkRepository = chunkRepository;
     }
 
-    // START CONVERSATION
     @PostMapping("/start")
     public StartResponse startConversation(@RequestBody StartRequest request) {
 
-        Persona persona = personaRepo
-                .findByPersonaIdAndIsActiveTrue(request.getPersonaId())
-                .orElseThrow(() -> new RuntimeException("Invalid or inactive persona"));
+        Persona persona = personaRepo.findById(request.getPersonaId())
+                .orElseThrow();
 
         Conversation conversation = new Conversation();
         conversation.setUserId(request.getUserId());
         conversation.setPersona(persona);
+
+        // Select random topic
+        String selectedTopic = topicArray.get(new Random().nextInt(topicArray.size()));
+        conversation.setCurrentTopic(selectedTopic); // recommend adding column
+
         convoRepo.save(conversation);
 
-        // 2️⃣ Build OpenAI messages
-        List<OpenAiMsg> messages = List.of(
-                new OpenAiMsg("system", persona.getSystemPrompt()),
-                new OpenAiMsg("user", persona.getGreetingInstruction()));
+        // Fetch chunks
+        List<DocumentChunk> chunks = chunkRepository.findTop5ByTopic(selectedTopic);
+        String chunkText = buildChunkText(chunks);
 
-        String greeting = openAiService.getChatResponse(messages);
+        List<OpenAiMsg> messages = new ArrayList<>();
+        messages.add(new OpenAiMsg("system", persona.getSystemPrompt()));
+        messages.add(new OpenAiMsg("system",
+                "Use ONLY the reference material below to conduct the interview."));
+        messages.add(new OpenAiMsg("system", chunkText));
+        messages.add(new OpenAiMsg("user", "Start the interview."));
 
-        Message assistantMsg = new Message();
-        assistantMsg.setConversationId(conversation.getConversationId());
-        assistantMsg.setRole(Role.ASSISTANT);
-        assistantMsg.setContent(greeting);
-        msgRepo.save(assistantMsg);
+        String response = openAiService.getChatResponse(messages);
 
-        return new StartResponse(conversation.getConversationId(), greeting);
+        saveAssistantMessage(conversation.getConversationId(), response);
+
+        return new StartResponse(conversation.getConversationId(), response);
     }
 
     // SEND MESSAGE
@@ -98,15 +142,11 @@ public class ChatController {
                 .findByPersonaIdAndIsActiveTrue(conversation.getPersona().getPersonaId())
                 .orElseThrow(() -> new RuntimeException("Persona not found"));
 
-        Message userMsg = new Message();
         if (request.getContent() == null || request.getContent().isBlank()) {
             throw new IllegalArgumentException("Message cannot be empty");
         }
 
-        userMsg.setConversationId(conversationId);
-        userMsg.setRole(Role.USER);
-        userMsg.setContent(request.getContent());
-        msgRepo.save(userMsg);
+        saveUserMessage(conversationId, request.getContent());
 
         // 2️⃣ Fetch last 10 messages
         List<Message> history = msgRepo.findRecentMessages(conversationId, PageRequest.of(0, 10));
@@ -115,7 +155,20 @@ public class ChatController {
 
         // 3️⃣ Build OpenAI payload
         List<OpenAiMsg> openAiMsgs = new ArrayList<>();
+
+        // 1️⃣ Persona
         openAiMsgs.add(new OpenAiMsg("system", persona.getSystemPrompt()));
+
+        // 2️⃣ Inject topic chunks
+        String topic = conversation.getCurrentTopic();
+        List<DocumentChunk> chunks = chunkRepository.findTop5ByTopic(topic);
+        String chunkText = buildChunkText(chunks);
+
+        openAiMsgs.add(new OpenAiMsg("system",
+                "Refer to the following reference material when asking conceptual questions. "
+                        + "If transitioning to coding or evaluation, you may ignore it."));
+
+        openAiMsgs.add(new OpenAiMsg("system", chunkText));
 
         for (Message msg : history) {
             openAiMsgs.add(new OpenAiMsg(
@@ -126,12 +179,37 @@ public class ChatController {
         String response = openAiService.getChatResponse(openAiMsgs);
 
         // 5️⃣ Store assistant reply
-        Message assistantMsg = new Message();
-        assistantMsg.setConversationId(conversationId);
-        assistantMsg.setRole(Role.ASSISTANT);
-        assistantMsg.setContent(response);
-        msgRepo.save(assistantMsg);
+        saveAssistantMessage(conversationId, response);
 
         return new MessageResponse(response);
     }
+
+    private String buildChunkText(List<DocumentChunk> chunks) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Reference Material:\n");
+
+        for (DocumentChunk chunk : chunks) {
+            sb.append("\n---\n");
+            sb.append(chunk.getContent());
+        }
+
+        return sb.toString();
+    }
+
+    private void saveAssistantMessage(Integer conversationId, String content) {
+        Message assistantMsg = new Message();
+        assistantMsg.setConversationId(conversationId);
+        assistantMsg.setRole(Role.ASSISTANT);
+        assistantMsg.setContent(content);
+        msgRepo.save(assistantMsg);
+    }
+
+    private void saveUserMessage(Integer conversationId, String content) {
+        Message userMsg = new Message();
+        userMsg.setConversationId(conversationId);
+        userMsg.setRole(Role.USER);
+        userMsg.setContent(content);
+        msgRepo.save(userMsg);
+    }
+
 }
