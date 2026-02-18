@@ -13,10 +13,15 @@ import java.util.Map;
 public class OpenAiService {
 
     private final WebClient webClient;
+    private final String model;
 
-    public OpenAiService(@Value("${openai.api.key}") String apiKey) {
+    public OpenAiService(
+            @Value("${openrouter.api.key}") String apiKey,
+            @Value("${openrouter.model:deepseek/deepseek-v3.2}") String model) {
+
+        this.model = model;
         this.webClient = WebClient.builder()
-                .baseUrl("https://api.openai.com/v1")
+                .baseUrl("https://openrouter.ai/api/v1")
                 .defaultHeader("Authorization", "Bearer " + apiKey)
                 .defaultHeader("Content-Type", "application/json")
                 .build();
@@ -24,14 +29,14 @@ public class OpenAiService {
 
     public String getChatResponse(List<OpenAiMsg> messages) {
 
-        ChatRequest request = new ChatRequest("gpt-4o-mini", messages);
+        ChatRequest request = new ChatRequest(model, messages);
 
         Map response = webClient.post()
                 .uri("/chat/completions")
                 .bodyValue(request)
                 .retrieve()
                 .onStatus(status -> status.isError(), clientResponse -> clientResponse.bodyToMono(String.class)
-                        .map(body -> new RuntimeException("OpenAI Error: " + body)))
+                        .map(body -> new RuntimeException("OpenRouter Error: " + body)))
                 .bodyToMono(Map.class)
                 .block();
 
