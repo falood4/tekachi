@@ -139,6 +139,7 @@ class _QuizResultState extends State<QuizResult> {
     );
   }
 
+  int index = 1;
   Widget _answerReviewCard(AnswerSelection answer) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
@@ -150,7 +151,7 @@ class _QuizResultState extends State<QuizResult> {
             style: const TextStyle(
               color: Colors.white,
               fontFamily: "Trebuchet",
-              fontSize: 16,
+              fontSize: 20,
             ),
           ),
           const SizedBox(height: 5),

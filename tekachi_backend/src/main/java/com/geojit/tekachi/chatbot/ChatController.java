@@ -81,8 +81,7 @@ public class ChatController {
             "CPU Scheduling",
             "Inter Process Communication",
             "Memory Management",
-            "Disk Scheduling Algorithms",
-            "Deadlocks");
+            "Disk Scheduling Algorithms");
 
     public ChatController(OpenAiService openAiService,
             ConvoRepo convoRepo,

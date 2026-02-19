@@ -5,7 +5,9 @@ import java.io.IOException;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
+import org.springframework.stereotype.Component;
 
+@Component
 public class PdfExtractor {
 
     public String extractText(File file) throws IOException {

@@ -1,5 +1,8 @@
 package com.geojit.tekachi.chatbot.RAG.chunk_processing;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class TextCleaner {
 
     public String clean(String text) {

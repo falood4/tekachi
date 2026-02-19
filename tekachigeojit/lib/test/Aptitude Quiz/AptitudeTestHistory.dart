@@ -13,6 +13,7 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
   final HistoryService _historyService = HistoryService();
   List<Map<String, dynamic>> _attempts = [];
   bool _isLoading = true;
+  int index = 0;
 
   @override
   void initState() {
@@ -98,7 +99,7 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color.fromRGBO(35, 35, 35, 1.0),
               foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
                 side: const BorderSide(color: Color(0xFF8DD300), width: 1),
@@ -122,30 +123,24 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
                   ),
                 ),
                 const SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        _formatDate(attempt['attemptedOn']),
-                        style: const TextStyle(
-                          fontFamily: 'Trebuchet',
-                          color: Colors.white,
-                          fontSize: 14,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        'Score: ${attempt['score']}',
-                        style: const TextStyle(
-                          fontFamily: 'Trebuchet',
-                          color: Colors.white70,
-                          fontSize: 12,
-                        ),
-                      ),
-                    ],
+                Text(
+                  _formatDate(attempt['attemptedOn']),
+                  style: const TextStyle(
+                    fontFamily: 'Trebuchet',
+                    color: Colors.white,
+                    fontSize: 20,
                   ),
                 ),
+                const SizedBox(width: 100),
+                Text(
+                  attempt['score'],
+                  style: const TextStyle(
+                    fontFamily: 'DelaGothicOne',
+                    color: Color(0xFF8DD300),
+                    fontSize: 22,
+                  ),
+                ),
+                const SizedBox(width: 10),
                 const Icon(Icons.chevron_right, color: Color(0xFF8DD300)),
               ],
             ),
@@ -158,6 +153,7 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
   Future<void> showAnswers(int attemptId, double screenheight) async {
     final List<Map<String, dynamic>> reviewAnswers = await HistoryService()
         .getAttemptAnswers(attemptId);
+    index = 0;
 
     showModalBottomSheet(
       context: context,
@@ -194,39 +190,70 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
   }
 
   Widget _answerReviewCard(String questionText, (String, String) answers) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            questionText,
-            style: TextStyle(
-              color: Colors.white,
-              fontFamily: "Trebuchet",
-              fontSize: 16,
+    index++;
+    if (answers.$1 == answers.$2) {
+      return Container(
+        margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 15),
+            Text(
+              "$index. $questionText",
+              style: TextStyle(
+                color: Colors.white,
+                fontFamily: "Trebuchet",
+                fontSize: 18,
+              ),
             ),
-          ),
-          const SizedBox(height: 5),
-          Text(
-            'Your Answer: ${answers.$1}',
-            style: TextStyle(
-              color: const Color.fromARGB(255, 248, 108, 98),
-              fontFamily: "Trebuchet",
-              fontSize: 14,
+            const SizedBox(height: 5),
+            Text(
+              'Your Answer: ${answers.$2} ✅',
+              style: TextStyle(
+                color: const Color.fromARGB(255, 113, 254, 118),
+                fontFamily: "Trebuchet",
+                fontSize: 14,
+              ),
             ),
-          ),
-          const SizedBox(height: 5),
-          Text(
-            'Correct Answer: ${answers.$2}',
-            style: TextStyle(
-              color: const Color.fromARGB(255, 113, 254, 118),
-              fontFamily: "Trebuchet",
-              fontSize: 14,
+          ],
+        ),
+      );
+    } else {
+      return Container(
+        margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 15),
+            Text(
+              "$index. $questionText",
+              style: TextStyle(
+                color: Colors.white,
+                fontFamily: "Trebuchet",
+                fontSize: 18,
+              ),
             ),
-          ),
-        ],
-      ),
-    );
+            const SizedBox(height: 5),
+            Text(
+              'Your Wrong Answer: ${answers.$1} ❌',
+              style: TextStyle(
+                color: const Color.fromARGB(255, 248, 108, 98),
+                fontFamily: "Trebuchet",
+                fontSize: 14,
+              ),
+            ),
+            const SizedBox(height: 5),
+            Text(
+              'Correct Answer: ${answers.$2}',
+              style: TextStyle(
+                color: Colors.white,
+                fontFamily: "Trebuchet",
+                fontSize: 14,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
   }
 }

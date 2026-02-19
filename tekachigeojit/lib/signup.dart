@@ -189,9 +189,8 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                           decoration: InputDecoration(
                             hintText: "E-mail",
                             hintStyle: TextStyle(
-                              color: Colors.black,
                               fontSize: screenWidth * 0.04,
-                              fontFamily: "DelaGothicOne",
+                              fontFamily: "Trebuchet",
                               letterSpacing: 0.1,
                             ),
                             border: InputBorder.none,
@@ -217,9 +216,8 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                           decoration: InputDecoration(
                             hintText: "Password",
                             hintStyle: TextStyle(
-                              color: Colors.black,
                               fontSize: screenWidth * 0.04,
-                              fontFamily: "DelaGothicOne",
+                              fontFamily: "Trebuchet",
                               letterSpacing: 0.1,
                             ),
                             border: InputBorder.none,
@@ -230,7 +228,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                   ),
 
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    padding: const EdgeInsets.only(top: 25, bottom: 10),
                     child: SizedBox(
                       width: 150,
                       child: ElevatedButton(
@@ -256,15 +254,25 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                   ),
 
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    padding: const EdgeInsets.symmetric(vertical: 1),
                     child: SizedBox(
-                      width: 50,
+                      width: 100,
                       height: 50,
-                      child: IconButton(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                        ),
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        icon: const Icon(Icons.arrow_back, color: Colors.white),
+                        child: Text(
+                          "Back",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: "DelaGothicOne",
+                            fontSize: screenWidth * 0.035,
+                          ),
+                        ),
                       ),
                     ),
                   ),
