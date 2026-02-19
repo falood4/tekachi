@@ -34,34 +34,46 @@ public class DocumentIngestionService {
     }
 
     private final List<String> topicArray = List.of(
-            "Database System Architecture",
-            "Three-Level Architecture",
-            "ER Model and Keys",
+            "Database Language", // DBMS
+            "Three Schema architecture",
+            "Structure of Relational Databases",
+            "Entity Relationship Diagram",
             "Relational Algebra",
-            "DDL, DML, DCL",
-            "Joins and Subqueries",
+            "Data Definition Language",
+            "Data Manipulation Language",
+            "Data Control Language",
+            "Cardinality",
+            "Basic Query Structure",
+            "Insertion",
+            "SQL Views",
+            "ER Model",
+            "Binary Relational Operations",
+            "General Constraints",
             "ACID",
             "Deadlocks",
-            "Sorting",
-            "Sorting Techniques",
+            "Sort", // DS
             "Trees",
             "Graphs",
-            "Graph Traversal and Algorithms",
+            "Graph Traversals",
             "Stack",
             "Queue",
-            "Object-Oriented Concepts",
-            "Overloading and Overriding",
-            "Inheritance and Multilevel Hierarchy",
-            "Packages and Interfaces",
+            "Object-Oriented Approach", // OOPS
+            "OOPs Concepts",
+            "Inheritance",
+            "Java Terminology",
+            "Overloading",
+            "Overriding",
+            "Superclass and Subclass",
+            "Exceptions",
             "Exception Handling",
-            "Multithreaded Programming",
+            "Multilevel Inheritance",
+            "Multithreading",
             "Event Handling",
             "AWT",
             "UML",
             "Data Abstraction",
-            "Encapsulation and Data Hiding",
             "Functions of an Operating System",
-            "Types of Operating Systems",
+            "Types of Operating Systems", // OS
             "Processes",
             "Multithreading",
             "CPU Scheduling",
@@ -83,9 +95,11 @@ public class DocumentIngestionService {
         AtomicInteger index = new AtomicInteger(0);
 
         textChunker.forEachChunk(clean, chunkText -> {
-            // detect topic change
+
+            String lowerChunk = chunkText.toLowerCase();
+
             for (String topic : topicArray) {
-                if (chunkText.trim().toLowerCase().startsWith(topic.toLowerCase())) {
+                if (lowerChunk.contains(topic.toLowerCase())) {
                     currentTopic.set(topic);
                     System.out.println("Detected topic: " + currentTopic.get());
                     break;

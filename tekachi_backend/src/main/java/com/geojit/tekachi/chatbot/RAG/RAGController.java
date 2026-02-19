@@ -22,10 +22,10 @@ public class RAGController {
     public String ingest() throws Exception {
 
         File file = new File(
-                "C:/Users/kurie/OneDrive/Desktop/flutter/tekachi/tekachi_backend/src/main/java/com/geojit/tekachi/chatbot/RAG/PDFS/data structures-1.pdf");
+                "C:/Users/kurie/OneDrive/Desktop/flutter/tekachi/tekachi_backend/src/main/java/com/geojit/tekachi/chatbot/RAG/PDFS/dbms.pdf");
 
         Integer docId = ingestionService.ingestPdf(file, "Tech Interview Syllabus");
-        
+
         return "Ingested with ID: " + docId;
     }
 }

@@ -10,7 +10,8 @@ public class TextCleaner {
                 .replaceAll("-\\n", "") // fix hyphen breaks
                 .replaceAll("\\n{2,}", "\n\n") // normalize paragraph breaks
                 .replaceAll("\\n", " ") // flatten single line breaks
-                .replaceAll("\\s{2,}", " ") // remove extra spaces
+                .replaceAll("\\s{2,}", " ")
+                .replaceAll("Data Structures-.*?RSET \\d+", " ") // remove headers/footers
                 .trim();
     }
 }
