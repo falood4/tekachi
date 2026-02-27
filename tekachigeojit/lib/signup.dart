@@ -154,12 +154,13 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
     final screenHeight = MediaQuery.of(context).size.height;
     final theme = Theme.of(context);
 
-    dynamic lime = theme.colorScheme.secondary;
-    dynamic black = theme.colorScheme.onPrimary;
-    dynamic grey = theme.colorScheme.tertiary;
-    dynamic lightGrey = theme.colorScheme.surface;
+    dynamic secondary = theme.colorScheme.secondary;
+    dynamic onPrimary = theme.colorScheme.onPrimary;
+    dynamic tertiary = theme.colorScheme.tertiary;
+    dynamic surface = theme.colorScheme.surface;
 
     return Scaffold(
+      backgroundColor: theme.colorScheme.background,
       resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: SingleChildScrollView(
@@ -185,7 +186,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                         vertical: 5,
                       ),
                       decoration: BoxDecoration(
-                        color: lightGrey,
+                        color: surface,
                         borderRadius: BorderRadius.circular(50),
                       ),
                       child: TextField(
@@ -199,7 +200,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                             fontSize: screenWidth * 0.04,
                             fontFamily: "Trebuchet",
                             letterSpacing: 0.1,
-                            color: grey,
+                            color: tertiary,
                           ),
                           border: InputBorder.none,
                         ),
@@ -218,7 +219,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                           vertical: 5,
                         ),
                         decoration: BoxDecoration(
-                          color: lightGrey,
+                          color: surface,
                           borderRadius: BorderRadius.circular(50),
                         ),
                         child: TextField(
@@ -230,7 +231,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                               fontSize: screenWidth * 0.04,
                               fontFamily: "Trebuchet",
                               letterSpacing: 0.1,
-                              color: grey,
+                              color: tertiary,
                             ),
                             border: InputBorder.none,
                           ),
@@ -248,12 +249,12 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                         style: ElevatedButton.styleFrom(
                           textStyle: theme.textTheme.headlineLarge,
                           padding: const EdgeInsets.all(16),
-                          backgroundColor: lime,
+                          backgroundColor: secondary,
                         ),
                         child: Text(
                           "Sign Up",
                           style: TextStyle(
-                            color: black,
+                            color: onPrimary,
                             fontSize: screenWidth * 0.05,
                           ),
                         ),
@@ -269,7 +270,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.all(0),
-                          backgroundColor: lightGrey,
+                          backgroundColor: surface,
                         ),
                         onPressed: () {
                           Navigator.pop(context);
@@ -277,7 +278,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                         child: Text(
                           "Back",
                           style: TextStyle(
-                            color: black,
+                            color: Colors.black,
                             fontFamily: "DelaGothicOne",
                             fontSize: screenWidth * 0.035,
                           ),
@@ -297,7 +298,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                           height: size,
                           child: Container(
                             decoration: BoxDecoration(
-                              color: lime,
+                              color: secondary,
                               borderRadius: BorderRadius.circular(999),
                             ),
                             child: Center(
@@ -306,7 +307,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                                 child: Icon(
                                   Icons.check,
                                   size: 72,
-                                  color: black,
+                                  color: onPrimary,
                                 ),
                               ),
                             ),

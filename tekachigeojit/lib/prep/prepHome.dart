@@ -16,6 +16,7 @@ class PrepHome extends StatelessWidget {
     dynamic black = theme.colorScheme.onPrimary;
 
     return Scaffold(
+      backgroundColor: theme.colorScheme.background,
       bottomNavigationBar: const NavBar(),
       body: SafeArea(
         child: Padding(

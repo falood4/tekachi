@@ -68,7 +68,7 @@ class AptitudeTest extends StatelessWidget {
                       child: Text(
                         "Start",
                         style: theme.textTheme.headlineLarge?.copyWith(
-                          color: bg,
+                          color: Colors.black,
                         ),
                       ),
                     ),

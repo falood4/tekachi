@@ -60,17 +60,20 @@ class _QuizPageState extends State<QuizPage> {
     final theme = Theme.of(context);
 
     dynamic black = theme.colorScheme.onPrimary;
-    dynamic white = theme.colorScheme.primary;
-    dynamic lime = theme.colorScheme.secondary;
+    dynamic primary = theme.colorScheme.primary;
+    dynamic secondary = theme.colorScheme.secondary;
 
     return Scaffold(
-      backgroundColor: white,
-      appBar: AppBar(title: Text('Quiz', style: theme.textTheme.headlineLarge)),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Text('Quiz', style: theme.textTheme.headlineLarge),
+        backgroundColor: Colors.white,
+      ),
       body: isLoading || currentQuestion == null
           ? SafeArea(
               child: Center(
                 child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(lime),
+                  valueColor: AlwaysStoppedAnimation<Color>(secondary),
                 ),
               ),
             )
@@ -112,12 +115,12 @@ class _QuizPageState extends State<QuizPage> {
                                 option.text,
                                 style: theme.textTheme.bodyMedium,
                               ),
-                              activeColor: lime,
+                              activeColor: secondary,
                               fillColor: WidgetStateProperty.resolveWith((
                                 states,
                               ) {
                                 if (states.contains(WidgetState.selected)) {
-                                  return lime;
+                                  return secondary;
                                 }
                                 return black;
                               }),
@@ -140,7 +143,7 @@ class _QuizPageState extends State<QuizPage> {
                         child: Text(
                           'Next',
                           style: theme.textTheme.titleLarge?.copyWith(
-                            color: lime,
+                            color: secondary,
                           ),
                         ),
                       ),

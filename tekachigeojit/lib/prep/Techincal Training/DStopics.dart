@@ -24,8 +24,8 @@ class _DStopicsState extends State<DStopics> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    dynamic white = theme.colorScheme.primary;
-    dynamic lime = theme.colorScheme.secondary;
+    dynamic primary = theme.colorScheme.primary;
+    dynamic secondary = theme.colorScheme.secondary;
     dynamic blackbg = theme.colorScheme.background;
 
     return Scaffold(
@@ -33,10 +33,10 @@ class _DStopicsState extends State<DStopics> {
       bottomNavigationBar: NavBar(),
       appBar: AppBar(
         backgroundColor: blackbg,
-        iconTheme: IconThemeData(color: lime),
+        iconTheme: IconThemeData(color: secondary),
         title: Text(
           'Technical Training',
-          style: theme.textTheme.titleLarge?.copyWith(color: lime),
+          style: theme.textTheme.titleLarge?.copyWith(color: secondary),
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_rounded),
@@ -66,7 +66,9 @@ class _DStopicsState extends State<DStopics> {
                 children: [
                   Text(
                     'Data Structures',
-                    style: theme.textTheme.titleMedium?.copyWith(color: white),
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      color: primary,
+                    ),
                   ),
                   SizedBox(height: screenWidth * 0.05),
 

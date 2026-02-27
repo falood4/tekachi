@@ -48,12 +48,12 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     dynamic secondary = theme.colorScheme.secondary;
-    dynamic blackbg = theme.colorScheme.onPrimary;
+    dynamic bg = theme.colorScheme.background;
 
     return Scaffold(
-      backgroundColor: blackbg,
+      backgroundColor: bg,
       appBar: AppBar(
-        backgroundColor: blackbg,
+        backgroundColor: bg,
         title: Text(
           'Aptitude Test History',
           style: theme.textTheme.titleLarge?.copyWith(color: secondary),
@@ -68,7 +68,7 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
     final theme = Theme.of(context);
     dynamic primary = theme.colorScheme.primary;
     dynamic secondary = theme.colorScheme.secondary;
-    dynamic blackbg = theme.colorScheme.background;
+    dynamic bg = theme.colorScheme.background;
 
     if (_isLoading) {
       return Center(child: CircularProgressIndicator(color: secondary));
@@ -97,11 +97,11 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
               showAnswers(attempt['attemptId'], screenHeight);
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: blackbg,
+              backgroundColor: bg,
               foregroundColor: primary,
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(25),
                 side: BorderSide(color: secondary, width: 1),
               ),
             ),
@@ -145,12 +145,12 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
   Future<void> showAnswers(int attemptId, double screenheight) async {
     final List<Map<String, dynamic>> reviewAnswers = await HistoryService()
         .getAttemptAnswers(attemptId);
-    final blackbg = Theme.of(context).colorScheme.background;
+    final bg = Theme.of(context).colorScheme.background;
     final secondary = Theme.of(context).colorScheme.secondary;
 
     showModalBottomSheet(
       context: context,
-      backgroundColor: blackbg,
+      backgroundColor: bg,
       isScrollControlled: true,
       builder: (context) {
         return Container(

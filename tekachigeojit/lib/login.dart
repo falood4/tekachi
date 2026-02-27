@@ -88,12 +88,13 @@ class _LoginState extends State<Login> {
     final screenHeight = MediaQuery.of(context).size.height;
     final theme = Theme.of(context);
 
-    dynamic lime = theme.colorScheme.secondary;
-    dynamic black = theme.colorScheme.onPrimary;
-    dynamic grey = theme.colorScheme.tertiary;
-    dynamic lightGrey = theme.colorScheme.surface;
+    dynamic secondary = theme.colorScheme.secondary;
+    dynamic onPrimary = theme.colorScheme.onPrimary;
+    dynamic tertiary = theme.colorScheme.tertiary;
+    dynamic surface = theme.colorScheme.surface;
 
     return Scaffold(
+      backgroundColor: theme.colorScheme.background,
       resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: SingleChildScrollView(
@@ -114,7 +115,7 @@ class _LoginState extends State<Login> {
                   height: screenHeight * 0.06,
                   child: Container(
                     decoration: BoxDecoration(
-                      color: lightGrey,
+                      color: surface,
                       borderRadius: BorderRadius.circular(50),
                     ),
                     padding: const EdgeInsets.symmetric(
@@ -133,7 +134,7 @@ class _LoginState extends State<Login> {
                           fontSize: screenWidth * 0.04,
                           fontFamily: "Trebuchet",
                           letterSpacing: 0.1,
-                          color: grey,
+                          color: tertiary,
                         ),
                         border: InputBorder.none,
                       ),
@@ -148,7 +149,7 @@ class _LoginState extends State<Login> {
                     height: screenHeight * 0.06,
                     child: Container(
                       decoration: BoxDecoration(
-                        color: lightGrey,
+                        color: surface,
                         borderRadius: BorderRadius.circular(50),
                       ),
                       padding: const EdgeInsets.symmetric(
@@ -165,7 +166,7 @@ class _LoginState extends State<Login> {
                             fontSize: screenWidth * 0.04,
                             fontFamily: "Trebuchet",
                             letterSpacing: 0.1,
-                            color: grey,
+                            color: tertiary,
                           ),
                           border: InputBorder.none,
                         ),
@@ -183,12 +184,12 @@ class _LoginState extends State<Login> {
                       style: ElevatedButton.styleFrom(
                         textStyle: theme.textTheme.headlineLarge,
                         padding: const EdgeInsets.all(16),
-                        backgroundColor: lime,
+                        backgroundColor: secondary,
                       ),
                       child: Text(
                         "Login",
                         style: TextStyle(
-                          color: black,
+                          color: onPrimary,
                           fontSize: 0.05 * screenWidth,
                         ),
                       ),
@@ -204,7 +205,7 @@ class _LoginState extends State<Login> {
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.all(0),
-                        backgroundColor: lightGrey,
+                        backgroundColor: surface,
                       ),
                       onPressed: () {
                         Navigator.pop(context);
@@ -212,7 +213,7 @@ class _LoginState extends State<Login> {
                       child: Text(
                         "Back",
                         style: TextStyle(
-                          color: black,
+                          color: Colors.black,
                           fontFamily: "DelaGothicOne",
                           fontSize: screenWidth * 0.035,
                         ),

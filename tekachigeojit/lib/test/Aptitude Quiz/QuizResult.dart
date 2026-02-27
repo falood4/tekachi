@@ -67,14 +67,14 @@ class _QuizResultState extends State<QuizResult> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     final theme = Theme.of(context);
-    final white = theme.colorScheme.primary;
-    final lime = theme.colorScheme.secondary;
-    final blackbg = theme.colorScheme.background;
+    final primary = theme.colorScheme.primary;
+    final secondary = theme.colorScheme.secondary;
+    final background = theme.colorScheme.background;
     final surface = theme.colorScheme.surface;
 
     return Scaffold(
       bottomNavigationBar: const NavBar(),
-      backgroundColor: blackbg,
+      backgroundColor: background,
       body: SafeArea(
         child: Container(
           margin: EdgeInsets.all(screenWidth * 0.1),
@@ -87,16 +87,16 @@ class _QuizResultState extends State<QuizResult> {
                   height: screenWidth * 0.6,
                   child: CircularProgressIndicator(
                     value: widget.score / 15,
-                    strokeWidth: screenWidth * 0.075,
+                    strokeWidth: screenWidth * 0.1,
                     backgroundColor: const Color.fromARGB(255, 51, 51, 51),
-                    valueColor: AlwaysStoppedAnimation<Color>(lime),
+                    valueColor: AlwaysStoppedAnimation<Color>(secondary),
                     strokeCap: StrokeCap.round,
                   ),
                 ),
                 Text(
                   '${widget.score}/15',
                   style: theme.textTheme.headlineLarge?.copyWith(
-                    color: white,
+                    color: primary,
                     fontSize: screenWidth * 0.1,
                   ),
                 ),
@@ -109,7 +109,7 @@ class _QuizResultState extends State<QuizResult> {
                       vertical: 10,
                       horizontal: 20,
                     ),
-                    backgroundColor: lime,
+                    backgroundColor: secondary,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(50),
                     ),
@@ -117,7 +117,7 @@ class _QuizResultState extends State<QuizResult> {
                   child: Text(
                     'Review Answers',
                     style: theme.textTheme.headlineLarge?.copyWith(
-                      color: blackbg,
+                      color: theme.colorScheme.onPrimary,
                       fontSize: screenWidth * 0.06,
                     ),
                   ),
@@ -128,7 +128,7 @@ class _QuizResultState extends State<QuizResult> {
                     child: Text(
                       'Saving result...',
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        color: surface,
+                        color: primary,
                         fontStyle: FontStyle.italic,
                       ),
                     ),
@@ -155,7 +155,7 @@ class _QuizResultState extends State<QuizResult> {
                   child: Text(
                     'Return to Tests',
                     style: theme.textTheme.headlineLarge?.copyWith(
-                      color: blackbg,
+                      color: theme.colorScheme.onPrimary,
                       fontSize: screenWidth * 0.04,
                     ),
                   ),
@@ -170,8 +170,8 @@ class _QuizResultState extends State<QuizResult> {
 
   Widget _answerReviewCard(AnswerSelection answer, int index) {
     final theme = Theme.of(context);
-    dynamic white = theme.colorScheme.primary;
-    dynamic lime = theme.colorScheme.secondary;
+    dynamic primary = theme.colorScheme.primary;
+    dynamic secondary = theme.colorScheme.secondary;
     dynamic red = theme.colorScheme.error;
 
     return Container(
@@ -181,7 +181,7 @@ class _QuizResultState extends State<QuizResult> {
         children: [
           Text(
             "${index + 1}. ${answer.questionText}",
-            style: theme.textTheme.bodyMedium?.copyWith(color: white),
+            style: theme.textTheme.bodyMedium?.copyWith(color: primary),
           ),
           const SizedBox(height: 5),
           Text(
@@ -191,7 +191,7 @@ class _QuizResultState extends State<QuizResult> {
           const SizedBox(height: 5),
           Text(
             'Correct Answer: ${answer.correctOptionText}',
-            style: theme.textTheme.bodySmall?.copyWith(color: lime),
+            style: theme.textTheme.bodySmall?.copyWith(color: secondary),
           ),
         ],
       ),
@@ -225,8 +225,8 @@ class _QuizResultState extends State<QuizResult> {
               width: screenWidth * 0.01,
             ),
             borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(screenWidth * 0.1),
-              topRight: Radius.circular(screenWidth * 0.1),
+              topLeft: Radius.circular(25),
+              topRight: Radius.circular(25),
             ),
           ),
           child: Padding(

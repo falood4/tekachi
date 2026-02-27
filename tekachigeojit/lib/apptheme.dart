@@ -107,14 +107,6 @@ class AppTheme {
       ),
     ),
 
-    cardTheme: const CardThemeData(
-      color: _cardLight,
-      elevation: 4,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(18)),
-      ),
-    ),
-
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         backgroundColor: const Color.fromRGBO(0, 0, 0, 1),
@@ -122,13 +114,6 @@ class AppTheme {
         foregroundColor: _accent,
         padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 14),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-      ),
-    ),
-
-    dialogTheme: const DialogThemeData(
-      backgroundColor: _cardLight,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(20)),
       ),
     ),
 
@@ -143,9 +128,75 @@ class AppTheme {
     ],
   );
 
-  static final ButtonStyle topicCards = ElevatedButton.styleFrom(
-    backgroundColor: Color(0xFFD9D9D9),
-    shadowColor: Colors.transparent,
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+  static ThemeData lightTheme = ThemeData(
+    useMaterial3: true,
+    brightness: Brightness.light,
+
+    scaffoldBackgroundColor: _cardLight,
+
+    colorScheme: const ColorScheme.light(
+      primary: _black,
+      secondary: _accent,
+      tertiary: _tertiary,
+      background: _white,
+      surface: _cardLight,
+      error: Color(0xFFE53935),
+      onPrimary: _black,
+    ),
+
+    textTheme: const TextTheme(
+      headlineLarge: TextStyle(
+        fontFamily: 'DelaGothicOne',
+        fontSize: 32,
+        color: _accent,
+      ),
+      titleLarge: TextStyle(
+        fontFamily: 'RussoOne',
+        fontSize: 28,
+        fontWeight: FontWeight.w500,
+        color: _black,
+      ),
+      titleMedium: TextStyle(
+        fontFamily: 'RussoOne',
+        fontSize: 24,
+        fontWeight: FontWeight.w300,
+        color: _black,
+      ),
+      bodyLarge: TextStyle(
+        fontSize: 22,
+        fontFamily: "Trebuchet",
+        color: Colors.black87,
+      ),
+      bodyMedium: TextStyle(
+        fontSize: 20,
+        fontFamily: "Trebuchet",
+        color: Colors.black87,
+      ),
+      bodySmall: TextStyle(
+        fontSize: 16,
+        fontFamily: "Trebuchet",
+        color: Colors.black87,
+      ),
+    ),
+
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: const Color.fromRGBO(0, 0, 0, 1),
+        disabledBackgroundColor: _cardLight,
+        foregroundColor: _accent,
+        padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 14),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+      ),
+    ),
+
+    extensions: const [
+      AppCustomColors(
+        cardLight: _cardLight,
+        popupSurface: Color(0xFF1F1F1F),
+        quizOption: Color(0xFFEFEFEF),
+        success: Color(0xFF4CAF50),
+        danger: Color(0xFFE53935),
+      ),
+    ],
   );
 }

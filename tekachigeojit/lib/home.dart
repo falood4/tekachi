@@ -15,6 +15,7 @@ class HomeScreen extends StatelessWidget {
     dynamic lightGrey = theme.colorScheme.surface;
 
     return Scaffold(
+      backgroundColor: theme.colorScheme.background,
       body: SafeArea(
         child: Center(
           child: Column(
@@ -74,7 +75,7 @@ class HomeScreen extends StatelessWidget {
                     child: Text(
                       "Sign Up",
                       style: theme.textTheme.headlineLarge?.copyWith(
-                        color: black,
+                        color: Colors.black,
                       ),
                     ),
                   ),
@@ -114,13 +115,12 @@ class AppSubtitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    dynamic lightGrey = theme.colorScheme.surface;
     return Text(
       "Your cheatcode to acing placements",
       textAlign: TextAlign.center,
       style: theme.textTheme.bodyMedium?.copyWith(
         fontSize: 0.04 * MediaQuery.of(context).size.width,
-        color: lightGrey,
+        color: Color.fromARGB(255, 134, 134, 134),
       ),
     );
   }
