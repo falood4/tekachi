@@ -100,6 +100,11 @@ class AppTheme {
         fontFamily: "Trebuchet",
         color: Colors.black87,
       ),
+      bodySmall: TextStyle(
+        fontSize: 16,
+        fontFamily: "Trebuchet",
+        color: _white,
+      ),
     ),
 
     cardTheme: const CardThemeData(
@@ -113,6 +118,7 @@ class AppTheme {
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         backgroundColor: const Color.fromRGBO(0, 0, 0, 1),
+        disabledBackgroundColor: _cardLight,
         foregroundColor: _accent,
         padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 14),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),

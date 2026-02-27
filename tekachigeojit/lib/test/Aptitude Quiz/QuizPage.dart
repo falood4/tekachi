@@ -57,23 +57,20 @@ class _QuizPageState extends State<QuizPage> {
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
+    final theme = Theme.of(context);
+
+    dynamic black = theme.colorScheme.onPrimary;
+    dynamic white = theme.colorScheme.primary;
+    dynamic lime = theme.colorScheme.secondary;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Quiz',
-          style: TextStyle(
-            color: const Color(0xFF8DD300),
-            fontFamily: "DelaGothicOne",
-            fontSize: 0.08 * screenWidth,
-          ),
-        ),
-      ),
+      backgroundColor: white,
+      appBar: AppBar(title: Text('Quiz', style: theme.textTheme.headlineLarge)),
       body: isLoading || currentQuestion == null
           ? SafeArea(
-              child: const Center(
+              child: Center(
                 child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF8DD300)),
+                  valueColor: AlwaysStoppedAnimation<Color>(lime),
                 ),
               ),
             )
@@ -85,12 +82,11 @@ class _QuizPageState extends State<QuizPage> {
                   children: [
                     Text(
                       currentQuestion!.questionText,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: theme.textTheme.bodyMedium,
                     ),
                     const SizedBox(height: 16),
+
+                    //Options
                     Expanded(
                       child: ListView.builder(
                         itemCount: currentQuestion!.options.length,
@@ -114,9 +110,17 @@ class _QuizPageState extends State<QuizPage> {
                               },
                               title: Text(
                                 option.text,
-                                style: const TextStyle(fontFamily: 'Trebuchet'),
+                                style: theme.textTheme.bodyMedium,
                               ),
-                              activeColor: const Color(0xFF8DD300),
+                              activeColor: lime,
+                              fillColor: WidgetStateProperty.resolveWith((
+                                states,
+                              ) {
+                                if (states.contains(WidgetState.selected)) {
+                                  return lime;
+                                }
+                                return black;
+                              }),
                               controlAffinity: ListTileControlAffinity.leading,
                             ),
                           );
@@ -124,22 +128,19 @@ class _QuizPageState extends State<QuizPage> {
                       ),
                     ),
                     const SizedBox(height: 16),
+
+                    //Next Button
                     Container(
                       alignment: Alignment.bottomRight,
                       child: ElevatedButton(
                         onPressed: _selectedOptionId != null
                             ? () => _handleNext(currentQuestion!)
                             : null,
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.all(12),
-                          backgroundColor: const Color(0xFF8DD300),
-                        ),
-                        child: const Text(
+                        style: theme.elevatedButtonTheme.style,
+                        child: Text(
                           'Next',
-                          style: TextStyle(
-                            fontFamily: 'DelaGothicOne',
-                            color: Colors.black,
-                            fontSize: 16,
+                          style: theme.textTheme.titleLarge?.copyWith(
+                            color: lime,
                           ),
                         ),
                       ),

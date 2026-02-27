@@ -5,27 +5,24 @@ import 'package:tekachigeojit/test/Aptitude%20Quiz/QuizPage.dart';
 class AptitudeTest extends StatelessWidget {
   const AptitudeTest({super.key});
 
-  static const Color _bg = Color.fromRGBO(20, 20, 20, 1.0);
-  static const Color _accent = Color(0xFF8DD300);
-
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double screenHeight = MediaQuery.of(context).size.height;
+    final theme = Theme.of(context);
+
+    final Color bg = theme.colorScheme.background;
+    final Color lime = theme.colorScheme.secondary;
 
     return Scaffold(
       bottomNavigationBar: NavBar(),
-      backgroundColor: _bg,
+      backgroundColor: bg,
       appBar: AppBar(
-        backgroundColor: _bg,
-        iconTheme: const IconThemeData(color: _accent),
+        backgroundColor: bg,
+        iconTheme: IconThemeData(color: lime),
         title: Text(
           'Aptitude Test',
-          style: TextStyle(
-            color: _accent,
-            fontFamily: "Trebuchet",
-            fontSize: 0.075 * screenWidth,
-          ),
+          style: theme.textTheme.titleLarge?.copyWith(color: lime),
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_rounded),
@@ -48,7 +45,7 @@ class AptitudeTest extends StatelessWidget {
                   'This aptitude test will measure and determine your abilities in problem-solving, logic, and reasoning in arithmetic and language',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: const Color.fromARGB(255, 255, 255, 255),
+                    color: theme.colorScheme.primary,
                     fontFamily: "Trebuchet",
                     fontSize: 0.05 * screenWidth,
                   ),
@@ -65,18 +62,14 @@ class AptitudeTest extends StatelessWidget {
                           MaterialPageRoute(builder: (_) => QuizPage()),
                         );
                       },
-                      style: ElevatedButton.styleFrom(
-                        textStyle: TextStyle(
-                          fontSize: 0.06 * screenWidth,
-                          fontFamily: "DelaGothicOne",
-                          color: Colors.black,
-                        ),
-                        padding: EdgeInsets.all(12),
-                        backgroundColor: Color(0xFF8DD300),
+                      style: theme.elevatedButtonTheme.style?.copyWith(
+                        backgroundColor: WidgetStatePropertyAll(lime),
                       ),
                       child: Text(
                         "Start",
-                        style: TextStyle(color: Colors.black),
+                        style: theme.textTheme.headlineLarge?.copyWith(
+                          color: bg,
+                        ),
                       ),
                     ),
                   ),

@@ -85,7 +85,6 @@ class AptitudeHome extends StatelessWidget {
   ) {
     final screenWidth = MediaQuery.of(context).size.width;
     final theme = Theme.of(context);
-    final black = theme.colorScheme.onPrimary;
 
     return Container(
       height: screenWidth * 0.25,

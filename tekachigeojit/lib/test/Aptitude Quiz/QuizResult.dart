@@ -66,9 +66,15 @@ class _QuizResultState extends State<QuizResult> {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
+    final theme = Theme.of(context);
+    final white = theme.colorScheme.primary;
+    final lime = theme.colorScheme.secondary;
+    final blackbg = theme.colorScheme.background;
+    final surface = theme.colorScheme.surface;
+
     return Scaffold(
       bottomNavigationBar: const NavBar(),
-      backgroundColor: const Color.fromRGBO(20, 20, 20, 1.0),
+      backgroundColor: blackbg,
       body: SafeArea(
         child: Container(
           margin: EdgeInsets.all(screenWidth * 0.1),
@@ -83,18 +89,15 @@ class _QuizResultState extends State<QuizResult> {
                     value: widget.score / 15,
                     strokeWidth: screenWidth * 0.075,
                     backgroundColor: const Color.fromARGB(255, 51, 51, 51),
-                    valueColor: const AlwaysStoppedAnimation<Color>(
-                      Color(0xFF8DD300),
-                    ),
+                    valueColor: AlwaysStoppedAnimation<Color>(lime),
                     strokeCap: StrokeCap.round,
                   ),
                 ),
                 Text(
                   '${widget.score}/15',
-                  style: TextStyle(
+                  style: theme.textTheme.headlineLarge?.copyWith(
+                    color: white,
                     fontSize: screenWidth * 0.1,
-                    fontFamily: "DelaGothicOne",
-                    color: Colors.white,
                   ),
                 ),
                 scoreRemark(widget.score, screenWidth * 0.05),
@@ -104,19 +107,18 @@ class _QuizResultState extends State<QuizResult> {
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
                       vertical: 10,
-                      horizontal: 15,
+                      horizontal: 20,
                     ),
-                    backgroundColor: const Color(0xFF8DD300),
+                    backgroundColor: lime,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(50),
                     ),
                   ),
                   child: Text(
                     'Review Answers',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: screenWidth * 0.07,
-                      fontFamily: "DelaGothicOne",
+                    style: theme.textTheme.headlineLarge?.copyWith(
+                      color: blackbg,
+                      fontSize: screenWidth * 0.06,
                     ),
                   ),
                 ),
@@ -125,10 +127,9 @@ class _QuizResultState extends State<QuizResult> {
                     padding: const EdgeInsets.only(top: 12),
                     child: Text(
                       'Saving result...',
-                      style: TextStyle(
-                        color: Colors.white70,
-                        fontFamily: "Trebuchet",
-                        fontSize: screenWidth * 0.035,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: surface,
+                        fontStyle: FontStyle.italic,
                       ),
                     ),
                   ),
@@ -146,17 +147,16 @@ class _QuizResultState extends State<QuizResult> {
                       vertical: 10,
                       horizontal: 15,
                     ),
-                    backgroundColor: const Color(0xFFD9D9D9),
+                    backgroundColor: surface,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(50),
                     ),
                   ),
                   child: Text(
                     'Return to Tests',
-                    style: TextStyle(
-                      color: Colors.black,
+                    style: theme.textTheme.headlineLarge?.copyWith(
+                      color: blackbg,
                       fontSize: screenWidth * 0.04,
-                      fontFamily: "DelaGothicOne",
                     ),
                   ),
                 ),
@@ -169,6 +169,11 @@ class _QuizResultState extends State<QuizResult> {
   }
 
   Widget _answerReviewCard(AnswerSelection answer, int index) {
+    final theme = Theme.of(context);
+    dynamic white = theme.colorScheme.primary;
+    dynamic lime = theme.colorScheme.secondary;
+    dynamic red = theme.colorScheme.error;
+
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       child: Column(
@@ -176,29 +181,17 @@ class _QuizResultState extends State<QuizResult> {
         children: [
           Text(
             "${index + 1}. ${answer.questionText}",
-            style: const TextStyle(
-              color: Colors.white,
-              fontFamily: "Trebuchet",
-              fontSize: 20,
-            ),
+            style: theme.textTheme.bodyMedium?.copyWith(color: white),
           ),
           const SizedBox(height: 5),
           Text(
             'Your Answer: ${answer.selectedOptionText}',
-            style: const TextStyle(
-              color: Color.fromARGB(255, 248, 108, 98),
-              fontFamily: "Trebuchet",
-              fontSize: 14,
-            ),
+            style: theme.textTheme.bodySmall?.copyWith(color: red),
           ),
           const SizedBox(height: 5),
           Text(
             'Correct Answer: ${answer.correctOptionText}',
-            style: const TextStyle(
-              color: Color(0xFF8DD300),
-              fontFamily: "Trebuchet",
-              fontSize: 14,
-            ),
+            style: theme.textTheme.bodySmall?.copyWith(color: lime),
           ),
         ],
       ),
@@ -222,13 +215,13 @@ class _QuizResultState extends State<QuizResult> {
 
     showModalBottomSheet(
       context: context,
-      backgroundColor: const Color.fromRGBO(20, 20, 20, 1.0),
+      backgroundColor: Theme.of(context).colorScheme.background,
       isScrollControlled: true,
       builder: (context) {
         return Container(
           decoration: BoxDecoration(
             border: Border.all(
-              color: const Color(0xFF8DD300),
+              color: Theme.of(context).colorScheme.secondary,
               width: screenWidth * 0.01,
             ),
             borderRadius: BorderRadius.only(
@@ -258,7 +251,7 @@ class _QuizResultState extends State<QuizResult> {
       return Text(
         'Excellent',
         style: TextStyle(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.primary,
           fontFamily: "DelaGothicOne",
           fontSize: fontSize,
         ),
@@ -267,7 +260,7 @@ class _QuizResultState extends State<QuizResult> {
       return Text(
         "Good",
         style: TextStyle(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.primary,
           fontFamily: "DelaGothicOne",
           fontSize: fontSize,
         ),
@@ -276,7 +269,7 @@ class _QuizResultState extends State<QuizResult> {
       return Text(
         "Needs Improvement",
         style: TextStyle(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.primary,
           fontFamily: "DelaGothicOne",
           fontSize: fontSize,
         ),

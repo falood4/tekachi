@@ -156,19 +156,23 @@ class HrTrainingScreen extends StatelessWidget {
     final double baseFontSize = size.width * 0.045;
     final double verticalPadding = size.height * 0.02;
 
+    final theme = Theme.of(context);
+    dynamic lime = theme.colorScheme.secondary;
+    dynamic blackbg = theme.colorScheme.background;
+
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: blackbg,
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: blackbg,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color(0xFF84B200)),
+          icon: Icon(Icons.arrow_back, color: lime),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
           "HR Training",
           style: TextStyle(
-            color: Color(0xFF8DD300),
+            color: lime,
             fontFamily: "RussoOne",
             fontSize: 0.075 * screenWidth,
           ),
@@ -189,7 +193,7 @@ class HrTrainingScreen extends StatelessWidget {
                 Text(
                   "Basic Introduction",
                   style: TextStyle(
-                    color: Color(0xFF8DD300),
+                    color: lime,
                     fontFamily: "RussoOne",
                     fontSize: baseFontSize * 1.4,
                   ),
@@ -200,7 +204,7 @@ class HrTrainingScreen extends StatelessWidget {
                 Text(
                   "Strengths & Weaknesses",
                   style: TextStyle(
-                    color: Color(0xFF8DD300),
+                    color: lime,
                     fontFamily: "RussoOne",
                     fontSize: baseFontSize * 1.4,
                   ),
@@ -211,7 +215,7 @@ class HrTrainingScreen extends StatelessWidget {
                 Text(
                   "Work Style & Attitude",
                   style: TextStyle(
-                    color: Color(0xFF8DD300),
+                    color: lime,
                     fontFamily: "RussoOne",
                     fontSize: baseFontSize * 1.4,
                   ),
@@ -222,7 +226,7 @@ class HrTrainingScreen extends StatelessWidget {
                 Text(
                   "Pressure & Challenges",
                   style: TextStyle(
-                    color: Color(0xFF8DD300),
+                    color: lime,
                     fontFamily: "RussoOne",
                     fontSize: baseFontSize * 1.4,
                   ),
@@ -233,7 +237,7 @@ class HrTrainingScreen extends StatelessWidget {
                 Text(
                   "Motivation & Goals",
                   style: TextStyle(
-                    color: Color(0xFF8DD300),
+                    color: lime,
                     fontFamily: "RussoOne",
                     fontSize: baseFontSize * 1.4,
                   ),
@@ -244,7 +248,7 @@ class HrTrainingScreen extends StatelessWidget {
                 Text(
                   "Company & Role Fit",
                   style: TextStyle(
-                    color: Color(0xFF8DD300),
+                    color: lime,
                     fontFamily: "RussoOne",
                     fontSize: baseFontSize * 1.4,
                   ),
@@ -255,7 +259,7 @@ class HrTrainingScreen extends StatelessWidget {
                 Text(
                   "Company & Role Fit",
                   style: TextStyle(
-                    color: Color(0xFF8DD300),
+                    color: lime,
                     fontFamily: "RussoOne",
                     fontSize: baseFontSize * 1.4,
                   ),
@@ -266,7 +270,7 @@ class HrTrainingScreen extends StatelessWidget {
                 Text(
                   "Ethics & Professionalism",
                   style: TextStyle(
-                    color: Color(0xFF8DD300),
+                    color: lime,
                     fontFamily: "RussoOne",
                     fontSize: baseFontSize * 1.4,
                   ),
@@ -277,7 +281,7 @@ class HrTrainingScreen extends StatelessWidget {
                 Text(
                   "Flexibility & Availability",
                   style: TextStyle(
-                    color: Color(0xFF8DD300),
+                    color: lime,
                     fontFamily: "RussoOne",
                     fontSize: baseFontSize * 1.4,
                   ),
@@ -288,7 +292,7 @@ class HrTrainingScreen extends StatelessWidget {
                 Text(
                   "Compensation & Closure",
                   style: TextStyle(
-                    color: Color(0xFF8DD300),
+                    color: lime,
                     fontFamily: "RussoOne",
                     fontSize: baseFontSize * 1.4,
                   ),
@@ -316,6 +320,11 @@ class HrTrainingScreen extends StatelessWidget {
         final question = entry.key;
         final answer = entry.value;
 
+        final theme = Theme.of(context);
+        dynamic black = theme.colorScheme.onPrimary;
+        dynamic surface = theme.colorScheme.surface;
+        dynamic lime = theme.colorScheme.secondary;
+
         return Padding(
           padding: EdgeInsets.only(bottom: verticalPadding),
           child: Theme(
@@ -331,22 +340,19 @@ class HrTrainingScreen extends StatelessWidget {
               collapsedShape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
-              backgroundColor: Color(0xFF8DD300),
-              collapsedBackgroundColor: Colors.white,
-              title: Text(
-                question,
-                style: TextStyle(
-                  fontSize: baseFontSize,
-                  fontFamily: "Trebuchet",
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              collapsedBackgroundColor: surface,
+              collapsedIconColor: black,
+
+              backgroundColor: lime,
+              title: Text(question, style: theme.textTheme.bodyMedium),
               children: [
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                   child: Text(
                     answer,
-                    style: TextStyle(fontSize: baseFontSize * 0.75),
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      fontSize: baseFontSize * 0.8,
+                    ),
                   ),
                 ),
               ],

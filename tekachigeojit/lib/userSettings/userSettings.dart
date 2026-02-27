@@ -159,8 +159,8 @@ class _UserSettingsState extends State<UserSettings> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        dynamic primary = Theme.of(context).colorScheme.primary;
-        dynamic white = Theme.of(context).colorScheme.secondary;
+        dynamic white = Theme.of(context).colorScheme.primary;
+        dynamic lime = Theme.of(context).colorScheme.secondary;
         dynamic grey = Theme.of(context).colorScheme.tertiary;
         dynamic blackbg = Theme.of(context).colorScheme.background;
         dynamic black = Theme.of(context).colorScheme.onPrimary;
@@ -214,7 +214,7 @@ class _UserSettingsState extends State<UserSettings> {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                style: ElevatedButton.styleFrom(backgroundColor: primary),
+                style: ElevatedButton.styleFrom(backgroundColor: lime),
                 child: Text(
                   'CANCEL',
                   style: TextStyle(color: black, fontFamily: "DelaGothicOne"),
@@ -224,7 +224,7 @@ class _UserSettingsState extends State<UserSettings> {
               SizedBox.fromSize(size: const Size.fromHeight(10)),
               Container(
                 decoration: BoxDecoration(
-                  border: Border.all(color: primary),
+                  border: Border.all(color: lime),
                   borderRadius: BorderRadius.circular(25),
                 ),
                 width: 120,
@@ -265,8 +265,8 @@ class _UserSettingsState extends State<UserSettings> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        dynamic primary = Theme.of(context).colorScheme.primary;
-        dynamic white = Theme.of(context).colorScheme.secondary;
+        dynamic white = Theme.of(context).colorScheme.primary;
+        dynamic lime = Theme.of(context).colorScheme.secondary;
         dynamic blackbg = Theme.of(context).colorScheme.background;
         dynamic black = Theme.of(context).colorScheme.onPrimary;
         dynamic red = Theme.of(context).colorScheme.error;
@@ -288,7 +288,7 @@ class _UserSettingsState extends State<UserSettings> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              style: ElevatedButton.styleFrom(backgroundColor: primary),
+              style: ElevatedButton.styleFrom(backgroundColor: lime),
               child: Text(
                 'CANCEL',
                 style: TextStyle(color: black, fontFamily: "DelaGothicOne"),
@@ -331,14 +331,19 @@ class _UserSettingsState extends State<UserSettings> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        dynamic primary = Theme.of(context).colorScheme.primary;
-        dynamic white = Theme.of(context).colorScheme.secondary;
+        dynamic white = Theme.of(context).colorScheme.primary;
+        dynamic lime = Theme.of(context).colorScheme.secondary;
         dynamic blackbg = Theme.of(context).colorScheme.background;
         dynamic black = Theme.of(context).colorScheme.onPrimary;
         dynamic red = Theme.of(context).colorScheme.error;
 
         return AlertDialog(
-          title: Text('Delete Account', style: TextStyle(color: white)),
+          title: Text(
+            'Delete Account',
+            style: Theme.of(
+              context,
+            ).textTheme.bodyLarge?.copyWith(color: white),
+          ),
           backgroundColor: blackbg,
           content: Text(
             'Are you sure you want to delete your account?',
@@ -351,7 +356,7 @@ class _UserSettingsState extends State<UserSettings> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              style: ElevatedButton.styleFrom(backgroundColor: primary),
+              style: ElevatedButton.styleFrom(backgroundColor: lime),
               child: Text(
                 'CANCEL',
                 style: TextStyle(color: black, fontFamily: "DelaGothicOne"),
@@ -399,22 +404,30 @@ class _UserSettingsState extends State<UserSettings> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        dynamic primary = Theme.of(context).colorScheme.primary;
+        dynamic white = Theme.of(context).colorScheme.primary;
+        dynamic lime = Theme.of(context).colorScheme.secondary;
         dynamic black = Theme.of(context).colorScheme.onPrimary;
+        dynamic blackbg = Theme.of(context).colorScheme.background;
+        dynamic red = Theme.of(context).colorScheme.error;
 
         return AlertDialog(
-          title: Text('Log Out', style: TextStyle(color: Colors.white)),
-          backgroundColor: const Color.fromRGBO(20, 20, 20, 1.0),
+          title: Text(
+            'Log Out',
+            style: Theme.of(
+              context,
+            ).textTheme.bodyLarge?.copyWith(color: white),
+          ),
+          backgroundColor: blackbg,
           content: Text(
             'Are you sure you want to log out?',
-            style: TextStyle(color: Colors.white, fontFamily: "Trebuchet"),
+            style: TextStyle(color: white, fontFamily: "Trebuchet"),
           ),
           actions: [
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              style: ElevatedButton.styleFrom(backgroundColor: primary),
+              style: ElevatedButton.styleFrom(backgroundColor: lime),
               child: Text(
                 'CANCEL',
                 style: TextStyle(color: black, fontFamily: "DelaGothicOne"),
@@ -425,15 +438,10 @@ class _UserSettingsState extends State<UserSettings> {
               onPressed: () {
                 _handleLogOut();
               },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 252, 88, 88),
-              ),
+              style: ElevatedButton.styleFrom(backgroundColor: red),
               child: Text(
                 'ACCEPT',
-                style: TextStyle(
-                  color: const Color.fromARGB(255, 255, 255, 255),
-                  fontFamily: "DelaGothicOne",
-                ),
+                style: TextStyle(color: white, fontFamily: "DelaGothicOne"),
               ),
             ),
           ],

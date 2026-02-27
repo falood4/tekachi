@@ -16,7 +16,6 @@ class TechnicalHome extends StatelessWidget {
     final theme = Theme.of(context);
     final blackbg = theme.colorScheme.background;
     final lime = theme.colorScheme.secondary;
-    final surface = theme.colorScheme.surface;
 
     return Scaffold(
       backgroundColor: blackbg,

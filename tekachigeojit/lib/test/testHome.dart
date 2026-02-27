@@ -14,13 +14,8 @@ class TestHome extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
     final theme = Theme.of(context);
 
-    dynamic primary = theme.colorScheme.primary;
-    dynamic white = theme.colorScheme.secondary;
-    dynamic blackbg = theme.colorScheme.background;
+    dynamic lime = theme.colorScheme.secondary;
     dynamic black = theme.colorScheme.onPrimary;
-    dynamic grey = theme.colorScheme.tertiary;
-    dynamic red = theme.colorScheme.error;
-    dynamic lightGrey = theme.colorScheme.surface;
 
     return Scaffold(
       bottomNavigationBar: const NavBar(),
@@ -82,7 +77,7 @@ class TestHome extends StatelessWidget {
                 height: screenHeight * 0.2,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(18),
-                  color: primary,
+                  color: lime,
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -140,12 +135,7 @@ class TestCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final theme = Theme.of(context);
-    dynamic primary = theme.colorScheme.primary;
-    dynamic white = theme.colorScheme.secondary;
-    dynamic blackbg = theme.colorScheme.background;
     dynamic black = theme.colorScheme.onPrimary;
-    dynamic grey = theme.colorScheme.tertiary;
-    dynamic red = theme.colorScheme.error;
     dynamic lightGrey = theme.colorScheme.surface;
 
     return Padding(

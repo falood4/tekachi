@@ -46,39 +46,39 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    dynamic secondary = theme.colorScheme.secondary;
+    dynamic blackbg = theme.colorScheme.onPrimary;
+
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(20, 20, 20, 1.0),
+      backgroundColor: blackbg,
       appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(20, 20, 20, 1.0),
-        title: const Text(
+        backgroundColor: blackbg,
+        title: Text(
           'Aptitude Test History',
-          style: TextStyle(
-            fontFamily: 'DelaGothicOne',
-            color: Color(0xFF8DD300),
-          ),
+          style: theme.textTheme.titleLarge?.copyWith(color: secondary),
         ),
-        iconTheme: const IconThemeData(color: Color(0xFF8DD300)),
+        iconTheme: IconThemeData(color: secondary),
       ),
       body: buildBody(),
     );
   }
 
   Widget buildBody() {
+    final theme = Theme.of(context);
+    dynamic primary = theme.colorScheme.primary;
+    dynamic secondary = theme.colorScheme.secondary;
+    dynamic blackbg = theme.colorScheme.background;
+
     if (_isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(color: Color(0xFF8DD300)),
-      );
+      return Center(child: CircularProgressIndicator(color: secondary));
     }
 
     if (_attempts.isEmpty) {
-      return const Center(
+      return Center(
         child: Text(
           'No attempts yet',
-          style: TextStyle(
-            color: Colors.white70,
-            fontFamily: 'Trebuchet',
-            fontSize: 18,
-          ),
+          style: theme.textTheme.bodyMedium?.copyWith(color: primary),
         ),
       );
     }
@@ -97,12 +97,12 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
               showAnswers(attempt['attemptId'], screenHeight);
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color.fromRGBO(35, 35, 35, 1.0),
-              foregroundColor: Colors.white,
+              backgroundColor: blackbg,
+              foregroundColor: primary,
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
-                side: const BorderSide(color: Color(0xFF8DD300), width: 1),
+                side: BorderSide(color: secondary, width: 1),
               ),
             ),
             child: Row(
@@ -110,7 +110,7 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF8DD300),
+                    color: secondary,
                     borderRadius: BorderRadius.circular(5),
                   ),
                   child: Text(
@@ -125,23 +125,15 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
                 const SizedBox(width: 16),
                 Text(
                   _formatDate(attempt['attemptedOn']),
-                  style: const TextStyle(
-                    fontFamily: 'Trebuchet',
-                    color: Colors.white,
-                    fontSize: 20,
-                  ),
+                  style: theme.textTheme.bodyMedium?.copyWith(color: primary),
                 ),
                 const SizedBox(width: 100),
                 Text(
                   attempt['score'],
-                  style: const TextStyle(
-                    fontFamily: 'DelaGothicOne',
-                    color: Color(0xFF8DD300),
-                    fontSize: 22,
-                  ),
+                  style: theme.textTheme.headlineLarge?.copyWith(fontSize: 22),
                 ),
                 const SizedBox(width: 10),
-                const Icon(Icons.chevron_right, color: Color(0xFF8DD300)),
+                Icon(Icons.chevron_right, color: secondary),
               ],
             ),
           ),
@@ -153,15 +145,17 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
   Future<void> showAnswers(int attemptId, double screenheight) async {
     final List<Map<String, dynamic>> reviewAnswers = await HistoryService()
         .getAttemptAnswers(attemptId);
+    final blackbg = Theme.of(context).colorScheme.background;
+    final secondary = Theme.of(context).colorScheme.secondary;
 
     showModalBottomSheet(
       context: context,
-      backgroundColor: const Color.fromRGBO(20, 20, 20, 1.0),
+      backgroundColor: blackbg,
       isScrollControlled: true,
       builder: (context) {
         return Container(
           decoration: BoxDecoration(
-            border: Border.all(color: const Color(0xFF8DD300)),
+            border: Border.all(color: secondary),
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(25),
               topRight: Radius.circular(25),
@@ -170,7 +164,7 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
           child: Padding(
             padding: const EdgeInsets.all(20.0),
             child: SizedBox(
-              height: screenheight * 0.6,
+              height: screenheight * 0.75,
               child: ListView.builder(
                 itemCount: reviewAnswers.length,
                 itemBuilder: (context, index) {
@@ -194,6 +188,10 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
     (String, String) answers,
   ) {
     index++;
+    dynamic primary = Theme.of(context).colorScheme.primary;
+    dynamic secondary = Theme.of(context).colorScheme.secondary;
+    dynamic error = Theme.of(context).colorScheme.error;
+
     if (answers.$1 == answers.$2) {
       return Container(
         margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
@@ -203,20 +201,16 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
             const SizedBox(height: 15),
             Text(
               "$index. $questionText",
-              style: TextStyle(
-                color: Colors.white,
-                fontFamily: "Trebuchet",
-                fontSize: 18,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: primary),
             ),
             const SizedBox(height: 5),
             Text(
               'Your Answer: ${answers.$2} ✅',
-              style: TextStyle(
-                color: const Color.fromARGB(255, 113, 254, 118),
-                fontFamily: "Trebuchet",
-                fontSize: 14,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall?.copyWith(color: secondary),
             ),
           ],
         ),
@@ -230,29 +224,23 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
             const SizedBox(height: 15),
             Text(
               "$index. $questionText",
-              style: TextStyle(
-                color: Colors.white,
-                fontFamily: "Trebuchet",
-                fontSize: 18,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: primary),
             ),
             const SizedBox(height: 5),
             Text(
               'Your Wrong Answer: ${answers.$1} ❌',
-              style: TextStyle(
-                color: const Color.fromARGB(255, 248, 108, 98),
-                fontFamily: "Trebuchet",
-                fontSize: 14,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall?.copyWith(color: error),
             ),
             const SizedBox(height: 5),
             Text(
               'Correct Answer: ${answers.$2}',
-              style: TextStyle(
-                color: Colors.white,
-                fontFamily: "Trebuchet",
-                fontSize: 14,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall?.copyWith(color: primary),
             ),
           ],
         ),
