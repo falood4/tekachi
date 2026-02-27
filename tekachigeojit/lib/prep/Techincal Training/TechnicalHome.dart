@@ -13,19 +13,20 @@ class TechnicalHome extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
 
+    final theme = Theme.of(context);
+    final blackbg = theme.colorScheme.background;
+    final lime = theme.colorScheme.secondary;
+    final surface = theme.colorScheme.surface;
+
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(20, 20, 20, 1.0),
+      backgroundColor: blackbg,
       bottomNavigationBar: NavBar(),
       appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(20, 20, 20, 1.0),
-        iconTheme: const IconThemeData(color: Color(0xFF8DD300)),
+        backgroundColor: blackbg,
+        iconTheme: IconThemeData(color: lime),
         title: Text(
           'Technical Training',
-          style: TextStyle(
-            color: const Color(0xFF8DD300),
-            fontFamily: "RussoOne",
-            fontSize: 0.075 * screenWidth,
-          ),
+          style: theme.textTheme.titleLarge?.copyWith(color: lime),
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_rounded),
@@ -85,13 +86,16 @@ class TechnicalHome extends StatelessWidget {
     Function()? onPressed,
   ) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final theme = Theme.of(context);
+    final surface = theme.colorScheme.surface;
+
     return Container(
+      height: screenWidth * 0.25,
       margin: EdgeInsets.symmetric(vertical: screenWidth * 0.015),
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: Color(0xFFD9D9D9),
-          shadowColor: Colors.transparent,
+          backgroundColor: surface,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(25),
           ),
@@ -100,14 +104,7 @@ class TechnicalHome extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: screenWidth * 0.05),
           child: Align(
             alignment: Alignment.centerLeft,
-            child: Text(
-              title,
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: screenWidth * 0.05,
-                fontFamily: "Trebuchet",
-              ),
-            ),
+            child: Text(title, style: theme.textTheme.titleMedium),
           ),
         ),
       ),

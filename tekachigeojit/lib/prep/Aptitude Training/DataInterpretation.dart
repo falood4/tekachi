@@ -8,6 +8,10 @@ class DataInterpretation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final theme = Theme.of(context);
+    dynamic white = theme.colorScheme.primary;
+    dynamic lime = theme.colorScheme.secondary;
+    dynamic blackbg = theme.colorScheme.background;
 
     final DataTopics = [
       "Table Charts",
@@ -17,17 +21,13 @@ class DataInterpretation extends StatelessWidget {
     ];
 
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(20, 20, 20, 1.0),
+      backgroundColor: blackbg,
       appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(20, 20, 20, 1.0),
-        iconTheme: const IconThemeData(color: Color(0xFF8DD300)),
+        backgroundColor: blackbg,
+        iconTheme: IconThemeData(color: white),
         title: Text(
           'Aptitude Training',
-          style: TextStyle(
-            color: const Color(0xFF8DD300),
-            fontFamily: "RussoOne",
-            fontSize: 0.075 * screenWidth,
-          ),
+          style: theme.textTheme.titleLarge?.copyWith(color: lime),
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_rounded),
@@ -46,11 +46,7 @@ class DataInterpretation extends StatelessWidget {
               children: [
                 Text(
                   'Data Interpretation Aptitude',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: screenWidth * 0.05,
-                    fontFamily: "Trebuchet",
-                  ),
+                  style: theme.textTheme.titleMedium?.copyWith(color: white),
                 ),
                 SizedBox(height: screenWidth * 0.05),
                 GridView.count(
@@ -74,14 +70,17 @@ class DataInterpretation extends StatelessWidget {
   }
 
   Widget _topicButton(BuildContext context, String title) {
-    final screenWidth = MediaQuery.of(context).size.width;
+    final theme = Theme.of(context);
+    dynamic lightGrey = theme.colorScheme.surface;
+    dynamic black = theme.colorScheme.onPrimary;
+
     return ElevatedButton(
       onPressed: () {
         showGeneralDialog(
           context: context,
           barrierDismissible: true,
           barrierLabel: 'Close',
-          barrierColor: Colors.black54,
+          barrierColor: black.withOpacity(0.25),
           transitionDuration: const Duration(milliseconds: 180),
           pageBuilder: (context, animation, secondaryAnimation) {
             return Center(child: TopicPopup(topicTitle: title));
@@ -103,18 +102,10 @@ class DataInterpretation extends StatelessWidget {
         );
       },
       style: ElevatedButton.styleFrom(
-        backgroundColor: Color(0xFFD9D9D9),
+        backgroundColor: lightGrey,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       ),
-      child: Text(
-        title,
-        style: TextStyle(
-          color: Colors.black,
-          fontSize: screenWidth * 0.04,
-          fontFamily: "Trebuchet",
-          fontWeight: FontWeight.bold,
-        ),
-      ),
+      child: Text(title, style: theme.textTheme.bodyMedium),
     );
   }
 }
@@ -128,6 +119,10 @@ class TopicPopup extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+    final theme = Theme.of(context);
+    dynamic surface = theme.colorScheme.surface;
+    dynamic black = theme.colorScheme.onPrimary;
+    dynamic lime = theme.colorScheme.secondary;
 
     final topicContents = {
       'Table Charts': [
@@ -310,13 +305,13 @@ Average annual exports of Company Z during the given period
     return BackdropFilter(
       filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
       child: Dialog(
-        backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
+        backgroundColor: black,
         child: Container(
           width: screenWidth * 0.8,
           height: screenHeight * 0.6,
           padding: EdgeInsets.all(screenWidth * 0.05),
           decoration: BoxDecoration(
-            color: Color(0xFFD9D9D9),
+            color: surface,
             borderRadius: BorderRadius.circular(20),
           ),
           child: Column(
@@ -324,11 +319,7 @@ Average annual exports of Company Z during the given period
             children: [
               Text(
                 topicTitle,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: screenWidth * 0.06,
-                  fontFamily: "DelaGothicOne",
-                ),
+                style: theme.textTheme.titleMedium?.copyWith(color: black),
               ),
               Expanded(
                 child: Container(
@@ -348,10 +339,8 @@ Average annual exports of Company Z during the given period
                                     ?.toString() ??
                                 'Content not available',
                             textAlign: TextAlign.left,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 18,
-                              fontFamily: "Trebuchet",
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              color: black,
                             ),
                           ),
                         ],
@@ -365,7 +354,7 @@ Average annual exports of Company Z during the given period
                   Navigator.of(context).pop();
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF8DD300),
+                  backgroundColor: lime,
                   padding: EdgeInsets.symmetric(
                     horizontal: screenWidth * 0.1,
                     vertical: screenHeight * 0.02,

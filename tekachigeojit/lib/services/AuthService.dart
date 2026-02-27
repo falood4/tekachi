@@ -74,6 +74,10 @@ class AuthService {
         body: jsonEncode({'email': email, 'password': password}),
       );
 
+      if (response.statusCode == 409) {
+        return http.Response('{"error": "Email already exists"}', 409);
+      }
+
       final data = jsonDecode(response.body);
       final token = data['token'];
       final userID = data['id'];
@@ -97,6 +101,10 @@ class AuthService {
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({"email": email.trim(), "password": password.trim()}),
       );
+
+      if (response.statusCode == 401) {
+        return response;
+      }
 
       final data = jsonDecode(response.body);
       final token = data['token'];

@@ -152,9 +152,14 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+    final theme = Theme.of(context);
+
+    dynamic lime = theme.colorScheme.secondary;
+    dynamic black = theme.colorScheme.onPrimary;
+    dynamic grey = theme.colorScheme.tertiary;
+    dynamic lightGrey = theme.colorScheme.surface;
 
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(20, 20, 20, 1.0),
       resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: SingleChildScrollView(
@@ -171,43 +176,49 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                 ),
 
                 if (!_signedUp) ...[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5),
-                    child: SizedBox(
-                      width: screenWidth * 0.6,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFD1D1D1),
-                          borderRadius: BorderRadius.circular(50),
-                        ),
-                        child: TextField(
-                          focusNode: _emailFocus,
-                          keyboardType: TextInputType.emailAddress,
-                          textInputAction: TextInputAction.next,
-                          controller: _emailCtrl,
-                          decoration: InputDecoration(
-                            hintText: "E-mail",
-                            hintStyle: TextStyle(
-                              fontSize: screenWidth * 0.04,
-                              fontFamily: "Trebuchet",
-                              letterSpacing: 0.1,
-                            ),
-                            border: InputBorder.none,
+                  SizedBox(
+                    width: screenWidth * 0.6,
+                    height: screenHeight * 0.06,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 5,
+                      ),
+                      decoration: BoxDecoration(
+                        color: lightGrey,
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      child: TextField(
+                        focusNode: _emailFocus,
+                        keyboardType: TextInputType.emailAddress,
+                        textInputAction: TextInputAction.next,
+                        controller: _emailCtrl,
+                        decoration: InputDecoration(
+                          hintText: "E-mail",
+                          hintStyle: TextStyle(
+                            fontSize: screenWidth * 0.04,
+                            fontFamily: "Trebuchet",
+                            letterSpacing: 0.1,
+                            color: grey,
                           ),
+                          border: InputBorder.none,
                         ),
                       ),
                     ),
                   ),
 
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
                     child: SizedBox(
                       width: screenWidth * 0.6,
+                      height: screenHeight * 0.06,
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 5,
+                        ),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFD1D1D1),
+                          color: lightGrey,
                           borderRadius: BorderRadius.circular(50),
                         ),
                         child: TextField(
@@ -219,6 +230,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                               fontSize: screenWidth * 0.04,
                               fontFamily: "Trebuchet",
                               letterSpacing: 0.1,
+                              color: grey,
                             ),
                             border: InputBorder.none,
                           ),
@@ -230,23 +242,19 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                   Padding(
                     padding: const EdgeInsets.only(top: 25, bottom: 10),
                     child: SizedBox(
-                      width: 150,
+                      width: screenWidth * 0.4,
                       child: ElevatedButton(
                         onPressed: handleSignup,
                         style: ElevatedButton.styleFrom(
-                          textStyle: const TextStyle(
-                            fontSize: 15,
-                            fontFamily: "DelaGothicOne",
-                            color: Colors.black,
-                          ),
+                          textStyle: theme.textTheme.headlineLarge,
                           padding: const EdgeInsets.all(16),
-                          backgroundColor: const Color(0xFF8DD300),
+                          backgroundColor: lime,
                         ),
                         child: Text(
                           "Sign Up",
                           style: TextStyle(
-                            color: Colors.black,
-                            fontSize: screenWidth * 0.04,
+                            color: black,
+                            fontSize: screenWidth * 0.05,
                           ),
                         ),
                       ),
@@ -260,7 +268,8 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                       height: 50,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
+                          padding: const EdgeInsets.all(0),
+                          backgroundColor: lightGrey,
                         ),
                         onPressed: () {
                           Navigator.pop(context);
@@ -268,7 +277,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                         child: Text(
                           "Back",
                           style: TextStyle(
-                            color: Colors.black,
+                            color: black,
                             fontFamily: "DelaGothicOne",
                             fontSize: screenWidth * 0.035,
                           ),
@@ -288,16 +297,16 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                           height: size,
                           child: Container(
                             decoration: BoxDecoration(
-                              color: const Color(0xFF8DD300),
+                              color: lime,
                               borderRadius: BorderRadius.circular(999),
                             ),
                             child: Center(
                               child: ScaleTransition(
                                 scale: _checkScale,
-                                child: const Icon(
+                                child: Icon(
                                   Icons.check,
                                   size: 72,
-                                  color: Colors.black,
+                                  color: black,
                                 ),
                               ),
                             ),

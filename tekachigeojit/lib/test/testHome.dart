@@ -12,9 +12,17 @@ class TestHome extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+    final theme = Theme.of(context);
+
+    dynamic primary = theme.colorScheme.primary;
+    dynamic white = theme.colorScheme.secondary;
+    dynamic blackbg = theme.colorScheme.background;
+    dynamic black = theme.colorScheme.onPrimary;
+    dynamic grey = theme.colorScheme.tertiary;
+    dynamic red = theme.colorScheme.error;
+    dynamic lightGrey = theme.colorScheme.surface;
 
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(20, 20, 20, 1.0),
       bottomNavigationBar: const NavBar(),
       body: SafeArea(
         child: Padding(
@@ -25,10 +33,8 @@ class TestHome extends StatelessWidget {
               Text(
                 'Test',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Color(0xFF8DD300),
-                  fontFamily: "DelaGothicOne",
-                  fontSize: 0.15 * screenWidth,
+                style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                  fontSize: screenWidth * 0.15,
                 ),
               ),
               const SizedBox(height: 10),
@@ -73,10 +79,10 @@ class TestHome extends StatelessWidget {
               const SizedBox(height: 20),
 
               Container(
-                height: screenHeight * 0.18,
+                height: screenHeight * 0.2,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(18),
-                  color: Color(0xFF8DD300),
+                  color: primary,
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -84,34 +90,24 @@ class TestHome extends StatelessWidget {
                     Text(
                       '3 Step Interview',
                       style: TextStyle(
-                        color: Colors.black,
+                        color: black,
                         fontFamily: 'Rostex',
                         fontSize: screenWidth * 0.06,
                       ),
                     ),
                     const SizedBox(height: 6),
-                    const Text(
+                    Text(
                       'Comprehensive Mock Interview',
-                      style: TextStyle(color: Colors.black87),
+                      style: TextStyle(color: black),
                     ),
                     const SizedBox(height: 12),
                     ElevatedButton(
                       onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.black,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 36,
-                          vertical: 14,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
-                      child: const Text(
+                      style: theme.elevatedButtonTheme.style,
+                      child: Text(
                         'Start',
-                        style: TextStyle(
-                          fontFamily: "DelaGothicOne",
-                          color: Color(0xFF8DD300),
+                        style: theme.textTheme.headlineLarge?.copyWith(
+                          fontSize: 22,
                         ),
                       ),
                     ),
@@ -143,13 +139,21 @@ class TestCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final theme = Theme.of(context);
+    dynamic primary = theme.colorScheme.primary;
+    dynamic white = theme.colorScheme.secondary;
+    dynamic blackbg = theme.colorScheme.background;
+    dynamic black = theme.colorScheme.onPrimary;
+    dynamic grey = theme.colorScheme.tertiary;
+    dynamic red = theme.colorScheme.error;
+    dynamic lightGrey = theme.colorScheme.surface;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: Material(
         elevation: 4,
         borderRadius: BorderRadius.circular(16),
-        color: const Color(0xFFD9D9D9),
+        color: lightGrey,
         child: InkWell(
           borderRadius: BorderRadius.circular(16),
           onTap: onTap,
@@ -158,26 +162,17 @@ class TestCard extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Row(
               children: [
-                Icon(icon, size: 36),
+                Icon(icon, size: 36, color: black),
                 const SizedBox(width: 16),
-                Expanded(
-                  child: Text(
-                    title,
-                    style: TextStyle(
-                      fontFamily: 'RussoOne',
-                      fontSize: screenWidth * 0.055,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
+                Expanded(child: Text(title, style: theme.textTheme.titleLarge)),
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 8),
                   child: IconButton(
                     onPressed: onPressed,
-                    icon: Icon(Icons.history),
+                    icon: Icon(Icons.history, color: black),
                   ),
                 ),
-                const Icon(Icons.arrow_forward_ios_rounded),
+                Icon(Icons.arrow_forward_ios_rounded, color: black),
               ],
             ),
           ),

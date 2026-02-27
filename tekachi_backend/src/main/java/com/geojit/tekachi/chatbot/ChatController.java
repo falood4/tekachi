@@ -9,7 +9,9 @@ import com.geojit.tekachi.chatbot.repo.MsgRepo;
 import com.geojit.tekachi.chatbot.repo.PersonaRepo;
 
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 
@@ -97,7 +99,7 @@ public class ChatController {
     public StartResponse startConversation(@RequestBody StartRequest request) {
 
         Persona persona = personaRepo.findById(request.getPersonaId())
-                .orElseThrow();
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Persona not found"));
 
         Conversation conversation = new Conversation();
         conversation.setUserId(request.getUserId());
@@ -134,11 +136,11 @@ public class ChatController {
             @RequestBody MessageRequest request) {
 
         Conversation conversation = convoRepo.findById(conversationId)
-                .orElseThrow(() -> new RuntimeException("Conversation not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Conversation not found"));
 
         Persona persona = personaRepo
                 .findByPersonaIdAndIsActiveTrue(conversation.getPersona().getPersonaId())
-                .orElseThrow(() -> new RuntimeException("Persona not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Persona not found"));
 
         if (request.getContent() == null || request.getContent().isBlank()) {
             throw new IllegalArgumentException("Message cannot be empty");

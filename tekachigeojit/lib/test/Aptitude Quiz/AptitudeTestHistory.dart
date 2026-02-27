@@ -153,7 +153,6 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
   Future<void> showAnswers(int attemptId, double screenheight) async {
     final List<Map<String, dynamic>> reviewAnswers = await HistoryService()
         .getAttemptAnswers(attemptId);
-    index = 0;
 
     showModalBottomSheet(
       context: context,
@@ -176,7 +175,7 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
                 itemCount: reviewAnswers.length,
                 itemBuilder: (context, index) {
                   final entry = reviewAnswers[index];
-                  return _answerReviewCard(entry['qsn'] as String, (
+                  return _answerReviewCard(index, entry['qsn'] as String, (
                     entry['userChoice'] as String,
                     entry['correctAnswer'] as String,
                   ));
@@ -189,7 +188,11 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
     );
   }
 
-  Widget _answerReviewCard(String questionText, (String, String) answers) {
+  Widget _answerReviewCard(
+    int index,
+    String questionText,
+    (String, String) answers,
+  ) {
     index++;
     if (answers.$1 == answers.$2) {
       return Container(

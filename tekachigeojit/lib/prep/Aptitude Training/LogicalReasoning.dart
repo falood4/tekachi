@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tekachigeojit/components/NavBar.dart';
-import 'package:tekachigeojit/components/TopicPopup.dart';
 import 'package:tekachigeojit/services/TopicService.dart';
+import 'package:tekachigeojit/components/topic_popup_dialog.dart';
 
 class LogicalReasoning extends StatefulWidget {
   const LogicalReasoning({super.key});
@@ -23,18 +23,18 @@ class _LogicalReasoningState extends State<LogicalReasoning> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    dynamic white = theme.colorScheme.primary;
+    dynamic lime = theme.colorScheme.secondary;
+    dynamic blackbg = theme.colorScheme.background;
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(20, 20, 20, 1.0),
+      backgroundColor: blackbg,
       appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(20, 20, 20, 1.0),
-        iconTheme: const IconThemeData(color: Color(0xFF8DD300)),
+        backgroundColor: blackbg,
+        iconTheme: IconThemeData(color: white),
         title: Text(
           'Aptitude Training',
-          style: TextStyle(
-            color: const Color(0xFF8DD300),
-            fontFamily: "RussoOne",
-            fontSize: 0.075 * screenWidth,
-          ),
+          style: theme.textTheme.titleLarge?.copyWith(color: lime),
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_rounded),
@@ -59,21 +59,17 @@ class _LogicalReasoningState extends State<LogicalReasoning> {
 
           return Container(
             margin: EdgeInsets.all(screenWidth * 0.05),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Logical Reasoning',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: screenWidth * 0.05,
-                    fontFamily: "Trebuchet",
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Logical Reasoning',
+                    style: theme.textTheme.titleMedium?.copyWith(color: white),
                   ),
-                ),
-                SizedBox(height: screenWidth * 0.05),
+                  SizedBox(height: screenWidth * 0.05),
 
-                Expanded(
-                  child: GridView.count(
+                  GridView.count(
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
                     crossAxisCount: 2,
@@ -84,8 +80,8 @@ class _LogicalReasoningState extends State<LogicalReasoning> {
                       return _topicButton(context, entry.key, entry.value);
                     }).toList(),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         },
@@ -95,49 +91,16 @@ class _LogicalReasoningState extends State<LogicalReasoning> {
 }
 
 Widget _topicButton(BuildContext context, String title, int topicId) {
-  final screenWidth = MediaQuery.of(context).size.width;
-
+  final theme = Theme.of(context);
+  final surface = theme.colorScheme.surface;
   return ElevatedButton(
     onPressed: () {
-      showGeneralDialog(
-        context: context,
-        barrierDismissible: true,
-        barrierLabel: 'Close',
-        barrierColor: Colors.black54,
-        transitionDuration: const Duration(milliseconds: 180),
-        pageBuilder: (context, animation, secondaryAnimation) {
-          return Center(
-            child: TopicPopup(topicTitle: title, topicId: topicId),
-          );
-        },
-        transitionBuilder: (context, animation, secondaryAnimation, child) {
-          final curved = CurvedAnimation(
-            parent: animation,
-            curve: Curves.easeOutCubic,
-            reverseCurve: Curves.easeInCubic,
-          );
-          return FadeTransition(
-            opacity: curved,
-            child: ScaleTransition(
-              scale: Tween<double>(begin: 0.9, end: 1.0).animate(curved),
-              child: child,
-            ),
-          );
-        },
-      );
+      showTopicPopupDialog(context, topicTitle: title, topicId: topicId);
     },
     style: ElevatedButton.styleFrom(
-      backgroundColor: Color(0xFFD9D9D9),
+      backgroundColor: surface,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
     ),
-    child: Text(
-      title,
-      style: TextStyle(
-        color: Colors.black,
-        fontSize: screenWidth * 0.04,
-        fontFamily: "Trebuchet",
-        fontWeight: FontWeight.bold,
-      ),
-    ),
+    child: Text(title, style: theme.textTheme.bodyMedium),
   );
 }

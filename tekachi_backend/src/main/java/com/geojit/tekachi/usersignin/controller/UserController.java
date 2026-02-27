@@ -43,6 +43,12 @@ public class UserController {
                         .body(Map.of("error", "Email and password are required"));
             }
 
+            User checkUser = repository.findByEmail(email);
+            if (checkUser != null) {
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .body(Map.of("error", "Email is already registered"));
+            }
+
             User user = new User();
             user.setEmail(email);
             user.setPassword(password);

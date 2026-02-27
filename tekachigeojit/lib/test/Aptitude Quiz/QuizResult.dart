@@ -4,6 +4,7 @@ import 'package:tekachigeojit/components/NavBar.dart';
 import 'package:tekachigeojit/models/AnswerSelection.dart';
 import 'package:tekachigeojit/services/HistoryService.dart';
 import 'package:tekachigeojit/services/AuthService.dart';
+import 'package:tekachigeojit/test/testHome.dart';
 
 class QuizResult extends StatefulWidget {
   final int score;
@@ -114,7 +115,7 @@ class _QuizResultState extends State<QuizResult> {
                     'Review Answers',
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: screenWidth * 0.05,
+                      fontSize: screenWidth * 0.07,
                       fontFamily: "DelaGothicOne",
                     ),
                   ),
@@ -131,6 +132,34 @@ class _QuizResultState extends State<QuizResult> {
                       ),
                     ),
                   ),
+
+                SizedBox(height: screenWidth * 0.03),
+
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => const TestHome()),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 10,
+                      horizontal: 15,
+                    ),
+                    backgroundColor: const Color(0xFFD9D9D9),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                  ),
+                  child: Text(
+                    'Return to Tests',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: screenWidth * 0.04,
+                      fontFamily: "DelaGothicOne",
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -139,15 +168,14 @@ class _QuizResultState extends State<QuizResult> {
     );
   }
 
-  int index = 1;
-  Widget _answerReviewCard(AnswerSelection answer) {
+  Widget _answerReviewCard(AnswerSelection answer, int index) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            answer.questionText,
+            "${index + 1}. ${answer.questionText}",
             style: const TextStyle(
               color: Colors.white,
               fontFamily: "Trebuchet",
@@ -215,7 +243,7 @@ class _QuizResultState extends State<QuizResult> {
               child: ListView.builder(
                 itemCount: wrongAnswers.length,
                 itemBuilder: (context, index) {
-                  return _answerReviewCard(wrongAnswers[index]);
+                  return _answerReviewCard(wrongAnswers[index], index);
                 },
               ),
             ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tekachigeojit/prep/HR%20Training/HRQuestions.dart';
+import 'package:tekachigeojit/prep/HRQuestions.dart';
 import 'package:tekachigeojit/prep/Techincal%20Training/TechnicalHome.dart';
 import './Aptitude Training/AptitudeHome.dart';
 import 'package:tekachigeojit/components/NavBar.dart';
@@ -11,9 +11,11 @@ class PrepHome extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+    final theme = Theme.of(context);
+
+    dynamic black = theme.colorScheme.onPrimary;
 
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(20, 20, 20, 1.0),
       bottomNavigationBar: const NavBar(),
       body: SafeArea(
         child: Padding(
@@ -24,10 +26,8 @@ class PrepHome extends StatelessWidget {
               Text(
                 'Prepare',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Color(0xFF8DD300),
-                  fontFamily: 'DelaGothicOne',
-                  fontSize: screenWidth * 0.13,
+                style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                  fontSize: screenWidth * 0.15,
                 ),
               ),
               const SizedBox(height: 20),
@@ -60,10 +60,11 @@ class PrepHome extends StatelessWidget {
               const SizedBox(height: 20),
 
               Container(
-                height: screenHeight * 0.18,
+                height: screenHeight * 0.2,
+                padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(18),
-                  color: Color(0xFF8DD300),
+                  color: theme.colorScheme.secondary,
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -71,34 +72,25 @@ class PrepHome extends StatelessWidget {
                     Text(
                       'AI Mentor',
                       style: TextStyle(
-                        color: Colors.black,
+                        color: black,
                         fontFamily: 'Rostex',
-                        fontSize: screenWidth * 0.07,
+                        fontSize: screenWidth * 0.09,
                       ),
                     ),
                     const SizedBox(height: 6),
-                    const Text(
+                    Text(
                       'Personalized interview practice',
-                      style: TextStyle(color: Colors.black87),
+                      style: TextStyle(color: black),
                     ),
+
                     const SizedBox(height: 12),
                     ElevatedButton(
                       onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.black,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 36,
-                          vertical: 14,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
-                      child: const Text(
+                      style: theme.elevatedButtonTheme.style,
+                      child: Text(
                         'Start',
-                        style: TextStyle(
-                          color: Color(0xFF8DD300),
-                          fontFamily: "DelaGothicOne",
+                        style: theme.textTheme.headlineLarge?.copyWith(
+                          fontSize: 22,
                         ),
                       ),
                     ),
@@ -134,7 +126,7 @@ class TrainingCard extends StatelessWidget {
       child: Material(
         elevation: 4,
         borderRadius: BorderRadius.circular(16),
-        color: const Color(0xFFD9D9D9),
+        color: Theme.of(context).colorScheme.surface,
         child: InkWell(
           borderRadius: BorderRadius.circular(16),
           onTap: onTap,
@@ -143,19 +135,22 @@ class TrainingCard extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Row(
               children: [
-                Icon(icon, size: 36),
+                Icon(
+                  icon,
+                  size: 36,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
                 const SizedBox(width: 16),
                 Expanded(
                   child: Text(
                     title,
-                    style: TextStyle(
-                      fontFamily: 'RussoOne',
-                      fontSize: screenWidth * 0.055,
-                      color: Colors.black,
-                    ),
+                    style: Theme.of(context).textTheme.titleLarge,
                   ),
                 ),
-                const Icon(Icons.arrow_forward_ios_rounded),
+                Icon(
+                  Icons.arrow_forward_ios_rounded,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
               ],
             ),
           ),

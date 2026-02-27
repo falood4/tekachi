@@ -8,9 +8,13 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+    final theme = Theme.of(context);
+
+    dynamic secondary = theme.colorScheme.secondary;
+    dynamic black = theme.colorScheme.onPrimary;
+    dynamic lightGrey = theme.colorScheme.surface;
 
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(20, 20, 20, 1.0),
       body: SafeArea(
         child: Center(
           child: Column(
@@ -27,7 +31,7 @@ class HomeScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5),
                 child: SizedBox(
-                  width: screenWidth * 0.45,
+                  width: screenWidth * 0.55,
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.of(
@@ -35,17 +39,17 @@ class HomeScreen extends StatelessWidget {
                       ).push(MaterialPageRoute(builder: (_) => Login()));
                     },
                     style: ElevatedButton.styleFrom(
-                      textStyle: TextStyle(
-                        fontSize: 0.05 * screenWidth,
-                        fontFamily: "DelaGothicOne",
-                        color: Colors.black,
+                      textStyle: theme.textTheme.labelLarge?.copyWith(
+                        fontSize: 0.065 * screenWidth,
                       ),
-                      padding: EdgeInsets.all(16),
-                      backgroundColor: Color(0xFF8DD300),
+                      padding: const EdgeInsets.all(16),
+                      backgroundColor: secondary,
                     ),
                     child: Text(
                       "Log In",
-                      style: TextStyle(color: Colors.black),
+                      style: theme.textTheme.headlineLarge?.copyWith(
+                        color: black,
+                      ),
                     ),
                   ),
                 ),
@@ -53,7 +57,7 @@ class HomeScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5),
                 child: SizedBox(
-                  width: screenWidth * 0.45,
+                  width: screenWidth * 0.55,
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.of(
@@ -61,17 +65,17 @@ class HomeScreen extends StatelessWidget {
                       ).push(MaterialPageRoute(builder: (_) => Signup()));
                     },
                     style: ElevatedButton.styleFrom(
-                      textStyle: TextStyle(
-                        fontSize: 0.05 * screenWidth,
-                        fontFamily: "DelaGothicOne",
-                        color: Colors.black,
+                      textStyle: theme.textTheme.labelLarge?.copyWith(
+                        fontSize: 0.065 * screenWidth,
                       ),
-                      padding: EdgeInsets.all(16),
-                      backgroundColor: Color(0xFFD1D1D1),
+                      padding: const EdgeInsets.all(16),
+                      backgroundColor: lightGrey,
                     ),
                     child: Text(
                       "Sign Up",
-                      style: TextStyle(color: Colors.black),
+                      style: theme.textTheme.headlineLarge?.copyWith(
+                        color: black,
+                      ),
                     ),
                   ),
                 ),
@@ -90,13 +94,15 @@ class AppTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final theme = Theme.of(context);
+    dynamic secondary = theme.colorScheme.secondary;
     return Text(
       "Tekachi",
       textAlign: TextAlign.center,
-      style: TextStyle(
-        fontFamily: 'RussoOne',
+      style: Theme.of(context).textTheme.headlineLarge?.copyWith(
         fontSize: 0.2 * screenWidth,
-        color: Color(0xFF8DD300),
+        color: secondary,
+        fontFamily: "RussoOne",
       ),
     );
   }
@@ -107,10 +113,15 @@ class AppSubtitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    dynamic lightGrey = theme.colorScheme.surface;
     return Text(
       "Your cheatcode to acing placements",
       textAlign: TextAlign.center,
-      style: TextStyle(color: Colors.white),
+      style: theme.textTheme.bodyMedium?.copyWith(
+        fontSize: 0.04 * MediaQuery.of(context).size.width,
+        color: lightGrey,
+      ),
     );
   }
 }

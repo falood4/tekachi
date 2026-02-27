@@ -124,20 +124,23 @@ class _QuizPageState extends State<QuizPage> {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: _selectedOptionId != null
-                          ? () => _handleNext(currentQuestion!)
-                          : null,
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.all(12),
-                        backgroundColor: const Color(0xFF8DD300),
-                      ),
-                      child: const Text(
-                        'Next',
-                        style: TextStyle(
-                          fontFamily: 'DelaGothicOne',
-                          color: Colors.black,
-                          fontSize: 16,
+                    Container(
+                      alignment: Alignment.bottomRight,
+                      child: ElevatedButton(
+                        onPressed: _selectedOptionId != null
+                            ? () => _handleNext(currentQuestion!)
+                            : null,
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.all(12),
+                          backgroundColor: const Color(0xFF8DD300),
+                        ),
+                        child: const Text(
+                          'Next',
+                          style: TextStyle(
+                            fontFamily: 'DelaGothicOne',
+                            color: Colors.black,
+                            fontSize: 16,
+                          ),
                         ),
                       ),
                     ),
