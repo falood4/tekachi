@@ -6,6 +6,7 @@ import 'package:tekachigeojit/apptheme.dart';
 import 'package:tekachigeojit/home.dart';
 import 'package:tekachigeojit/prep/HRQuestions.dart';
 import 'package:tekachigeojit/prep/prepHome.dart';
+import 'package:tekachigeojit/test/TechQuiz/TechInterview.dart';
 import 'package:tekachigeojit/userSettings/userSettings.dart';
 import 'login.dart';
 import 'signup.dart';
@@ -21,10 +22,17 @@ class TekachiGeo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Tekachi',
-      theme: AppTheme.darkTheme,
-      home: const HomeScreen(),
+    return ValueListenableBuilder<ThemeMode>(
+      valueListenable: themeNotifier,
+      builder: (context, themeMode, child) {
+        return MaterialApp(
+          title: 'Tekachi',
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme,
+          themeMode: themeMode,
+          home: const HomeScreen(),
+        );
+      },
     );
   }
 }

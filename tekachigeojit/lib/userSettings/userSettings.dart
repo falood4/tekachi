@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tekachigeojit/apptheme.dart';
 import 'package:tekachigeojit/components/NavBar.dart';
 import 'package:tekachigeojit/home.dart';
 import 'package:tekachigeojit/services/AuthService.dart';
@@ -115,23 +116,28 @@ class _UserSettingsState extends State<UserSettings> {
 
                             SizedBox(width: screenWidth * 0.15),
 
-                            Switch(
-                              value: false,
-                              onChanged: (val) {
-                                _changeTheme();
+                            ValueListenableBuilder<ThemeMode>(
+                              valueListenable: themeNotifier,
+                              builder: (context, themeMode, child) {
+                                return Switch(
+                                  value: themeMode == ThemeMode.light,
+                                  onChanged: (val) {
+                                    _changeTheme();
+                                  },
+                                  activeThumbColor: Theme.of(
+                                    context,
+                                  ).colorScheme.secondary,
+                                  activeTrackColor: Theme.of(
+                                    context,
+                                  ).colorScheme.background,
+                                  inactiveThumbColor: Theme.of(
+                                    context,
+                                  ).colorScheme.secondary,
+                                  inactiveTrackColor: Theme.of(
+                                    context,
+                                  ).colorScheme.onPrimary,
+                                );
                               },
-                              activeThumbColor: Theme.of(
-                                context,
-                              ).colorScheme.secondary,
-                              activeTrackColor: Theme.of(
-                                context,
-                              ).colorScheme.surface,
-                              inactiveThumbColor: Theme.of(
-                                context,
-                              ).colorScheme.secondary,
-                              inactiveTrackColor: Theme.of(
-                                context,
-                              ).colorScheme.background,
                             ),
                           ],
                         ),
@@ -159,11 +165,7 @@ class _UserSettingsState extends State<UserSettings> {
     );
   }
 
-  Widget _settingsItem(
-    String title, {
-    bool isDestructive = false,
-    required VoidCallback onPressed,
-  }) {
+  Widget _settingsItem(String title, {bool isDestructive = false, required VoidCallback onPressed}) {
     dynamic black = Theme.of(context).colorScheme.onPrimary;
     dynamic red = Theme.of(context).colorScheme.error;
 
@@ -313,7 +315,9 @@ class _UserSettingsState extends State<UserSettings> {
     }
   }
 
-  void _changeTheme() {}
+  void _changeTheme() {
+    themeNotifier.toggleTheme();
+  }
 
   void _confirmClearConversations() {
     showDialog(

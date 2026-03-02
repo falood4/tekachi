@@ -20,7 +20,7 @@ class _NavBarState extends State<NavBar> {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     return Container(
-      height: screenHeight * 0.1,
+      height: screenHeight * 0.085,
       alignment: Alignment.bottomCenter,
       color: const Color(0xFF8DD300),
 

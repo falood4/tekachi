@@ -60,7 +60,6 @@ class _QuizPageState extends State<QuizPage> {
     final theme = Theme.of(context);
 
     dynamic black = theme.colorScheme.onPrimary;
-    dynamic primary = theme.colorScheme.primary;
     dynamic secondary = theme.colorScheme.secondary;
 
     return Scaffold(

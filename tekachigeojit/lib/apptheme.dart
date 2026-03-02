@@ -200,3 +200,15 @@ class AppTheme {
     ],
   );
 }
+
+class ThemeNotifier extends ValueNotifier<ThemeMode> {
+  ThemeNotifier() : super(ThemeMode.dark);
+
+  bool get isDarkMode => value == ThemeMode.dark;
+
+  void toggleTheme() {
+    value = isDarkMode ? ThemeMode.light : ThemeMode.dark;
+  }
+}
+
+final themeNotifier = ThemeNotifier();

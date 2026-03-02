@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tekachigeojit/components/NavBar.dart';
 import 'package:tekachigeojit/test/Aptitude%20Quiz/AptitudeTest.dart';
 import 'package:tekachigeojit/test/Aptitude%20Quiz/AptitudeTestHistory.dart';
+import 'package:tekachigeojit/test/TechQuiz/TechInterviewIntro.dart';
 
 class TestHome extends StatelessWidget {
   const TestHome({super.key});
@@ -57,7 +58,9 @@ class TestHome extends StatelessWidget {
                   //Tech interview page to be implemented later
                 },
                 onTap: () {
-                  // navigate to aptitude
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => Techinterviewintro()),
+                  );
                 },
               ),
 
