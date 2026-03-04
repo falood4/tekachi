@@ -47,9 +47,15 @@ class _QuizPageState extends State<QuizPage> {
       debugPrint('Error loading question: $e');
       setState(() => isLoading = false);
       if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Error loading question: $e')));
+        final theme = Theme.of(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Error loading question: $e',
+              style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
+            ),
+          ),
+        );
       }
     }
   }

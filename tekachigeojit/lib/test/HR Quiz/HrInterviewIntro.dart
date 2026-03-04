@@ -3,8 +3,8 @@ import 'package:tekachigeojit/components/NavBar.dart';
 import 'package:tekachigeojit/services/ChatService.dart';
 import 'package:tekachigeojit/test/TechQuiz/ChatInterview.dart';
 
-class Techinterviewintro extends StatelessWidget {
-  const Techinterviewintro({super.key});
+class HRinterviewIntro extends StatelessWidget {
+  const HRinterviewIntro({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class Techinterviewintro extends StatelessWidget {
         backgroundColor: bg,
         iconTheme: IconThemeData(color: secondary),
         title: Text(
-          'Technical Interview',
+          'HR Interview',
           style: theme.textTheme.titleLarge?.copyWith(color: secondary),
         ),
         leading: IconButton(
@@ -44,7 +44,7 @@ class Techinterviewintro extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Hello. I’m a Tech Lead, and I’ll be conducting your technical interview today. \n\n My goal is to explore your technical foundation and see how you approach complex problems. We’ll dive into some core computer science concepts—specifically DSA, DBMS, and Operating Systems—and then move into a live coding exercise to see your logic in action.',
+                  'Hello. I’m an HR Manager, and I’ll be conducting your HR interview today. \n\n My goal is to understand your professional background, soft skills, and cultural fit with our organization. We’ll discuss your experience, career goals, and how you handle workplace challenges. This is a two-way conversation where you can also learn about our company and the role.',
                   textAlign: TextAlign.center,
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: primary,
@@ -61,13 +61,13 @@ class Techinterviewintro extends StatelessWidget {
                       onPressed: () async {
                         try {
                           final String reply = await Chatservice()
-                              .startConversation(2);
+                              .startConversation(3);
                           if (!context.mounted) return;
                           Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
                               builder: (_) => ChatInterview(
                                 initialMessage: reply,
-                                personaId: 2,
+                                personaId: 3,
                               ),
                             ),
                           );

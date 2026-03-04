@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tekachigeojit/components/NavBar.dart';
 import 'package:tekachigeojit/test/Aptitude%20Quiz/AptitudeTest.dart';
 import 'package:tekachigeojit/test/Aptitude%20Quiz/AptitudeTestHistory.dart';
+import 'package:tekachigeojit/test/HR%20Quiz/HrInterviewIntro.dart';
 import 'package:tekachigeojit/test/TechQuiz/TechInterviewIntro.dart';
 
 class TestHome extends StatelessWidget {
@@ -55,7 +56,7 @@ class TestHome extends StatelessWidget {
                 title: 'Tech Interview',
                 icon: Icons.code_rounded,
                 onPressed: () {
-                  //Tech interview page to be implemented later
+                  //Tech interview history
                 },
                 onTap: () {
                   Navigator.of(context).push(
@@ -68,10 +69,12 @@ class TestHome extends StatelessWidget {
                 title: 'HR Interview',
                 icon: Icons.groups_rounded,
                 onPressed: () {
-                  //HR interview page to be implemented later
+                  //HR interview history
                 },
                 onTap: () {
-                  // navigate to aptitude
+                  Navigator.of(
+                    context,
+                  ).push(MaterialPageRoute(builder: (_) => HRinterviewIntro()));
                 },
               ),
 

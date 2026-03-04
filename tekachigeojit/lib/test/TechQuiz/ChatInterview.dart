@@ -3,17 +3,30 @@ import 'package:tekachigeojit/components/NavBar.dart';
 import 'package:tekachigeojit/components/ChatBubble.dart';
 import 'package:tekachigeojit/services/ChatService.dart';
 
-class TechInterview extends StatefulWidget {
-  const TechInterview({super.key});
+class ChatInterview extends StatefulWidget {
+  const ChatInterview({super.key, this.initialMessage, this.personaId});
+
+  final String? initialMessage;
+  final int? personaId;
 
   @override
-  State<TechInterview> createState() => _TechInterviewState();
+  State<ChatInterview> createState() => _ChatInterviewState();
 }
 
-class _TechInterviewState extends State<TechInterview> {
+class _ChatInterviewState extends State<ChatInterview> {
   final TextEditingController _messageController = TextEditingController();
   final FocusNode _messageFocus = FocusNode();
+  final ScrollController _scrollController = ScrollController();
   final List<_ChatMessage> _messages = [];
+
+  @override
+  void initState() {
+    super.initState();
+    final String? initial = widget.initialMessage?.trim();
+    if (initial != null && initial.isNotEmpty) {
+      _messages.add(_ChatMessage(text: initial, isUser: false));
+    }
+  }
 
   Widget _buildMessage(String text, bool isUser) {
     return Container(
@@ -27,14 +40,20 @@ class _TechInterviewState extends State<TechInterview> {
     setState(() {
       _messages.add(_ChatMessage(text: text, isUser: isUser));
     });
+    _scrollToBottom();
   }
 
   Future<void> sendMessage() async {
+    final theme = Theme.of(context);
     final String messageText = _messageController.text.trim();
     if (messageText.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Your reply is empty', style: TextStyle(fontSize: 14)),
+        SnackBar(
+          backgroundColor: Color(0xFF141414),
+          content: Text(
+            'Your reply is empty',
+            style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
+          ),
         ),
       );
       return;
@@ -44,19 +63,38 @@ class _TechInterviewState extends State<TechInterview> {
     _messageController.clear();
 
     try {
-      final String response = await Chatservice().newTechMessage(messageText);
-      _addMessage(response, false);
+      if (widget.personaId == 2) {
+        final String response = await Chatservice().newTechMessage(messageText);
+        _addMessage(response, false);
+      } else {
+        final String response = await Chatservice().newHrMessage(messageText);
+        debugPrint('Received HR response');
+        _addMessage(response, false);
+      }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text(
             'An error occurred while sending the message. Please try again.',
+            style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
           ),
         ),
       );
       debugPrint('error: $e');
       return;
     }
+  }
+
+  void _scrollToBottom() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      }
+    });
   }
 
   @override
@@ -81,7 +119,7 @@ class _TechInterviewState extends State<TechInterview> {
           },
         ),
         title: Text(
-          "Technical Interview",
+          "AI Interview",
           style: theme.textTheme.titleLarge?.copyWith(color: secondary),
         ),
       ),
@@ -92,6 +130,7 @@ class _TechInterviewState extends State<TechInterview> {
             SizedBox(height: 12),
             Expanded(
               child: ListView.builder(
+                controller: _scrollController,
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 itemCount: _messages.length,
                 itemBuilder: (context, index) {

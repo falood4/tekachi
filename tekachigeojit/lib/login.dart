@@ -23,24 +23,40 @@ class _LoginState extends State<Login> {
   }
 
   Future<void> _handleLogin() async {
+    final theme = Theme.of(context);
     if (_emailCtrl.text.isEmpty) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Please enter an email')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Please enter an email',
+            style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
+          ),
+        ),
+      );
       return;
     }
 
     if (!_isValidEmail(_emailCtrl.text)) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter a valid email address')),
+        SnackBar(
+          content: Text(
+            'Please enter a valid email address',
+            style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
+          ),
+        ),
       );
       return;
     }
 
     if (_passwordCtrl.text.isEmpty) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Please enter a password')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Please enter a password',
+            style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
+          ),
+        ),
+      );
       return;
     }
 
@@ -63,14 +79,33 @@ class _LoginState extends State<Login> {
         );
       } else if (response.statusCode == 401) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Wrong email or password')),
+          SnackBar(
+            content: Text(
+              'Wrong email or password',
+              style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
+            ),
+          ),
+        );
+      } else if (response.statusCode == 400) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Cannot connect to server. Please try again later.',
+              style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
+            ),
+          ),
         );
       }
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text("An error occurred: $e")));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            "An error occurred: $e",
+            style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
+          ),
+        ),
+      );
     }
   }
 
@@ -120,7 +155,7 @@ class _LoginState extends State<Login> {
                     ),
                     padding: const EdgeInsets.symmetric(
                       horizontal: 20,
-                      vertical: 10,
+                      vertical: 15,
                     ),
                     child: TextField(
                       focusNode: _emailFocus,

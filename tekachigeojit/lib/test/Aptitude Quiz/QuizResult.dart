@@ -201,15 +201,21 @@ class _QuizResultState extends State<QuizResult> {
   void startReview(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+    final theme = Theme.of(context);
 
     final wrongAnswers = widget.answers
         .where((element) => !element.isCorrect)
         .toList();
 
     if (wrongAnswers.isEmpty) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('No answers to review.')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'No answers to review.',
+            style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
+          ),
+        ),
+      );
       return;
     }
 

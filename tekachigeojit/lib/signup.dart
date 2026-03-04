@@ -62,30 +62,52 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
   }
 
   void handleSignup() async {
+    final theme = Theme.of(context);
+
     if (_emailCtrl.text.isEmpty) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Please enter an email')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Please enter an email',
+            style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
+          ),
+        ),
+      );
       return;
     }
 
     if (!_isValidEmail(_emailCtrl.text)) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter a valid email address')),
+        SnackBar(
+          content: Text(
+            'Please enter a valid email address',
+            style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
+          ),
+        ),
       );
       return;
     }
 
     if (_passwordCtrl.text.isEmpty) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Please enter a password')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Please enter a password',
+            style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
+          ),
+        ),
+      );
       return;
     }
 
     if (_passwordCtrl.text.length < 6) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Password must be at least 6 characters')),
+        SnackBar(
+          content: Text(
+            'Password must be at least 6 characters',
+            style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
+          ),
+        ),
       );
       return;
     }
@@ -122,28 +144,44 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
           (route) => false,
         );
       } else if (response.statusCode == 409) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(const SnackBar(content: Text('Email already exists')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Email already exists',
+              style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
+            ),
+          ),
+        );
         return;
       } else {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Error: ${response.body}')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Error: ${response.body}',
+              style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
+            ),
+          ),
+        );
       }
     } on http.ClientException catch (_) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text(
             'Network error. Please check your connection and try again.',
+            style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
           ),
         ),
       );
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('An unexpected error occurred: $e')),
+        SnackBar(
+          content: Text(
+            'An unexpected error occurred: $e',
+            style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
+          ),
+        ),
       );
     }
   }
@@ -204,6 +242,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                           ),
                           border: InputBorder.none,
                         ),
+                        style: Theme.of(context).textTheme.bodyMedium,
                       ),
                     ),
                   ),
@@ -235,6 +274,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                             ),
                             border: InputBorder.none,
                           ),
+                          style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ),
                     ),

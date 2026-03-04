@@ -11,8 +11,8 @@ class ChatBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double screenheight = MediaQuery.of(context).size.height;
     double screenwidth = MediaQuery.of(context).size.width;
+    final theme = Theme.of(context);
 
     if (isUser) {
       return ConstrainedBox(
@@ -24,10 +24,16 @@ class ChatBubble extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surface,
+            color: theme.colorScheme.surface,
             borderRadius: BorderRadius.circular(12),
           ),
-          child: Text(message_text),
+          child: Text(
+            message_text,
+            softWrap: true,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onPrimary,
+            ),
+          ),
         ),
       );
     } else {
@@ -36,15 +42,20 @@ class ChatBubble extends StatelessWidget {
           minWidth: 50,
           minHeight: 50,
           maxWidth: screenwidth * 0.6,
-          maxHeight: screenheight * 0.75,
         ),
         child: Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.secondary,
+            color: theme.colorScheme.secondary,
             borderRadius: BorderRadius.circular(12),
           ),
-          child: Text(message_text),
+          child: Text(
+            message_text,
+            softWrap: true,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onPrimary,
+            ),
+          ),
         ),
       );
     }

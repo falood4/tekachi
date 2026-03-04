@@ -165,7 +165,11 @@ class _UserSettingsState extends State<UserSettings> {
     );
   }
 
-  Widget _settingsItem(String title, {bool isDestructive = false, required VoidCallback onPressed}) {
+  Widget _settingsItem(
+    String title, {
+    bool isDestructive = false,
+    required VoidCallback onPressed,
+  }) {
     dynamic black = Theme.of(context).colorScheme.onPrimary;
     dynamic red = Theme.of(context).colorScheme.error;
 
@@ -370,6 +374,7 @@ class _UserSettingsState extends State<UserSettings> {
   }
 
   Future<void> _handleClearConversations() async {
+    final theme = Theme.of(context);
     final response = await HistoryService().deleteAttempt();
 
     if (response.statusCode == 200 || response.statusCode == 201) {
@@ -378,7 +383,10 @@ class _UserSettingsState extends State<UserSettings> {
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Failed to clear conversations'),
+          content: Text(
+            'Failed to clear conversations',
+            style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
+          ),
           backgroundColor: Colors.red,
         ),
       );

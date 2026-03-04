@@ -106,34 +106,46 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
               ),
             ),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: secondary,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Text(
-                    '#${index + 1}',
-                    style: const TextStyle(
-                      fontFamily: 'DelaGothicOne',
-                      color: Color.fromRGBO(20, 20, 20, 1.0),
-                      fontSize: 16,
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: secondary,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Text(
+                        '#${index + 1}',
+                        style: const TextStyle(
+                          fontFamily: 'DelaGothicOne',
+                          color: Color.fromRGBO(20, 20, 20, 1.0),
+                          fontSize: 16,
+                        ),
+                      ),
                     ),
-                  ),
+                    const SizedBox(width: 16),
+                    Text(
+                      _formatDate(attempt['attemptedOn']),
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: primary,
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 16),
-                Text(
-                  _formatDate(attempt['attemptedOn']),
-                  style: theme.textTheme.bodyMedium?.copyWith(color: primary),
+                Row(
+                  children: [
+                    Text(
+                      attempt['score'],
+                      style: theme.textTheme.headlineLarge?.copyWith(
+                        fontSize: 22,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Icon(Icons.chevron_right, color: secondary),
+                  ],
                 ),
-                const SizedBox(width: 100),
-                Text(
-                  attempt['score'],
-                  style: theme.textTheme.headlineLarge?.copyWith(fontSize: 22),
-                ),
-                const SizedBox(width: 10),
-                Icon(Icons.chevron_right, color: secondary),
               ],
             ),
           ),

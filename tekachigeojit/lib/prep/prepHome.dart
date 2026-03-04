@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tekachigeojit/prep/HRQuestions.dart';
 import 'package:tekachigeojit/prep/Techincal%20Training/TechnicalHome.dart';
+import 'package:tekachigeojit/services/ChatService.dart';
+import 'package:tekachigeojit/test/TechQuiz/ChatInterview.dart';
 import './Aptitude Training/AptitudeHome.dart';
 import 'package:tekachigeojit/components/NavBar.dart';
 
@@ -86,7 +88,33 @@ class PrepHome extends StatelessWidget {
 
                     const SizedBox(height: 12),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        try {
+                          final String reply = await Chatservice()
+                              .startConversation(1);
+                          if (!context.mounted) return;
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => ChatInterview(
+                                initialMessage: reply,
+                                personaId: 1,
+                              ),
+                            ),
+                          );
+                        } catch (e) {
+                          if (!context.mounted) return;
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                'Could not start the interview. Please try again.',
+                                style: theme.textTheme.bodySmall?.copyWith(
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                          );
+                        }
+                      },
                       style: theme.elevatedButtonTheme.style,
                       child: Text(
                         'Start',

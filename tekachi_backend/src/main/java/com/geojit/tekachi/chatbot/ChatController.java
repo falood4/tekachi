@@ -105,21 +105,35 @@ public class ChatController {
         conversation.setUserId(request.getUserId());
         conversation.setPersona(persona);
 
-        // Select random topic
-        String selectedTopic = topicArray.get(new Random().nextInt(topicArray.size()));
-        conversation.setCurrentTopic(selectedTopic); // recommend adding column
+        if (persona.getPersonaId() == 2) {
+            // Select random topic
+            String selectedTopic = topicArray.get(new Random().nextInt(topicArray.size()));
+            conversation.setCurrentTopic(selectedTopic);
+
+            convoRepo.save(conversation);
+
+            // Fetch chunks
+            List<DocumentChunk> chunks = chunkRepository.findTop5ByTopic(selectedTopic);
+            String chunkText = buildChunkText(chunks);
+
+            List<OpenAiMsg> messages = new ArrayList<>();
+            messages.add(new OpenAiMsg("system", persona.getSystemPrompt()));
+            messages.add(new OpenAiMsg("system",
+                    "Use the reference material given to ask a technical interview question."));
+            messages.add(new OpenAiMsg("system", chunkText));
+            messages.add(new OpenAiMsg("user", "Start the interview."));
+
+            String response = openAiService.getChatResponse(messages);
+
+            saveAssistantMessage(conversation.getConversationId(), response);
+
+            return new StartResponse(conversation.getConversationId(), response);
+        }
 
         convoRepo.save(conversation);
 
-        // Fetch chunks
-        List<DocumentChunk> chunks = chunkRepository.findTop5ByTopic(selectedTopic);
-        String chunkText = buildChunkText(chunks);
-
         List<OpenAiMsg> messages = new ArrayList<>();
         messages.add(new OpenAiMsg("system", persona.getSystemPrompt()));
-        messages.add(new OpenAiMsg("system",
-                "Use ONLY the reference material below to conduct the interview."));
-        messages.add(new OpenAiMsg("system", chunkText));
         messages.add(new OpenAiMsg("user", "Start the interview."));
 
         String response = openAiService.getChatResponse(messages);
@@ -130,8 +144,8 @@ public class ChatController {
     }
 
     // SEND MESSAGE
-    @PostMapping("/{conversationId}/message")
-    public MessageResponse sendMessage(
+    @PostMapping("/{conversationId}/tech/message")
+    public MessageResponse sendTechMessage(
             @PathVariable Integer conversationId,
             @RequestBody MessageRequest request) {
 
@@ -166,7 +180,7 @@ public class ChatController {
 
         openAiMsgs.add(new OpenAiMsg("system",
                 "Refer to the following reference material when asking conceptual questions. "
-                        + "If transitioning to coding or evaluation, you may ignore it."));
+                        + "If transitioning/currently asking about coding or performing final evaluation, you may ignore it."));
 
         openAiMsgs.add(new OpenAiMsg("system", chunkText));
 
@@ -182,6 +196,59 @@ public class ChatController {
         saveAssistantMessage(conversationId, response);
 
         return new MessageResponse(response);
+    }
+
+    @PostMapping("/{conversationId}/hrmentor/message")
+    public MessageResponse sendHrMentorMessage(
+            @PathVariable Integer conversationId,
+            @RequestBody MessageRequest request) {
+
+        Conversation conversation = convoRepo.findById(conversationId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Conversation not found"));
+
+        Persona persona = personaRepo
+                .findByPersonaIdAndIsActiveTrue(conversation.getPersona().getPersonaId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Persona not found"));
+
+        if (request.getContent() == null || request.getContent().isBlank()) {
+            throw new IllegalArgumentException("Message cannot be empty");
+        }
+
+        saveUserMessage(conversationId, request.getContent());
+
+        // 2️⃣ Fetch last 10 messages
+        List<Message> history = msgRepo.findRecentMessages(conversationId, PageRequest.of(0, 10));
+
+        Collections.reverse(history);
+
+        // 3️⃣ Build OpenAI payload
+        List<OpenAiMsg> openAiMsgs = new ArrayList<>();
+
+        // 1️⃣ Persona
+        openAiMsgs.add(new OpenAiMsg("system", persona.getSystemPrompt()));
+
+        for (Message msg : history) {
+            openAiMsgs.add(new OpenAiMsg(
+                    msg.getRole().name().toLowerCase(),
+                    msg.getContent()));
+        }
+
+        String response = openAiService.getChatResponse(openAiMsgs);
+
+        // 5️⃣ Store assistant reply
+        saveAssistantMessage(conversationId, response);
+
+        return new MessageResponse(response);
+    }
+
+    @GetMapping("/{conversationId}/messages")
+    public List<Message> getMessages(@PathVariable Integer conversationId) {
+        Conversation conversation = convoRepo.findById(conversationId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Conversation not found"));
+
+        List<Message> history = msgRepo.findRecentMessages(conversationId, PageRequest.of(0, 100));
+        Collections.reverse(history);
+        return history;
     }
 
     private String buildChunkText(List<DocumentChunk> chunks) {

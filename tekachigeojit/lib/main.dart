@@ -6,7 +6,7 @@ import 'package:tekachigeojit/apptheme.dart';
 import 'package:tekachigeojit/home.dart';
 import 'package:tekachigeojit/prep/HRQuestions.dart';
 import 'package:tekachigeojit/prep/prepHome.dart';
-import 'package:tekachigeojit/test/TechQuiz/TechInterview.dart';
+import 'package:tekachigeojit/test/TechQuiz/ChatInterview.dart';
 import 'package:tekachigeojit/userSettings/userSettings.dart';
 import 'login.dart';
 import 'signup.dart';
