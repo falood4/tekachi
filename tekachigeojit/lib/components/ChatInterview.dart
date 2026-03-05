@@ -24,24 +24,28 @@ class _ChatInterviewState extends State<ChatInterview> {
     super.initState();
     final String? initial = widget.initialMessage?.trim();
     if (initial != null && initial.isNotEmpty) {
-      _messages.add(_ChatMessage(text: initial, isUser: false));
+      _messages.add(_ChatMessage(text: initial, isUser: "ASSISTANT"));
     }
   }
 
-  Widget _buildMessage(String text, bool isUser) {
+  Widget _buildMessage(String text, String isUser) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
+      alignment: isUser == "USER"
+          ? Alignment.centerRight
+          : Alignment.centerLeft,
       child: ChatBubble(message_text: text, isUser: isUser),
     );
   }
 
-  void _addMessage(String text, bool isUser) {
+  void _addMessage(String text, String isUser) {
     setState(() {
       _messages.add(_ChatMessage(text: text, isUser: isUser));
     });
     _scrollToBottom();
   }
+
+  
 
   Future<void> sendMessage() async {
     final theme = Theme.of(context);
@@ -59,17 +63,16 @@ class _ChatInterviewState extends State<ChatInterview> {
       return;
     }
 
-    _addMessage(messageText, true);
+    _addMessage(messageText, "USER");
     _messageController.clear();
 
     try {
       if (widget.personaId == 2) {
         final String response = await Chatservice().newTechMessage(messageText);
-        _addMessage(response, false);
+        _addMessage(response, "ASSISTANT");
       } else {
         final String response = await Chatservice().newHrMessage(messageText);
-        debugPrint('Received HR response');
-        _addMessage(response, false);
+        _addMessage(response, "ASSISTANT");
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -115,7 +118,7 @@ class _ChatInterviewState extends State<ChatInterview> {
           icon: Icon(Icons.arrow_back, color: secondary),
           onPressed: () {
             Navigator.pop(context);
-            Chatservice().endConversation();
+            Chatservice().clearConvId();
           },
         ),
         title: Text(
@@ -195,5 +198,5 @@ class _ChatMessage {
   _ChatMessage({required this.text, required this.isUser});
 
   final String text;
-  final bool isUser;
+  final String isUser;
 }

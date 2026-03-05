@@ -241,14 +241,30 @@ public class ChatController {
         return new MessageResponse(response);
     }
 
+    @GetMapping("/conversations/{userId}/{personaId}")
+    public List<ConvoHistory> getConversations(@PathVariable Long userId,
+            @PathVariable Integer personaId) {
+
+        List<ConvoHistory> history = convoRepo.findByUserId(userId).stream()
+                .filter(conversation -> conversation.getPersona().getPersonaId() == personaId)
+                .map(conversation -> new ConvoHistory(
+                        conversation.getConversationId(),
+                        conversation.getCreatedAt(),
+                        conversation.getPersona().getPersonaId(),
+                        conversation.getUserId()))
+                .toList();
+
+        return history;
+    }
+
     @GetMapping("/{conversationId}/messages")
     public List<Message> getMessages(@PathVariable Integer conversationId) {
         Conversation conversation = convoRepo.findById(conversationId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Conversation not found"));
 
-        List<Message> history = msgRepo.findRecentMessages(conversationId, PageRequest.of(0, 100));
-        Collections.reverse(history);
-        return history;
+        List<Message> chat = msgRepo.findRecentMessages(conversationId, PageRequest.of(0, 100));
+        Collections.reverse(chat);
+        return chat;
     }
 
     private String buildChunkText(List<DocumentChunk> chunks) {

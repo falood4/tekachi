@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tekachigeojit/prep/HRQuestions.dart';
 import 'package:tekachigeojit/prep/Techincal%20Training/TechnicalHome.dart';
 import 'package:tekachigeojit/services/ChatService.dart';
-import 'package:tekachigeojit/test/TechQuiz/ChatInterview.dart';
+import 'package:tekachigeojit/components/ChatInterview.dart';
 import './Aptitude Training/AptitudeHome.dart';
 import 'package:tekachigeojit/components/NavBar.dart';
 

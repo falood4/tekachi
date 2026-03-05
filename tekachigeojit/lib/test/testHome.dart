@@ -3,6 +3,7 @@ import 'package:tekachigeojit/components/NavBar.dart';
 import 'package:tekachigeojit/test/Aptitude%20Quiz/AptitudeTest.dart';
 import 'package:tekachigeojit/test/Aptitude%20Quiz/AptitudeTestHistory.dart';
 import 'package:tekachigeojit/test/HR%20Quiz/HrInterviewIntro.dart';
+import 'package:tekachigeojit/test/TechQuiz/History/TechInterviewHistory.dart';
 import 'package:tekachigeojit/test/TechQuiz/TechInterviewIntro.dart';
 
 class TestHome extends StatelessWidget {
@@ -56,7 +57,11 @@ class TestHome extends StatelessWidget {
                 title: 'Tech Interview',
                 icon: Icons.code_rounded,
                 onPressed: () {
-                  //Tech interview history
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => TechnicalInterviewHistory(personaId: 2),
+                    ),
+                  );
                 },
                 onTap: () {
                   Navigator.of(context).push(
@@ -69,7 +74,11 @@ class TestHome extends StatelessWidget {
                 title: 'HR Interview',
                 icon: Icons.groups_rounded,
                 onPressed: () {
-                  //HR interview history
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => TechnicalInterviewHistory(personaId: 3),
+                    ),
+                  );
                 },
                 onTap: () {
                   Navigator.of(

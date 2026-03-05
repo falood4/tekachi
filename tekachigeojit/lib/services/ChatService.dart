@@ -121,7 +121,67 @@ class Chatservice {
     }
   }
 
-  Future<void> endConversation() async {
+  Future<List<Map<String, dynamic>>> getConversationHistory(int persona) async {
+    try {
+      Map<String, String> token = _headers();
+      if (token['Authorization'] == null) {
+        return Future.error('User not authenticated');
+      }
+
+      int? user_id = AuthService().shareUserId();
+
+      final reponse = await http.get(
+        Uri.parse("$_baseUrl/conversations/$user_id/$persona"),
+        headers: token,
+      );
+
+      if (reponse.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(reponse.body);
+        return data
+            .map((item) => item as Map<String, dynamic>)
+            .toList();
+      } else if (reponse.statusCode == 500) {
+        throw Exception('Server error. Please try later');
+      } else {
+        throw Exception(
+          'Failed to get conversation history: HTTP ${reponse.statusCode}',
+        );
+      }
+    } catch (e) {
+      throw Exception('Failed to get conversation history: $e');
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getChatHistory(int conv_id) async {
+    try {
+      Map<String, String> token = _headers();
+      if (token['Authorization'] == null) {
+        return Future.error('User not authenticated');
+      }
+
+      final reponse = await http.get(
+        Uri.parse("$_baseUrl/$conv_id/messages"),
+        headers: token,
+      );
+
+      if (reponse.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(reponse.body);
+        return data
+            .map((item) => item as Map<String, dynamic>)
+            .toList();
+      } else if (reponse.statusCode == 500) {
+        throw Exception('Server error. Please try later');
+      } else {
+        throw Exception(
+          'Failed to get conversation history: HTTP ${reponse.statusCode}',
+        );
+      }
+    } catch (e) {
+      throw Exception('Failed to get conversation history: $e');
+    }
+  }
+
+  Future<void> clearConvId() async {
     try {
       conv_id = 0;
     } catch (e) {

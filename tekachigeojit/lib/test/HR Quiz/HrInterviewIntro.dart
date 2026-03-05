@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tekachigeojit/components/NavBar.dart';
 import 'package:tekachigeojit/services/ChatService.dart';
-import 'package:tekachigeojit/test/TechQuiz/ChatInterview.dart';
+import 'package:tekachigeojit/components/ChatInterview.dart';
 
 class HRinterviewIntro extends StatelessWidget {
   const HRinterviewIntro({super.key});

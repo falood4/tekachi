@@ -7,14 +7,14 @@ class ChatBubble extends StatelessWidget {
     required this.isUser,
   });
   final String message_text;
-  final bool isUser;
+  final String isUser;
 
   @override
   Widget build(BuildContext context) {
     double screenwidth = MediaQuery.of(context).size.width;
     final theme = Theme.of(context);
 
-    if (isUser) {
+    if (isUser=="USER") {
       return ConstrainedBox(
         constraints: BoxConstraints(
           minWidth: 50,
