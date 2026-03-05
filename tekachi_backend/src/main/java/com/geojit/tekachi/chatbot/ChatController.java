@@ -10,6 +10,7 @@ import com.geojit.tekachi.chatbot.repo.PersonaRepo;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -265,6 +266,30 @@ public class ChatController {
         List<Message> chat = msgRepo.findRecentMessages(conversationId, PageRequest.of(0, 100));
         Collections.reverse(chat);
         return chat;
+    }
+
+    @Transactional
+    @DeleteMapping("/conversations/{userId}/{personaId}/clear")
+    public void clearConversations(@PathVariable Long userId,
+            @PathVariable Integer personaId) {
+
+        List<Conversation> conversations = convoRepo.findByUserId(userId).stream()
+                .filter(conversation -> conversation.getPersona().getPersonaId() == personaId)
+                .toList();
+
+        for (Conversation convo : conversations) {
+            clearMessages(convo.getConversationId());
+            convoRepo.delete(convo);
+        }
+    }
+
+    @Transactional
+    @DeleteMapping("/{conversationId}/messages/clear")
+    public void clearMessages(@PathVariable Integer conversationId) {
+        Conversation conversation = convoRepo.findById(conversationId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Conversation not found"));
+
+        msgRepo.deleteByConversationId(conversationId);
     }
 
     private String buildChunkText(List<DocumentChunk> chunks) {

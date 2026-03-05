@@ -137,9 +137,7 @@ class Chatservice {
 
       if (reponse.statusCode == 200) {
         final List<dynamic> data = jsonDecode(reponse.body);
-        return data
-            .map((item) => item as Map<String, dynamic>)
-            .toList();
+        return data.map((item) => item as Map<String, dynamic>).toList();
       } else if (reponse.statusCode == 500) {
         throw Exception('Server error. Please try later');
       } else {
@@ -166,9 +164,7 @@ class Chatservice {
 
       if (reponse.statusCode == 200) {
         final List<dynamic> data = jsonDecode(reponse.body);
-        return data
-            .map((item) => item as Map<String, dynamic>)
-            .toList();
+        return data.map((item) => item as Map<String, dynamic>).toList();
       } else if (reponse.statusCode == 500) {
         throw Exception('Server error. Please try later');
       } else {
@@ -178,6 +174,60 @@ class Chatservice {
       }
     } catch (e) {
       throw Exception('Failed to get conversation history: $e');
+    }
+  }
+
+  void clearChatHistory(int conv_id) async {
+    try {
+      Map<String, String> token = _headers();
+      if (token['Authorization'] == null) {
+        debugPrint('User not authenticated');
+        return;
+      }
+      final reponse = await http.delete(
+        Uri.parse("$_baseUrl/$conv_id/messages/clear"),
+        headers: token,
+      );
+
+      if (reponse.statusCode == 200) {
+        debugPrint('Conversation history cleared');
+      } else if (reponse.statusCode == 500) {
+        throw Exception('Server error. Please try later');
+      } else {
+        throw Exception(
+          'Failed to clear conversation history: HTTP ${reponse.statusCode}',
+        );
+      }
+    } catch (e) {
+      throw Exception('Failed to clear conversation history: $e');
+    }
+  }
+
+  void clearConvoHistory(int persona) async {
+    try {
+      Map<String, String> token = _headers();
+      if (token['Authorization'] == null) {
+        debugPrint('User not authenticated');
+        return;
+      }
+
+      int? user_id = AuthService().shareUserId();
+      final reponse = await http.delete(
+        Uri.parse("$_baseUrl/conversations/$user_id/$persona/clear"),
+        headers: token,
+      );
+
+      if (reponse.statusCode == 200) {
+        debugPrint('Conversation history cleared');
+      } else if (reponse.statusCode == 500) {
+        throw Exception('Server error. Please try later');
+      } else {
+        throw Exception(
+          'Failed to clear conversation history: HTTP ${reponse.statusCode}',
+        );
+      }
+    } catch (e) {
+      throw Exception('Failed to clear conversation history: $e');
     }
   }
 

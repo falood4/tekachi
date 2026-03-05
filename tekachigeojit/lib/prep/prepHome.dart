@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tekachigeojit/components/InterviewHistory.dart';
 import 'package:tekachigeojit/prep/HRQuestions.dart';
 import 'package:tekachigeojit/prep/Techincal%20Training/TechnicalHome.dart';
 import 'package:tekachigeojit/services/ChatService.dart';
@@ -63,7 +64,7 @@ class PrepHome extends StatelessWidget {
               const SizedBox(height: 20),
 
               Container(
-                height: screenHeight * 0.2,
+                height: screenHeight * 0.25,
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(18),
@@ -120,6 +121,36 @@ class PrepHome extends StatelessWidget {
                         'Start',
                         style: theme.textTheme.headlineLarge?.copyWith(
                           fontSize: 22,
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(height: 5),
+
+                    ElevatedButton(
+                      onPressed: () async {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) =>
+                                InterviewHistory(personaId: 1, title: "Mentor"),
+                          ),
+                        );
+                      },
+                      style: theme.elevatedButtonTheme.style?.copyWith(
+                        padding: WidgetStateProperty.all<EdgeInsets>(
+                          const EdgeInsets.symmetric(
+                            horizontal: 24,
+                            vertical: 12,
+                          ),
+                        ),
+                        backgroundColor: WidgetStateProperty.all<Color>(
+                          theme.colorScheme.surface,
+                        ),
+                      ),
+                      child: Text(
+                        'Archive',
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontSize: 16,
                         ),
                       ),
                     ),

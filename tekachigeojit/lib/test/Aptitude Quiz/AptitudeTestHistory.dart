@@ -49,6 +49,7 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
     final theme = Theme.of(context);
     dynamic secondary = theme.colorScheme.secondary;
     dynamic bg = theme.colorScheme.background;
+    dynamic red = theme.colorScheme.error;
 
     return Scaffold(
       backgroundColor: bg,
@@ -59,6 +60,20 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
           style: theme.textTheme.titleLarge?.copyWith(color: secondary),
         ),
         iconTheme: IconThemeData(color: secondary),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.delete, color: red),
+            onPressed: _confirmClearConvoHistory,
+            style: ButtonStyle(
+              backgroundColor: WidgetStateProperty.all<Color>(
+                theme.colorScheme.primary,
+              ),
+              shape: WidgetStateProperty.all<CircleBorder>(
+                const CircleBorder(),
+              ),
+            ),
+          ),
+        ],
       ),
       body: buildBody(),
     );
@@ -258,5 +273,56 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
         ),
       );
     }
+  }
+
+  void _confirmClearConvoHistory() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        dynamic primary = Theme.of(context).colorScheme.primary;
+        dynamic secondary = Theme.of(context).colorScheme.secondary;
+        dynamic blackbg = Theme.of(context).colorScheme.background;
+        dynamic black = Theme.of(context).colorScheme.onPrimary;
+        dynamic red = Theme.of(context).colorScheme.error;
+
+        return AlertDialog(
+          title: Text(
+            'Clear Interview History',
+            style: Theme.of(
+              context,
+            ).textTheme.bodyLarge?.copyWith(color: primary),
+          ),
+          backgroundColor: blackbg,
+          content: Text(
+            'Are you sure you want to clear interview history?',
+            style: TextStyle(color: primary, fontFamily: "Trebuchet"),
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              style: ElevatedButton.styleFrom(backgroundColor: secondary),
+              child: Text(
+                'CANCEL',
+                style: TextStyle(color: black, fontFamily: "DelaGothicOne"),
+              ),
+            ),
+            SizedBox.fromSize(size: const Size.fromHeight(10)),
+            ElevatedButton(
+              onPressed: () async {
+                HistoryService().deleteAttempt;
+                Navigator.of(context).pop();
+              },
+              style: ElevatedButton.styleFrom(backgroundColor: red),
+              child: Text(
+                'CLEAR',
+                style: TextStyle(color: primary, fontFamily: "DelaGothicOne"),
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

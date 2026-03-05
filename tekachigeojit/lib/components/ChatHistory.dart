@@ -52,6 +52,15 @@ class _ChatHistoryState extends State<ChatHistory> {
     }
   }
 
+  String _formatTime(String dateString) {
+    try {
+      final date = DateTime.parse(dateString);
+      return DateFormat('hh:mm a').format(date);
+    } catch (e) {
+      return dateString;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -82,18 +91,36 @@ class _ChatHistoryState extends State<ChatHistory> {
       itemCount: _attempts.length,
       itemBuilder: (context, index) {
         final attempt = _attempts[index];
-        return _buildMessage(attempt['content'], attempt['role']);
+        return _buildMessage(
+          attempt['content'],
+          attempt['role'],
+          attempt['createdAt'],
+        );
       },
     );
   }
 
-  Widget _buildMessage(String text, String isUser) {
+  Widget _buildMessage(String text, String isUser, String time) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       alignment: isUser == "USER"
           ? Alignment.centerRight
           : Alignment.centerLeft,
-      child: ChatBubble(message_text: text, isUser: isUser),
+      child: Column(
+        crossAxisAlignment: isUser == "USER"
+            ? CrossAxisAlignment.end
+            : CrossAxisAlignment.start,
+        children: [
+          ChatBubble(message_text: text, isUser: isUser),
+          SizedBox(height: 5),
+          Text(
+            _formatTime(time),
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: Colors.grey),
+          ),
+        ],
+      ),
     );
   }
 }

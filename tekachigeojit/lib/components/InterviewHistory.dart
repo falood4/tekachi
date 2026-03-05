@@ -3,16 +3,20 @@ import 'package:intl/intl.dart';
 import 'package:tekachigeojit/services/ChatService.dart';
 import 'package:tekachigeojit/components/ChatHistory.dart';
 
-class TechnicalInterviewHistory extends StatefulWidget {
-  const TechnicalInterviewHistory({super.key, required this.personaId});
+class InterviewHistory extends StatefulWidget {
+  const InterviewHistory({
+    super.key,
+    required this.personaId,
+    required this.title,
+  });
   final int personaId;
+  final String title;
 
   @override
-  State<TechnicalInterviewHistory> createState() =>
-      _TechnicalInterviewHistoryState();
+  State<InterviewHistory> createState() => _InterviewHistoryState();
 }
 
-class _TechnicalInterviewHistoryState extends State<TechnicalInterviewHistory> {
+class _InterviewHistoryState extends State<InterviewHistory> {
   final Chatservice _chatService = Chatservice();
   late List<Map<String, dynamic>> _attempts = [];
   late bool _isLoading = true;
@@ -54,21 +58,46 @@ class _TechnicalInterviewHistoryState extends State<TechnicalInterviewHistory> {
     }
   }
 
+  String fetchtitle() {
+    if (widget.personaId == 1) {
+      return 'Mentor History';
+    } else if (widget.personaId == 2) {
+      return 'Tech Interviews';
+    } else {
+      return 'HR Interviews';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     dynamic secondary = theme.colorScheme.secondary;
     dynamic bg = theme.colorScheme.background;
+    dynamic red = theme.colorScheme.error;
 
     return Scaffold(
       backgroundColor: bg,
       appBar: AppBar(
         backgroundColor: bg,
         title: Text(
-          'Tech Interviews',
+          fetchtitle(),
           style: theme.textTheme.titleLarge?.copyWith(color: secondary),
         ),
         iconTheme: IconThemeData(color: secondary),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.delete, color: red),
+            onPressed: _confirmClearConvoHistory,
+            style: ButtonStyle(
+              backgroundColor: WidgetStateProperty.all<Color>(
+                theme.colorScheme.primary,
+              ),
+              shape: WidgetStateProperty.all<CircleBorder>(
+                const CircleBorder(),
+              ),
+            ),
+          ),
+        ],
       ),
       body: buildBody(),
     );
@@ -82,6 +111,13 @@ class _TechnicalInterviewHistoryState extends State<TechnicalInterviewHistory> {
 
     if (_isLoading) {
       return const Center(child: CircularProgressIndicator());
+    } else if (!_isLoading && _attempts.isEmpty) {
+      return Center(
+        child: Text(
+          'No interview history found.',
+          style: theme.textTheme.bodyMedium?.copyWith(color: primary),
+        ),
+      );
     }
 
     return ListView.builder(
@@ -146,6 +182,58 @@ class _TechnicalInterviewHistoryState extends State<TechnicalInterviewHistory> {
               ],
             ),
           ),
+        );
+      },
+    );
+  }
+
+  void _confirmClearConvoHistory() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        dynamic primary = Theme.of(context).colorScheme.primary;
+        dynamic secondary = Theme.of(context).colorScheme.secondary;
+        dynamic blackbg = Theme.of(context).colorScheme.background;
+        dynamic black = Theme.of(context).colorScheme.onPrimary;
+        dynamic red = Theme.of(context).colorScheme.error;
+
+        return AlertDialog(
+          title: Text(
+            'Clear Interview History',
+            style: Theme.of(
+              context,
+            ).textTheme.bodyLarge?.copyWith(color: primary),
+          ),
+          backgroundColor: blackbg,
+          content: Text(
+            'Are you sure you want to clear interview history?',
+            style: TextStyle(color: primary, fontFamily: "Trebuchet"),
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              style: ElevatedButton.styleFrom(backgroundColor: secondary),
+              child: Text(
+                'CANCEL',
+                style: TextStyle(color: black, fontFamily: "DelaGothicOne"),
+              ),
+            ),
+            SizedBox.fromSize(size: const Size.fromHeight(10)),
+            ElevatedButton(
+              onPressed: () async {
+                Chatservice().clearConvoHistory(widget.personaId);
+                Navigator.of(context).pop();
+                await _fetchConversationHistory();
+              },
+              style: ElevatedButton.styleFrom(backgroundColor: red),
+              child: Text(
+                'CLEAR',
+                style: TextStyle(color: primary, fontFamily: "DelaGothicOne"),
+              ),
+            ),
+          ],
         );
       },
     );

@@ -17,4 +17,6 @@ public interface MsgRepo extends JpaRepository<Message, Integer> {
     List<Message> findRecentMessages(
             @Param("conversationId") Integer conversationId,
             Pageable pageable);
+
+    void deleteByConversationId(Integer conversationId);
 }

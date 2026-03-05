@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:tekachigeojit/components/NavBar.dart';
 import 'package:tekachigeojit/test/Aptitude%20Quiz/AptitudeTest.dart';
 import 'package:tekachigeojit/test/Aptitude%20Quiz/AptitudeTestHistory.dart';
-import 'package:tekachigeojit/test/HR%20Quiz/HrInterviewIntro.dart';
-import 'package:tekachigeojit/test/TechQuiz/History/TechInterviewHistory.dart';
-import 'package:tekachigeojit/test/TechQuiz/TechInterviewIntro.dart';
+import 'package:tekachigeojit/test/HrInterviewIntro.dart';
+import 'package:tekachigeojit/components/InterviewHistory.dart';
+import 'package:tekachigeojit/test/TechInterviewIntro.dart';
 
 class TestHome extends StatelessWidget {
   const TestHome({super.key});
@@ -59,7 +59,8 @@ class TestHome extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (_) => TechnicalInterviewHistory(personaId: 2),
+                      builder: (_) =>
+                          InterviewHistory(personaId: 2, title: "Tech"),
                     ),
                   );
                 },
@@ -76,7 +77,8 @@ class TestHome extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (_) => TechnicalInterviewHistory(personaId: 3),
+                      builder: (_) =>
+                          InterviewHistory(personaId: 3, title: "HR"),
                     ),
                   );
                 },

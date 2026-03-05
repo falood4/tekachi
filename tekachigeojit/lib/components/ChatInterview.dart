@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:tekachigeojit/components/NavBar.dart';
 import 'package:tekachigeojit/components/ChatBubble.dart';
 import 'package:tekachigeojit/services/ChatService.dart';
@@ -28,13 +29,27 @@ class _ChatInterviewState extends State<ChatInterview> {
     }
   }
 
-  Widget _buildMessage(String text, String isUser) {
+  Widget _buildMessage(String text, String isUser, String timestamp) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       alignment: isUser == "USER"
           ? Alignment.centerRight
           : Alignment.centerLeft,
-      child: ChatBubble(message_text: text, isUser: isUser),
+      child: Column(
+        crossAxisAlignment: isUser == "USER"
+            ? CrossAxisAlignment.end
+            : CrossAxisAlignment.start,
+        children: [
+          ChatBubble(message_text: text, isUser: isUser),
+          SizedBox(height: 5),
+          Text(
+            _formatTime(timestamp),
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: Colors.grey),
+          ),
+        ],
+      ),
     );
   }
 
@@ -44,8 +59,6 @@ class _ChatInterviewState extends State<ChatInterview> {
     });
     _scrollToBottom();
   }
-
-  
 
   Future<void> sendMessage() async {
     final theme = Theme.of(context);
@@ -100,6 +113,15 @@ class _ChatInterviewState extends State<ChatInterview> {
     });
   }
 
+  String _formatTime(String dateString) {
+    try {
+      final date = DateTime.parse(dateString);
+      return DateFormat('hh:mm a').format(date);
+    } catch (e) {
+      return dateString;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -138,7 +160,11 @@ class _ChatInterviewState extends State<ChatInterview> {
                 itemCount: _messages.length,
                 itemBuilder: (context, index) {
                   final message = _messages[index];
-                  return _buildMessage(message.text, message.isUser);
+                  return _buildMessage(
+                    message.text,
+                    message.isUser,
+                    message.timestamp,
+                  );
                 },
               ),
             ),
@@ -199,4 +225,5 @@ class _ChatMessage {
 
   final String text;
   final String isUser;
+  final String timestamp = DateTime.now().toIso8601String();
 }

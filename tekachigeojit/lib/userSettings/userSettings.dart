@@ -142,10 +142,6 @@ class _UserSettingsState extends State<UserSettings> {
                           ],
                         ),
 
-                        _settingsItem(
-                          "Clear conversations",
-                          onPressed: _confirmClearConversations,
-                        ),
                         _settingsItem("Log Out", onPressed: _confirmLogout),
                         _settingsItem(
                           "Delete account",
@@ -321,76 +317,6 @@ class _UserSettingsState extends State<UserSettings> {
 
   void _changeTheme() {
     themeNotifier.toggleTheme();
-  }
-
-  void _confirmClearConversations() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        dynamic primary = Theme.of(context).colorScheme.primary;
-        dynamic secondary = Theme.of(context).colorScheme.secondary;
-        dynamic blackbg = Theme.of(context).colorScheme.background;
-        dynamic black = Theme.of(context).colorScheme.onPrimary;
-        dynamic red = Theme.of(context).colorScheme.error;
-
-        return AlertDialog(
-          title: Text(
-            'Clear Conversations',
-            style: Theme.of(
-              context,
-            ).textTheme.bodyLarge?.copyWith(color: primary),
-          ),
-          backgroundColor: blackbg,
-          content: Text(
-            'Are you sure you want to clear conversations?',
-            style: TextStyle(color: primary, fontFamily: "Trebuchet"),
-          ),
-          actions: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              style: ElevatedButton.styleFrom(backgroundColor: secondary),
-              child: Text(
-                'CANCEL',
-                style: TextStyle(color: black, fontFamily: "DelaGothicOne"),
-              ),
-            ),
-            SizedBox.fromSize(size: const Size.fromHeight(10)),
-            ElevatedButton(
-              onPressed: () {
-                _handleClearConversations();
-              },
-              style: ElevatedButton.styleFrom(backgroundColor: red),
-              child: Text(
-                'CLEAR',
-                style: TextStyle(color: primary, fontFamily: "DelaGothicOne"),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> _handleClearConversations() async {
-    final theme = Theme.of(context);
-    final response = await HistoryService().deleteAttempt();
-
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      Navigator.pop(context);
-      debugPrint('Conversations cleared successfully');
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Failed to clear conversations',
-            style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
-          ),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
   }
 
   void _confirmDeleteAccount() {
