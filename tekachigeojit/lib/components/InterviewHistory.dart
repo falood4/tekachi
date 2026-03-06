@@ -83,23 +83,18 @@ class _InterviewHistoryState extends State<InterviewHistory> {
           fetchtitle(),
           style: theme.textTheme.titleLarge?.copyWith(color: secondary),
         ),
-        iconTheme: IconThemeData(color: secondary),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.delete, color: red),
-            onPressed: _confirmClearConvoHistory,
-            style: ButtonStyle(
-              backgroundColor: WidgetStateProperty.all<Color>(
-                theme.colorScheme.primary,
-              ),
-              shape: WidgetStateProperty.all<CircleBorder>(
-                const CircleBorder(),
-              ),
-            ),
-          ),
-        ],
       ),
-      body: buildBody(),
+      body: SafeArea(child: buildBody()),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _confirmClearConvoHistory,
+        child: IconButton(
+          icon: Icon(Icons.delete, color: red),
+          onPressed: _confirmClearConvoHistory,
+          style: ButtonStyle(
+            shape: WidgetStateProperty.all<CircleBorder>(const CircleBorder()),
+          ),
+        ),
+      ),
     );
   }
 
@@ -226,6 +221,7 @@ class _InterviewHistoryState extends State<InterviewHistory> {
                 Chatservice().clearConvoHistory(widget.personaId);
                 Navigator.of(context).pop();
                 await _fetchConversationHistory();
+                setState(() {});
               },
               style: ElevatedButton.styleFrom(backgroundColor: red),
               child: Text(

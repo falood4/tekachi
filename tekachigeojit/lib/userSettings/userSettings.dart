@@ -3,7 +3,6 @@ import 'package:tekachigeojit/apptheme.dart';
 import 'package:tekachigeojit/components/NavBar.dart';
 import 'package:tekachigeojit/home.dart';
 import 'package:tekachigeojit/services/AuthService.dart';
-import 'package:tekachigeojit/services/HistoryService.dart';
 
 class UserSettings extends StatefulWidget {
   const UserSettings({super.key});

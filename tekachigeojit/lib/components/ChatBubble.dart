@@ -14,12 +14,12 @@ class ChatBubble extends StatelessWidget {
     double screenwidth = MediaQuery.of(context).size.width;
     final theme = Theme.of(context);
 
-    if (isUser=="USER") {
+    if (isUser == "USER") {
       return ConstrainedBox(
         constraints: BoxConstraints(
           minWidth: 50,
           minHeight: 50,
-          maxWidth: screenwidth * 0.6,
+          maxWidth: screenwidth * 0.7,
         ),
         child: Container(
           padding: const EdgeInsets.all(12),
@@ -41,7 +41,7 @@ class ChatBubble extends StatelessWidget {
         constraints: BoxConstraints(
           minWidth: 50,
           minHeight: 50,
-          maxWidth: screenwidth * 0.6,
+          maxWidth: screenwidth * 0.7,
         ),
         child: Container(
           padding: const EdgeInsets.all(12),

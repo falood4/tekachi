@@ -91,6 +91,17 @@ class PrepHome extends StatelessWidget {
                     ElevatedButton(
                       onPressed: () async {
                         try {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                'Loading chat...',
+                                style: theme.textTheme.bodySmall?.copyWith(
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                          );
+
                           final String reply = await Chatservice()
                               .startConversation(1);
                           if (!context.mounted) return;
@@ -109,7 +120,7 @@ class PrepHome extends StatelessWidget {
                               content: Text(
                                 'Could not start the interview. Please try again.',
                                 style: theme.textTheme.bodySmall?.copyWith(
-                                  color: Colors.black,
+                                  color: theme.colorScheme.onPrimary,
                                 ),
                               ),
                             ),

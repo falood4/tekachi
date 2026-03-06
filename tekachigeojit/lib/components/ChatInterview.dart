@@ -19,6 +19,7 @@ class _ChatInterviewState extends State<ChatInterview> {
   final FocusNode _messageFocus = FocusNode();
   final ScrollController _scrollController = ScrollController();
   final List<_ChatMessage> _messages = [];
+  bool _isWaiting = false;
 
   @override
   void initState() {
@@ -29,7 +30,12 @@ class _ChatInterviewState extends State<ChatInterview> {
     }
   }
 
-  Widget _buildMessage(String text, String isUser, String timestamp) {
+  Widget _buildMessage(
+    String text,
+    String isUser,
+    String timestamp, {
+    bool showLoading = false,
+  }) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       alignment: isUser == "USER"
@@ -48,6 +54,15 @@ class _ChatInterviewState extends State<ChatInterview> {
               context,
             ).textTheme.bodySmall?.copyWith(color: Colors.grey),
           ),
+
+          if (showLoading)
+            Align(
+              alignment: Alignment.centerLeft,
+              child: CircularProgressIndicator(
+                strokeWidth: 3,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+            ),
         ],
       ),
     );
@@ -76,18 +91,24 @@ class _ChatInterviewState extends State<ChatInterview> {
       return;
     }
 
-    _addMessage(messageText, "USER");
+    setState(() {
+      _messages.add(_ChatMessage(text: messageText, isUser: "USER"));
+      _isWaiting = true;
+    });
+    _scrollToBottom();
     _messageController.clear();
 
     try {
+      String response;
       if (widget.personaId == 2) {
-        final String response = await Chatservice().newTechMessage(messageText);
-        _addMessage(response, "ASSISTANT");
+        response = await Chatservice().newTechMessage(messageText);
       } else {
-        final String response = await Chatservice().newHrMessage(messageText);
-        _addMessage(response, "ASSISTANT");
+        response = await Chatservice().newHrMessage(messageText);
       }
+      setState(() => _isWaiting = false);
+      _addMessage(response, "ASSISTANT");
     } catch (e) {
+      setState(() => _isWaiting = false);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
@@ -164,6 +185,10 @@ class _ChatInterviewState extends State<ChatInterview> {
                     message.text,
                     message.isUser,
                     message.timestamp,
+                    showLoading:
+                        _isWaiting &&
+                        index == _messages.length - 1 &&
+                        message.isUser == "USER",
                   );
                 },
               ),
