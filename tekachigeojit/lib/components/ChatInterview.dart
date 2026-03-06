@@ -19,6 +19,7 @@ class _ChatInterviewState extends State<ChatInterview> {
   final FocusNode _messageFocus = FocusNode();
   final ScrollController _scrollController = ScrollController();
   final List<_ChatMessage> _messages = [];
+  bool _isWaiting = false;
 
   @override
   void initState() {
@@ -78,16 +79,20 @@ class _ChatInterviewState extends State<ChatInterview> {
 
     _addMessage(messageText, "USER");
     _messageController.clear();
+    setState(() => _isWaiting = true);
 
     try {
       if (widget.personaId == 2) {
         final String response = await Chatservice().newTechMessage(messageText);
+        setState(() => _isWaiting = false);
         _addMessage(response, "ASSISTANT");
       } else {
         final String response = await Chatservice().newHrMessage(messageText);
+        setState(() => _isWaiting = false);
         _addMessage(response, "ASSISTANT");
       }
     } catch (e) {
+      setState(() => _isWaiting = false);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
@@ -168,6 +173,21 @@ class _ChatInterviewState extends State<ChatInterview> {
                 },
               ),
             ),
+
+            if (_isWaiting)
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 4,
+                  horizontal: 16,
+                ),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 3,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                ),
+              ),
 
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,

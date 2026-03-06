@@ -51,6 +51,12 @@ class AptitudeTest extends StatelessWidget {
                   ),
                 ),
 
+                Image(
+                  image: Image.asset(
+                    'assets/interview_avatar/aptitude.png',
+                  ).image,
+                ),
+
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 5),
                   child: Container(

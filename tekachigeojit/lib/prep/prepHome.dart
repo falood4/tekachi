@@ -90,10 +90,22 @@ class PrepHome extends StatelessWidget {
                     const SizedBox(height: 12),
                     ElevatedButton(
                       onPressed: () async {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'Loading chat...',
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: Colors.black,
+                              ),
+                            ),
+                            duration: Duration(minutes: 1),
+                          ),
+                        );
                         try {
                           final String reply = await Chatservice()
                               .startConversation(1);
                           if (!context.mounted) return;
+                          ScaffoldMessenger.of(context).hideCurrentSnackBar();
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (_) => ChatInterview(
@@ -104,6 +116,7 @@ class PrepHome extends StatelessWidget {
                           );
                         } catch (e) {
                           if (!context.mounted) return;
+                          ScaffoldMessenger.of(context).hideCurrentSnackBar();
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text(

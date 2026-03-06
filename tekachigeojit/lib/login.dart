@@ -189,7 +189,7 @@ class _LoginState extends State<Login> {
                       ),
                       padding: const EdgeInsets.symmetric(
                         horizontal: 20,
-                        vertical: 10,
+                        vertical: 15,
                       ),
                       child: TextField(
                         controller: _passwordCtrl,

@@ -221,7 +221,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 20,
-                        vertical: 5,
+                        vertical: 15,
                       ),
                       decoration: BoxDecoration(
                         color: surface,
@@ -255,7 +255,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                       child: Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 20,
-                          vertical: 5,
+                          vertical: 15,
                         ),
                         decoration: BoxDecoration(
                           color: surface,
