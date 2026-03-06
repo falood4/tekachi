@@ -13,7 +13,7 @@ Future<void> showTopicPopupDialog(
     barrierDismissible: true,
     barrierLabel: 'Close',
     // semi-transparent so the blur is visible
-    barrierColor: Colors.black.withOpacity(0.25),
+    barrierColor: Colors.black.withValues(alpha: 0.25),
     transitionDuration: const Duration(milliseconds: 180),
     pageBuilder: (context, animation, secondaryAnimation) {
       return BackdropFilter(
@@ -48,7 +48,7 @@ Future<void> showBlurDialog(BuildContext context, {required Widget child}) {
     context: context,
     barrierDismissible: true,
     barrierLabel: 'Close',
-    barrierColor: Colors.black.withOpacity(0.25),
+    barrierColor: Colors.black.withValues(alpha: 0.25),
     transitionDuration: const Duration(milliseconds: 180),
     pageBuilder: (context, animation, secondaryAnimation) {
       return BackdropFilter(

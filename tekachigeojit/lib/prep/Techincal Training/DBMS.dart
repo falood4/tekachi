@@ -73,7 +73,7 @@ class _DBMSState extends State<DBMS> {
 
                   GridView.count(
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     crossAxisCount: 2,
                     crossAxisSpacing: screenWidth * 0.05,
                     mainAxisSpacing: screenWidth * 0.05,

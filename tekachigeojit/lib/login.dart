@@ -90,7 +90,7 @@ class _LoginState extends State<Login> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              'Cannot connect to server. Please try again later.',
+              'Invalid request. Please check your details.',
               style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
             ),
           ),

@@ -235,18 +235,18 @@ class _UserSettingsState extends State<UserSettings> {
 
     showDialog(
       context: context,
-      builder: (BuildContext context) {
-        dynamic primary = Theme.of(context).colorScheme.primary;
-        dynamic secondary = Theme.of(context).colorScheme.secondary;
-        dynamic tertiary = Theme.of(context).colorScheme.tertiary;
-        dynamic blackbg = Theme.of(context).colorScheme.background;
-        dynamic black = Theme.of(context).colorScheme.onPrimary;
+      builder: (BuildContext dialogContext) {
+        dynamic primary = Theme.of(dialogContext).colorScheme.primary;
+        dynamic secondary = Theme.of(dialogContext).colorScheme.secondary;
+        dynamic tertiary = Theme.of(dialogContext).colorScheme.tertiary;
+        dynamic blackbg = Theme.of(dialogContext).colorScheme.background;
+        dynamic black = Theme.of(dialogContext).colorScheme.onPrimary;
 
         return AlertDialog(
           title: Text(
             'Change Password',
             style: Theme.of(
-              context,
+              dialogContext,
             ).textTheme.bodyLarge?.copyWith(color: primary),
           ),
           backgroundColor: blackbg,
@@ -257,7 +257,7 @@ class _UserSettingsState extends State<UserSettings> {
               TextField(
                 controller: currentController,
                 obscureText: true,
-                style: Theme.of(context).textTheme.bodyMedium,
+                style: Theme.of(dialogContext).textTheme.bodyMedium,
                 decoration: InputDecoration(
                   hintText: 'Current Password',
                   hintStyle: TextStyle(
@@ -271,7 +271,7 @@ class _UserSettingsState extends State<UserSettings> {
               TextField(
                 controller: newController,
                 obscureText: true,
-                style: Theme.of(context).textTheme.bodyMedium,
+                style: Theme.of(dialogContext).textTheme.bodyMedium,
                 decoration: InputDecoration(
                   hintText: 'New Password',
                   hintStyle: TextStyle(
@@ -285,7 +285,7 @@ class _UserSettingsState extends State<UserSettings> {
               TextField(
                 controller: confirmController,
                 obscureText: true,
-                style: Theme.of(context).textTheme.bodyMedium,
+                style: Theme.of(dialogContext).textTheme.bodyMedium,
                 decoration: InputDecoration(
                   hintText: 'Confirm New Password',
                   hintStyle: TextStyle(
@@ -298,7 +298,7 @@ class _UserSettingsState extends State<UserSettings> {
 
               ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.of(dialogContext).pop();
                 },
                 style: ElevatedButton.styleFrom(backgroundColor: secondary),
                 child: Text(
@@ -317,7 +317,31 @@ class _UserSettingsState extends State<UserSettings> {
                 height: 55,
                 child: ElevatedButton(
                   onPressed: () {
-                    _handleChangePassword(newController.text);
+                    final newPass = newController.text.trim();
+                    final confirmPass = confirmController.text.trim();
+                    if (newPass.length < 6) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            'Password must be at least 6 characters',
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                        ),
+                      );
+                      return;
+                    }
+                    if (newPass != confirmPass) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            'Passwords do not match',
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                        ),
+                      );
+                      return;
+                    }
+                    _handleChangePassword(newPass);
                   },
                   style: ElevatedButton.styleFrom(backgroundColor: black),
                   child: Text(
@@ -334,7 +358,11 @@ class _UserSettingsState extends State<UserSettings> {
           ),
         );
       },
-    );
+    ).then((_) {
+      currentController.dispose();
+      newController.dispose();
+      confirmController.dispose();
+    });
   }
 
   Future<void> _handleChangePassword(String newPassword) async {
@@ -342,10 +370,19 @@ class _UserSettingsState extends State<UserSettings> {
       newPassword: newPassword,
     );
 
+    if (!mounted) return;
     if (response.statusCode == 200 || response.statusCode == 201) {
       Navigator.pop(context);
       debugPrint('Password changed successfully');
     } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Failed to change password. Please try again.',
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+        ),
+      );
       debugPrint('Failed to change password');
     }
   }
@@ -411,6 +448,7 @@ class _UserSettingsState extends State<UserSettings> {
     try {
       final response = await AuthService().deleteUser();
 
+      if (!mounted) return;
       if (response.statusCode == 200 || response.statusCode == 201) {
         Navigator.pushAndRemoveUntil(
           context,
@@ -481,6 +519,7 @@ class _UserSettingsState extends State<UserSettings> {
     try {
       final response = await AuthService().logout();
 
+      if (!mounted) return;
       if (response.statusCode == 200 || response.statusCode == 201) {
         // Source - https://stackoverflow.com/a/57030299
         // Posted by Paul Iluhin, modified by community. See post 'Timeline' for change history

@@ -231,11 +231,7 @@ class Chatservice {
     }
   }
 
-  Future<void> clearConvId() async {
-    try {
-      conv_id = 0;
-    } catch (e) {
-      throw Exception('Failed to end conversation: $e');
-    }
+  void clearConvId() {
+    conv_id = 0;
   }
 }

@@ -30,6 +30,7 @@ class _InterviewHistoryState extends State<InterviewHistory> {
   }
 
   Future<void> _fetchConversationHistory() async {
+    if (!mounted) return;
     setState(() {
       _isLoading = true;
     });
@@ -42,11 +43,13 @@ class _InterviewHistoryState extends State<InterviewHistory> {
       } else {
         debugPrint('Conversations found: ${attempts.length}');
       }
+      if (!mounted) return;
       setState(() {
         _attempts = attempts;
         _isLoading = false;
       });
     } catch (e) {
+      if (!mounted) return;
       setState(() {
         _isLoading = false;
         debugPrint('Searching conversations failed: $e');

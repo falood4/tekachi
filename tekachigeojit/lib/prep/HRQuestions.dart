@@ -257,7 +257,7 @@ class HrTrainingScreen extends StatelessWidget {
                 buildQuestionList(companyRoleFitQA, context),
 
                 Text(
-                  "Company & Role Fit",
+                  "Behavioural",
                   style: TextStyle(
                     color: lime,
                     fontFamily: "RussoOne",
