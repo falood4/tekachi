@@ -3,7 +3,6 @@ import 'package:tekachigeojit/apptheme.dart';
 import 'package:tekachigeojit/components/NavBar.dart';
 import 'package:tekachigeojit/home.dart';
 import 'package:tekachigeojit/services/AuthService.dart';
-import 'package:tekachigeojit/services/HistoryService.dart';
 
 class UserSettings extends StatefulWidget {
   const UserSettings({super.key});
@@ -97,24 +96,40 @@ class _UserSettingsState extends State<UserSettings> {
                         _settingsItem(
                           "Change password",
                           onPressed: _setChangePassword,
+                          icon: Icon(Icons.password),
                         ),
+
                         Row(
                           children: [
                             Padding(
                               padding: EdgeInsets.symmetric(
-                                horizontal: 45,
-                                vertical: 8,
+                                horizontal: screenWidth * 0.08,
+                                vertical: 16,
                               ),
                               child: Align(
                                 alignment: Alignment.centerLeft,
-                                child: Text(
-                                  "Change theme",
-                                  style: Theme.of(context).textTheme.bodyLarge,
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.brightness_6,
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.onPrimary,
+                                      size: 26,
+                                    ),
+                                    SizedBox(width: 12),
+                                    Text(
+                                      "Change theme",
+                                      style: Theme.of(
+                                        context,
+                                      ).textTheme.bodyLarge,
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
 
-                            SizedBox(width: screenWidth * 0.15),
+                            SizedBox(width: screenWidth * 0.1),
 
                             ValueListenableBuilder<ThemeMode>(
                               valueListenable: themeNotifier,
@@ -142,12 +157,19 @@ class _UserSettingsState extends State<UserSettings> {
                           ],
                         ),
 
-                        _settingsItem("Log Out", onPressed: _confirmLogout),
+                        _settingsItem(
+                          "Log Out",
+                          onPressed: _confirmLogout,
+                          icon: Icon(Icons.logout_outlined),
+                        ),
+
                         _settingsItem(
                           "Delete account",
                           isDestructive: true,
                           onPressed: _confirmDeleteAccount,
+                          icon: Icon(Icons.delete_forever_outlined),
                         ),
+
                         SizedBox(height: screenHeight * 0.01),
                       ],
                     ),
@@ -165,6 +187,7 @@ class _UserSettingsState extends State<UserSettings> {
     String title, {
     bool isDestructive = false,
     required VoidCallback onPressed,
+    required Icon icon,
   }) {
     dynamic black = Theme.of(context).colorScheme.onPrimary;
     dynamic red = Theme.of(context).colorScheme.error;
@@ -177,14 +200,26 @@ class _UserSettingsState extends State<UserSettings> {
         shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        padding: EdgeInsets.symmetric(vertical: 5),
         child: Align(
           alignment: Alignment.centerLeft,
-          child: Text(
-            title,
-            style: Theme.of(
-              context,
-            ).textTheme.bodyLarge?.copyWith(color: isDestructive ? red : black),
+          child: Row(
+            children: [
+              Icon(
+                icon.icon,
+                color: Theme.of(context).colorScheme.onPrimary,
+                size: 26,
+              ),
+
+              SizedBox(width: 12),
+
+              Text(
+                title,
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  color: isDestructive ? red : black,
+                ),
+              ),
+            ],
           ),
         ),
       ),

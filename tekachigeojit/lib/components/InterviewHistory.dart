@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:tekachigeojit/components/NavBar.dart';
 import 'package:tekachigeojit/services/ChatService.dart';
 import 'package:tekachigeojit/components/ChatHistory.dart';
 
@@ -29,6 +30,9 @@ class _InterviewHistoryState extends State<InterviewHistory> {
   }
 
   Future<void> _fetchConversationHistory() async {
+    setState(() {
+      _isLoading = true;
+    });
     try {
       final attempts = await _chatService.getConversationHistory(
         widget.personaId,
@@ -44,6 +48,7 @@ class _InterviewHistoryState extends State<InterviewHistory> {
       });
     } catch (e) {
       setState(() {
+        _isLoading = false;
         debugPrint('Searching conversations failed: $e');
       });
     }
@@ -77,6 +82,7 @@ class _InterviewHistoryState extends State<InterviewHistory> {
 
     return Scaffold(
       backgroundColor: bg,
+      bottomNavigationBar: NavBar(),
       appBar: AppBar(
         backgroundColor: bg,
         title: Text(
@@ -114,7 +120,7 @@ class _InterviewHistoryState extends State<InterviewHistory> {
     } else if (!_isLoading && _attempts.isEmpty) {
       return Center(
         child: Text(
-          'No interview history found.',
+          'No history found.',
           style: theme.textTheme.bodyMedium?.copyWith(color: primary),
         ),
       );
@@ -223,8 +229,12 @@ class _InterviewHistoryState extends State<InterviewHistory> {
             SizedBox.fromSize(size: const Size.fromHeight(10)),
             ElevatedButton(
               onPressed: () async {
-                Chatservice().clearConvoHistory(widget.personaId);
+                await _chatService.clearConvoHistory(widget.personaId);
                 Navigator.of(context).pop();
+                setState(() {
+                  _attempts = [];
+                  _isLoading = false;
+                });
                 await _fetchConversationHistory();
               },
               style: ElevatedButton.styleFrom(backgroundColor: red),

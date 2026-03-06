@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tekachigeojit/components/NavBar.dart';
 import 'package:tekachigeojit/services/HistoryService.dart';
 import 'package:intl/intl.dart';
 
@@ -53,6 +54,7 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
 
     return Scaffold(
       backgroundColor: bg,
+      bottomNavigationBar: NavBar(),
       appBar: AppBar(
         backgroundColor: bg,
         title: Text(

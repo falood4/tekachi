@@ -203,7 +203,7 @@ class Chatservice {
     }
   }
 
-  void clearConvoHistory(int persona) async {
+  Future<void> clearConvoHistory(int persona) async {
     try {
       Map<String, String> token = _headers();
       if (token['Authorization'] == null) {

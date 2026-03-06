@@ -66,17 +66,18 @@ class HRinterviewIntro extends StatelessWidget {
                         try {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
+                              backgroundColor: Color(0xFF141414),
                               content: Text(
                                 'Loading interview...',
                                 style: theme.textTheme.bodySmall?.copyWith(
-                                  color: theme.colorScheme.onPrimary,
+                                  color: Color(0xFF8DD300),
                                 ),
                               ),
-                              duration: const Duration(seconds: 4),
+                              duration: const Duration(seconds: 5),
                             ),
                           );
                           final String reply = await Chatservice()
-                              .startConversation(2);
+                              .startConversation(3);
                           if (!context.mounted) {
                             return;
                           }
@@ -95,7 +96,7 @@ class HRinterviewIntro extends StatelessWidget {
                               content: Text(
                                 'Could not start the interview. Please try again.',
                                 style: theme.textTheme.bodySmall?.copyWith(
-                                  color: Colors.black,
+                                  color: Color(0xFF8DD300),
                                 ),
                               ),
                             ),

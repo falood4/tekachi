@@ -19,6 +19,7 @@ class _ChatInterviewState extends State<ChatInterview> {
   final FocusNode _messageFocus = FocusNode();
   final ScrollController _scrollController = ScrollController();
   final List<_ChatMessage> _messages = [];
+  bool replyReceived = false;
 
   @override
   void initState() {
@@ -29,7 +30,12 @@ class _ChatInterviewState extends State<ChatInterview> {
     }
   }
 
-  Widget _buildMessage(String text, String isUser, String timestamp) {
+  Widget _buildMessage(
+    String text,
+    String isUser,
+    String timestamp,
+    bool isLast,
+  ) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       alignment: isUser == "USER"
@@ -42,12 +48,21 @@ class _ChatInterviewState extends State<ChatInterview> {
         children: [
           ChatBubble(message_text: text, isUser: isUser),
           SizedBox(height: 5),
+
           Text(
             _formatTime(timestamp),
             style: Theme.of(
               context,
             ).textTheme.bodySmall?.copyWith(color: Colors.grey),
           ),
+
+          SizedBox(height: 15),
+
+          if (!replyReceived && isUser == "USER" && isLast)
+            Align(
+              alignment: Alignment.centerLeft,
+              child: CircularProgressIndicator(color: Color(0xFF8DD300)),
+            ),
         ],
       ),
     );
@@ -69,13 +84,18 @@ class _ChatInterviewState extends State<ChatInterview> {
           backgroundColor: Color(0xFF141414),
           content: Text(
             'Your reply is empty',
-            style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: Color(0xFF8DD300),
+            ),
           ),
         ),
       );
       return;
     }
 
+    setState(() {
+      replyReceived = false;
+    });
     _addMessage(messageText, "USER");
     _messageController.clear();
 
@@ -83,9 +103,15 @@ class _ChatInterviewState extends State<ChatInterview> {
       if (widget.personaId == 2) {
         final String response = await Chatservice().newTechMessage(messageText);
         _addMessage(response, "ASSISTANT");
+        setState(() {
+          replyReceived = true;
+        });
       } else {
         final String response = await Chatservice().newHrMessage(messageText);
         _addMessage(response, "ASSISTANT");
+        setState(() {
+          replyReceived = true;
+        });
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -122,6 +148,16 @@ class _ChatInterviewState extends State<ChatInterview> {
     }
   }
 
+  String fetchtitle() {
+    if (widget.personaId == 1) {
+      return 'Mentor Chat';
+    } else if (widget.personaId == 2) {
+      return 'Tech Interview';
+    } else {
+      return 'HR Interview';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -144,7 +180,7 @@ class _ChatInterviewState extends State<ChatInterview> {
           },
         ),
         title: Text(
-          "AI Interview",
+          fetchtitle(),
           style: theme.textTheme.titleLarge?.copyWith(color: secondary),
         ),
       ),
@@ -164,6 +200,7 @@ class _ChatInterviewState extends State<ChatInterview> {
                     message.text,
                     message.isUser,
                     message.timestamp,
+                    index == _messages.length - 1,
                   );
                 },
               ),

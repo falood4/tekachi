@@ -42,13 +42,19 @@ class AptitudeTest extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'This aptitude test will measure and determine your abilities in problem-solving, logic, and reasoning in arithmetic and language',
+                  'This aptitude test will measure and determine your abilities in problem-solving, logic, and reasoning in arithmetic, data interpretation and language',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: theme.colorScheme.primary,
                     fontFamily: "Trebuchet",
                     fontSize: 0.05 * screenWidth,
                   ),
+                ),
+
+                Image(
+                  image: Image.asset(
+                    'assets/interview_avatar/aptitude.png',
+                  ).image,
                 ),
 
                 Padding(

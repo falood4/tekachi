@@ -64,7 +64,7 @@ class PrepHome extends StatelessWidget {
               const SizedBox(height: 20),
 
               Container(
-                height: screenHeight * 0.25,
+                height: screenHeight * 0.225,
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(18),
@@ -88,71 +88,89 @@ class PrepHome extends StatelessWidget {
                     ),
 
                     const SizedBox(height: 12),
-                    ElevatedButton(
-                      onPressed: () async {
-                        try {
-                          final String reply = await Chatservice()
-                              .startConversation(1);
-                          if (!context.mounted) return;
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => ChatInterview(
-                                initialMessage: reply,
-                                personaId: 1,
-                              ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () async {
+                            try {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  backgroundColor: Color(0xFF141414),
+                                  content: Text(
+                                    'Loading Chat',
+                                    style: theme.textTheme.bodySmall?.copyWith(
+                                      color: Color(0xFF8DD300),
+                                    ),
+                                  ),
+                                  duration: const Duration(seconds: 5),
+                                ),
+                              );
+                              final String reply = await Chatservice()
+                                  .startConversation(1);
+                              if (!context.mounted) return;
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) => ChatInterview(
+                                    initialMessage: reply,
+                                    personaId: 1,
+                                  ),
+                                ),
+                              );
+                            } catch (e) {
+                              if (!context.mounted) return;
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    'Could not start the interview. Please try again.',
+                                    style: theme.textTheme.bodySmall?.copyWith(
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                          style: theme.elevatedButtonTheme.style,
+                          child: Text(
+                            'Start',
+                            style: theme.textTheme.headlineLarge?.copyWith(
+                              fontSize: 22,
                             ),
-                          );
-                        } catch (e) {
-                          if (!context.mounted) return;
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                'Could not start the interview. Please try again.',
-                                style: theme.textTheme.bodySmall?.copyWith(
-                                  color: Colors.black,
+                          ),
+                        ),
+
+                        ElevatedButton(
+                          onPressed: () async {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => InterviewHistory(
+                                  personaId: 1,
+                                  title: "Mentor",
                                 ),
                               ),
+                            );
+                          },
+                          style: theme.elevatedButtonTheme.style?.copyWith(
+                            padding: WidgetStateProperty.all<EdgeInsets>(
+                              const EdgeInsets.symmetric(
+                                horizontal: 24,
+                                vertical: 12,
+                              ),
                             ),
-                          );
-                        }
-                      },
-                      style: theme.elevatedButtonTheme.style,
-                      child: Text(
-                        'Start',
-                        style: theme.textTheme.headlineLarge?.copyWith(
-                          fontSize: 22,
-                        ),
-                      ),
-                    ),
-
-                    SizedBox(height: 5),
-
-                    ElevatedButton(
-                      onPressed: () async {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) =>
-                                InterviewHistory(personaId: 1, title: "Mentor"),
+                            backgroundColor: WidgetStateProperty.all<Color>(
+                              theme.colorScheme.background,
+                            ),
                           ),
-                        );
-                      },
-                      style: theme.elevatedButtonTheme.style?.copyWith(
-                        padding: WidgetStateProperty.all<EdgeInsets>(
-                          const EdgeInsets.symmetric(
-                            horizontal: 24,
-                            vertical: 12,
+                          child: Text(
+                            'Archive',
+                            style: theme.textTheme.headlineLarge?.copyWith(
+                              fontSize: 22,
+                              color: theme.colorScheme.primary,
+                            ),
                           ),
                         ),
-                        backgroundColor: WidgetStateProperty.all<Color>(
-                          theme.colorScheme.surface,
-                        ),
-                      ),
-                      child: Text(
-                        'Archive',
-                        style: theme.textTheme.titleMedium?.copyWith(
-                          fontSize: 16,
-                        ),
-                      ),
+                      ],
                     ),
                   ],
                 ),
