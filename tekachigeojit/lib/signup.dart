@@ -61,7 +61,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
     return emailRegex.hasMatch(email);
   }
 
-  void handleSignup() async {
+  void _handleSignup() async {
     final theme = Theme.of(context);
 
     if (_emailCtrl.text.isEmpty) {
@@ -157,7 +157,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              'Error: ${response.body}',
+              'Sign up failed. Please try again.',
               style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
             ),
           ),
@@ -192,10 +192,10 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
     final screenHeight = MediaQuery.of(context).size.height;
     final theme = Theme.of(context);
 
-    dynamic secondary = theme.colorScheme.secondary;
-    dynamic onPrimary = theme.colorScheme.onPrimary;
-    dynamic tertiary = theme.colorScheme.tertiary;
-    dynamic surface = theme.colorScheme.surface;
+    final Color secondary = theme.colorScheme.secondary;
+    final Color onPrimary = theme.colorScheme.onPrimary;
+    final Color tertiary = theme.colorScheme.tertiary;
+    final Color surface = theme.colorScheme.surface;
 
     return Scaffold(
       backgroundColor: theme.colorScheme.background,
@@ -285,7 +285,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                     child: SizedBox(
                       width: screenWidth * 0.4,
                       child: ElevatedButton(
-                        onPressed: handleSignup,
+                        onPressed: _handleSignup,
                         style: ElevatedButton.styleFrom(
                           textStyle: theme.textTheme.headlineLarge,
                           padding: const EdgeInsets.all(16),

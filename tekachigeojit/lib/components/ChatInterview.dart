@@ -41,7 +41,7 @@ class _ChatInterviewState extends State<ChatInterview> {
             ? CrossAxisAlignment.end
             : CrossAxisAlignment.start,
         children: [
-          ChatBubble(message_text: text, isUser: isUser),
+          ChatBubble(messageText: text, isUser: isUser),
           SizedBox(height: 5),
           Text(
             _formatTime(timestamp),
@@ -93,6 +93,7 @@ class _ChatInterviewState extends State<ChatInterview> {
       }
     } catch (e) {
       setState(() => _isWaiting = false);
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(

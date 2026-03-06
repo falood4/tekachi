@@ -10,9 +10,9 @@ class NavBar extends StatefulWidget {
   State<NavBar> createState() => _NavBarState();
 }
 
-int selected_page = 1;
-void nav_chosen(int index) {
-  selected_page = index;
+int _selectedPage = 1;
+void _navChosen(int index) {
+  _selectedPage = index;
 }
 
 class _NavBarState extends State<NavBar> {
@@ -29,7 +29,7 @@ class _NavBarState extends State<NavBar> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (selected_page == 1)
+            if (_selectedPage == 1)
               SizedBox(
                 width: 75,
                 height: 75,
@@ -63,7 +63,7 @@ class _NavBarState extends State<NavBar> {
                   ),
                   onPressed: () {
                     setState(() {
-                      nav_chosen(1);
+                      _navChosen(1);
                     });
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(builder: (context) => const PrepHome()),
@@ -74,7 +74,7 @@ class _NavBarState extends State<NavBar> {
 
             SizedBox(width: screenHeight * 0.075),
 
-            if (selected_page == 2)
+            if (_selectedPage == 2)
               SizedBox(
                 width: 75,
                 height: 75,
@@ -108,7 +108,7 @@ class _NavBarState extends State<NavBar> {
                   ),
                   onPressed: () {
                     setState(() {
-                      nav_chosen(2);
+                      _navChosen(2);
                     });
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(builder: (context) => const TestHome()),
@@ -119,7 +119,7 @@ class _NavBarState extends State<NavBar> {
 
             SizedBox(width: screenHeight * 0.075),
 
-            if (selected_page == 3)
+            if (_selectedPage == 3)
               SizedBox(
                 width: 75,
                 height: 75,
@@ -153,7 +153,7 @@ class _NavBarState extends State<NavBar> {
                   ),
                   onPressed: () {
                     setState(() {
-                      nav_chosen(3);
+                      _navChosen(3);
                     });
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
