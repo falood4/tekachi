@@ -16,7 +16,7 @@ class Chatservice {
 
   String? get _token => AuthService().shareToken();
   int? get _userId => AuthService().shareUserId();
-  int _convId = 0;
+  int? _convId;
 
   Map<String, String> _headers() {
     final headers = {'Content-Type': 'application/json'};
@@ -68,6 +68,9 @@ class Chatservice {
       if (requestHeaders['Authorization'] == null) {
         return Future.error('User not authenticated');
       }
+      if (_convId == null) {
+        throw Exception('No active conversation. Please start a new session.');
+      }
 
       final response = await http.post(
         Uri.parse("$_baseUrl/$_convId/tech/message"),
@@ -94,6 +97,9 @@ class Chatservice {
       final requestHeaders = _headers();
       if (requestHeaders['Authorization'] == null) {
         return Future.error('User not authenticated');
+      }
+      if (_convId == null) {
+        throw Exception('No active conversation. Please start a new session.');
       }
 
       final response = await http.post(
@@ -219,6 +225,6 @@ class Chatservice {
   }
 
   void clearConvId() {
-    _convId = 0;
+    _convId = null;
   }
 }

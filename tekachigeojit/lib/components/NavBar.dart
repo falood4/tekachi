@@ -3,19 +3,12 @@ import 'package:tekachigeojit/prep/prepHome.dart';
 import 'package:tekachigeojit/test/testHome.dart';
 import 'package:tekachigeojit/userSettings/userSettings.dart';
 
-class NavBar extends StatefulWidget {
-  const NavBar({super.key});
+class NavBar extends StatelessWidget {
+  const NavBar({super.key, this.selectedPage = 1});
 
-  @override
-  State<NavBar> createState() => _NavBarState();
-}
+  /// Which tab is currently active: 1 = Prep, 2 = Test, 3 = Profile.
+  final int selectedPage;
 
-int _selectedPage = 1;
-void _navChosen(int index) {
-  _selectedPage = index;
-}
-
-class _NavBarState extends State<NavBar> {
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -29,7 +22,7 @@ class _NavBarState extends State<NavBar> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (_selectedPage == 1)
+            if (selectedPage == 1)
               SizedBox(
                 width: 75,
                 height: 75,
@@ -62,9 +55,6 @@ class _NavBarState extends State<NavBar> {
                     size: screenHeight * 0.07,
                   ),
                   onPressed: () {
-                    setState(() {
-                      _navChosen(1);
-                    });
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(builder: (context) => const PrepHome()),
                     );
@@ -74,7 +64,7 @@ class _NavBarState extends State<NavBar> {
 
             SizedBox(width: screenHeight * 0.075),
 
-            if (_selectedPage == 2)
+            if (selectedPage == 2)
               SizedBox(
                 width: 75,
                 height: 75,
@@ -107,9 +97,6 @@ class _NavBarState extends State<NavBar> {
                     size: screenHeight * 0.07,
                   ),
                   onPressed: () {
-                    setState(() {
-                      _navChosen(2);
-                    });
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(builder: (context) => const TestHome()),
                     );
@@ -119,7 +106,7 @@ class _NavBarState extends State<NavBar> {
 
             SizedBox(width: screenHeight * 0.075),
 
-            if (_selectedPage == 3)
+            if (selectedPage == 3)
               SizedBox(
                 width: 75,
                 height: 75,
@@ -152,9 +139,6 @@ class _NavBarState extends State<NavBar> {
                     size: screenHeight * 0.07,
                   ),
                   onPressed: () {
-                    setState(() {
-                      _navChosen(3);
-                    });
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
                         builder: (context) => const UserSettings(),

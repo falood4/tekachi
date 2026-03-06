@@ -17,7 +17,7 @@ class HRinterviewIntro extends StatelessWidget {
     final Color secondary = theme.colorScheme.secondary;
 
     return Scaffold(
-      bottomNavigationBar: NavBar(),
+      bottomNavigationBar: NavBar(selectedPage: 2),
       backgroundColor: bg,
       appBar: AppBar(
         backgroundColor: bg,

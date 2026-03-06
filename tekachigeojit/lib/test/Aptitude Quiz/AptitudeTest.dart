@@ -15,7 +15,7 @@ class AptitudeTest extends StatelessWidget {
     final Color lime = theme.colorScheme.secondary;
 
     return Scaffold(
-      bottomNavigationBar: NavBar(),
+      bottomNavigationBar: NavBar(selectedPage: 2),
       backgroundColor: bg,
       appBar: AppBar(
         backgroundColor: bg,

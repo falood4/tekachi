@@ -29,7 +29,7 @@ class _UserSettingsState extends State<UserSettings> {
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
-      bottomNavigationBar: NavBar(),
+      bottomNavigationBar: NavBar(selectedPage: 3),
       body: SafeArea(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 1000),
