@@ -19,7 +19,7 @@ class InterviewHistory extends StatefulWidget {
 class _InterviewHistoryState extends State<InterviewHistory> {
   final Chatservice _chatService = Chatservice();
   late List<Map<String, dynamic>> _attempts = [];
-  late bool _isLoading = true;
+  bool _isLoading = true;
   int index = 0;
 
   @override
@@ -44,6 +44,7 @@ class _InterviewHistoryState extends State<InterviewHistory> {
       });
     } catch (e) {
       setState(() {
+        _isLoading = false;
         debugPrint('Searching conversations failed: $e');
       });
     }
@@ -71,9 +72,9 @@ class _InterviewHistoryState extends State<InterviewHistory> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    dynamic secondary = theme.colorScheme.secondary;
-    dynamic bg = theme.colorScheme.background;
-    dynamic red = theme.colorScheme.error;
+    final Color secondary = theme.colorScheme.secondary;
+    final Color bg = theme.colorScheme.background;
+    final Color red = theme.colorScheme.error;
 
     return Scaffold(
       backgroundColor: bg,
@@ -100,9 +101,9 @@ class _InterviewHistoryState extends State<InterviewHistory> {
 
   Widget buildBody() {
     final theme = Theme.of(context);
-    dynamic primary = theme.colorScheme.primary;
-    dynamic secondary = theme.colorScheme.secondary;
-    dynamic bg = theme.colorScheme.background;
+    final Color primary = theme.colorScheme.primary;
+    final Color secondary = theme.colorScheme.secondary;
+    final Color bg = theme.colorScheme.background;
 
     if (_isLoading) {
       return const Center(child: CircularProgressIndicator());
@@ -186,11 +187,11 @@ class _InterviewHistoryState extends State<InterviewHistory> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        dynamic primary = Theme.of(context).colorScheme.primary;
-        dynamic secondary = Theme.of(context).colorScheme.secondary;
-        dynamic blackbg = Theme.of(context).colorScheme.background;
-        dynamic black = Theme.of(context).colorScheme.onPrimary;
-        dynamic red = Theme.of(context).colorScheme.error;
+        final Color primary = Theme.of(context).colorScheme.primary;
+        final Color secondary = Theme.of(context).colorScheme.secondary;
+        final Color blackbg = Theme.of(context).colorScheme.background;
+        final Color black = Theme.of(context).colorScheme.onPrimary;
+        final Color red = Theme.of(context).colorScheme.error;
 
         return AlertDialog(
           title: Text(
@@ -218,10 +219,9 @@ class _InterviewHistoryState extends State<InterviewHistory> {
             SizedBox.fromSize(size: const Size.fromHeight(10)),
             ElevatedButton(
               onPressed: () async {
-                Chatservice().clearConvoHistory(widget.personaId);
                 Navigator.of(context).pop();
+                await Chatservice().clearConvoHistory(widget.personaId);
                 await _fetchConversationHistory();
-                setState(() {});
               },
               style: ElevatedButton.styleFrom(backgroundColor: red),
               child: Text(

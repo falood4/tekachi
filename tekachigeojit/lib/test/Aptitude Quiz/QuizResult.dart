@@ -73,7 +73,7 @@ class _QuizResultState extends State<QuizResult> {
     final surface = theme.colorScheme.surface;
 
     return Scaffold(
-      bottomNavigationBar: const NavBar(),
+      bottomNavigationBar: const NavBar(selectedPage: 2),
       backgroundColor: background,
       body: SafeArea(
         child: Container(

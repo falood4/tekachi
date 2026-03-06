@@ -15,7 +15,7 @@ class ChatHistory extends StatefulWidget {
 class _ChatHistoryState extends State<ChatHistory> {
   final Chatservice _chatService = Chatservice();
   late List<Map<String, dynamic>> _attempts = [];
-  late bool _isLoading = true;
+  bool _isLoading = true;
   int index = 0;
 
   @override
@@ -38,6 +38,7 @@ class _ChatHistoryState extends State<ChatHistory> {
       });
     } catch (e) {
       setState(() {
+        _isLoading = false;
         debugPrint('Searching messages failed: $e');
       });
     }
@@ -64,8 +65,8 @@ class _ChatHistoryState extends State<ChatHistory> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    dynamic secondary = theme.colorScheme.secondary;
-    dynamic bg = theme.colorScheme.background;
+    final Color secondary = theme.colorScheme.secondary;
+    final Color bg = theme.colorScheme.background;
 
     return Scaffold(
       backgroundColor: bg,
@@ -111,7 +112,7 @@ class _ChatHistoryState extends State<ChatHistory> {
             ? CrossAxisAlignment.end
             : CrossAxisAlignment.start,
         children: [
-          ChatBubble(message_text: text, isUser: isUser),
+          ChatBubble(messageText: text, isUser: isUser),
           SizedBox(height: 5),
           Text(
             _formatTime(time),
