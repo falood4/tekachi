@@ -7,14 +7,18 @@ import com.geojit.tekachi.chatbot.entity.*;
 import com.geojit.tekachi.chatbot.repo.ConvoRepo;
 import com.geojit.tekachi.chatbot.repo.MsgRepo;
 import com.geojit.tekachi.chatbot.repo.PersonaRepo;
+import com.geojit.tekachi.usersignin.entity.User;
+import com.geojit.tekachi.usersignin.repository.UserRepository;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
+import java.util.Objects;
 
 /*
 User presses start
@@ -49,6 +53,7 @@ public class ChatController {
     private final MsgRepo msgRepo;
     private final PersonaRepo personaRepo;
     private final ChunkRepository chunkRepository;
+    private final UserRepository userRepository;
 
     private final List<String> topicArray = List.of(
             "Database System Architecture",
@@ -88,22 +93,29 @@ public class ChatController {
     public ChatController(OpenAiService openAiService,
             ConvoRepo convoRepo,
             MsgRepo msgRepo,
-            PersonaRepo personaRepo, ChunkRepository chunkRepository) {
+            PersonaRepo personaRepo,
+            ChunkRepository chunkRepository,
+            UserRepository userRepository) {
         this.openAiService = openAiService;
         this.convoRepo = convoRepo;
         this.msgRepo = msgRepo;
         this.personaRepo = personaRepo;
         this.chunkRepository = chunkRepository;
+        this.userRepository = userRepository;
     }
 
     @PostMapping("/start")
     public StartResponse startConversation(@RequestBody StartRequest request) {
+        Long authenticatedUserId = getAuthenticatedUserId();
+        if (request.getUserId() != null && !Objects.equals(request.getUserId(), authenticatedUserId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Cannot start conversation for another user");
+        }
 
         Persona persona = personaRepo.findById(request.getPersonaId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Persona not found"));
 
         Conversation conversation = new Conversation();
-        conversation.setUserId(request.getUserId());
+        conversation.setUserId(authenticatedUserId);
         conversation.setPersona(persona);
 
         if (persona.getPersonaId() == 2) {
@@ -150,8 +162,7 @@ public class ChatController {
             @PathVariable Integer conversationId,
             @RequestBody MessageRequest request) {
 
-        Conversation conversation = convoRepo.findById(conversationId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Conversation not found"));
+        Conversation conversation = findOwnedConversation(conversationId);
 
         Persona persona = personaRepo
                 .findByPersonaIdAndIsActiveTrue(conversation.getPersona().getPersonaId())
@@ -204,8 +215,7 @@ public class ChatController {
             @PathVariable Integer conversationId,
             @RequestBody MessageRequest request) {
 
-        Conversation conversation = convoRepo.findById(conversationId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Conversation not found"));
+        Conversation conversation = findOwnedConversation(conversationId);
 
         Persona persona = personaRepo
                 .findByPersonaIdAndIsActiveTrue(conversation.getPersona().getPersonaId())
@@ -245,9 +255,10 @@ public class ChatController {
     @GetMapping("/conversations/{userId}/{personaId}")
     public List<ConvoHistory> getConversations(@PathVariable Long userId,
             @PathVariable Integer personaId) {
+        enforceCurrentUser(userId);
 
         List<ConvoHistory> history = convoRepo.findByUserId(userId).stream()
-                .filter(conversation -> conversation.getPersona().getPersonaId() == personaId)
+                .filter(conversation -> Objects.equals(conversation.getPersona().getPersonaId(), personaId))
                 .map(conversation -> new ConvoHistory(
                         conversation.getConversationId(),
                         conversation.getCreatedAt(),
@@ -260,8 +271,7 @@ public class ChatController {
 
     @GetMapping("/{conversationId}/messages")
     public List<Message> getMessages(@PathVariable Integer conversationId) {
-        Conversation conversation = convoRepo.findById(conversationId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Conversation not found"));
+        findOwnedConversation(conversationId);
 
         List<Message> chat = msgRepo.findRecentMessages(conversationId, PageRequest.of(0, 100));
         Collections.reverse(chat);
@@ -272,9 +282,10 @@ public class ChatController {
     @DeleteMapping("/conversations/{userId}/{personaId}/clear")
     public void clearConversations(@PathVariable Long userId,
             @PathVariable Integer personaId) {
+        enforceCurrentUser(userId);
 
         List<Conversation> conversations = convoRepo.findByUserId(userId).stream()
-                .filter(conversation -> conversation.getPersona().getPersonaId() == personaId)
+                .filter(conversation -> Objects.equals(conversation.getPersona().getPersonaId(), personaId))
                 .toList();
 
         for (Conversation convo : conversations) {
@@ -286,10 +297,36 @@ public class ChatController {
     @Transactional
     @DeleteMapping("/{conversationId}/messages/clear")
     public void clearMessages(@PathVariable Integer conversationId) {
+        findOwnedConversation(conversationId);
+
+        msgRepo.deleteByConversationId(conversationId);
+    }
+
+    private Conversation findOwnedConversation(Integer conversationId) {
         Conversation conversation = convoRepo.findById(conversationId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Conversation not found"));
 
-        msgRepo.deleteByConversationId(conversationId);
+        Long authenticatedUserId = getAuthenticatedUserId();
+        if (!Objects.equals(conversation.getUserId(), authenticatedUserId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Conversation does not belong to this user");
+        }
+        return conversation;
+    }
+
+    private void enforceCurrentUser(Long userId) {
+        Long authenticatedUserId = getAuthenticatedUserId();
+        if (!Objects.equals(userId, authenticatedUserId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Cannot access another user's conversation data");
+        }
+    }
+
+    private Long getAuthenticatedUserId() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Authenticated user not found");
+        }
+        return user.getId();
     }
 
     private String buildChunkText(List<DocumentChunk> chunks) {
