@@ -95,10 +95,11 @@ class PrepHome extends StatelessWidget {
                             content: Text(
                               'Loading chat...',
                               style: theme.textTheme.bodySmall?.copyWith(
-                                color: Colors.black,
+                                color: theme.colorScheme.secondary,
                               ),
                             ),
-                            duration: Duration(minutes: 1),
+                            backgroundColor: theme.colorScheme.primary,
+                            duration: Duration(seconds: 10),
                           ),
                         );
                         try {

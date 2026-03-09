@@ -1,11 +1,16 @@
 package com.geojit.tekachi.chatbot.RAG.service;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.geojit.tekachi.chatbot.RAG.chunk_processing.PdfExtractor;
 import com.geojit.tekachi.chatbot.RAG.chunk_processing.TextChunker;
@@ -23,14 +28,19 @@ public class DocumentIngestionService {
     private final PdfExtractor pdfExtractor;
     private final TextCleaner textCleaner;
     private final TextChunker textChunker;
+    private final String ingestBaseDir;
 
     DocumentIngestionService(DocumentRepository documentRepository, ChunkRepository chunkRepository,
-            PdfExtractor pdfExtractor, TextCleaner textCleaner, TextChunker textChunker) {
+            PdfExtractor pdfExtractor,
+            TextCleaner textCleaner,
+            TextChunker textChunker,
+            @Value("${rag.ingest.base-dir:src/main/java/com/geojit/tekachi/chatbot/RAG/PDFS}") String ingestBaseDir) {
         this.documentRepository = documentRepository;
         this.chunkRepository = chunkRepository;
         this.pdfExtractor = pdfExtractor;
         this.textCleaner = textCleaner;
         this.textChunker = textChunker;
+        this.ingestBaseDir = ingestBaseDir;
     }
 
     private final List<String> topicArray = List.of(
@@ -120,5 +130,25 @@ public class DocumentIngestionService {
         });
 
         return savedDocument.getDocumentId();
+    }
+
+    public File resolvePdfFile(String fileName) {
+        if (fileName == null || fileName.isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "fileName is required");
+        }
+
+        Path basePath = Paths.get(ingestBaseDir).toAbsolutePath().normalize();
+        Path resolvedPath = basePath.resolve(fileName).normalize();
+
+        if (!resolvedPath.startsWith(basePath)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid file name");
+        }
+
+        File file = resolvedPath.toFile();
+        if (!file.exists() || !file.isFile()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "PDF file not found: " + fileName);
+        }
+
+        return file;
     }
 }

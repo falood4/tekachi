@@ -3,6 +3,7 @@ package com.geojit.tekachi.chatbot;
 import com.geojit.tekachi.chatbot.dtos.ChatRequest;
 import com.geojit.tekachi.chatbot.dtos.OpenAiMsg;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -27,26 +28,58 @@ public class OpenAiService {
                                 .build();
         }
 
-        @SuppressWarnings("rawtypes")
         public String getChatResponse(List<OpenAiMsg> messages) {
 
-                ChatRequest request = new ChatRequest(model, messages);
+                try {
+                        ChatRequest request = new ChatRequest(model, messages);
 
-                Map response = webClient.post()
-                                .uri("/chat/completions")
-                                .bodyValue(request)
-                                .retrieve()
-                                .onStatus(status -> status.isError(),
-                                                clientResponse -> clientResponse.bodyToMono(String.class)
-                                                                .map(body -> new RuntimeException(
-                                                                                "OpenRouter Error: " + body)))
-                                .bodyToMono(Map.class)
-                                .block();
+                        Map<String, Object> response = webClient.post()
+                                        .uri("/chat/completions")
+                                        .bodyValue(request)
+                                        .retrieve()
+                                        .onStatus(status -> status.isError(),
+                                                        clientResponse -> clientResponse.bodyToMono(String.class)
+                                                                        .map(body -> new OpenAiServiceException(
+                                                                                        "OpenRouter Error: " + body,
+                                                                                        null,
+                                                                                        false)))
+                                        .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {
+                                        })
+                                        .block();
 
-                List choices = (List) response.get("choices");
-                Map firstChoice = (Map) choices.get(0);
-                Map message = (Map) firstChoice.get("message");
+                        return extractContentFromResponse(response);
+                } catch (OpenAiServiceException e) {
+                        throw e;
+                } catch (Exception e) {
+                        throw new OpenAiServiceException("Failed to fetch chat response from OpenRouter", e, true);
+                }
+        }
 
-                return (String) message.get("content");
+        private String extractContentFromResponse(Map<String, Object> response) {
+                if (response == null) {
+                        throw new OpenAiServiceException("OpenRouter returned an empty response", null, true);
+                }
+
+                Object choicesObj = response.get("choices");
+                if (!(choicesObj instanceof List<?> choices) || choices.isEmpty()) {
+                        throw new OpenAiServiceException("OpenRouter response missing choices", null, true);
+                }
+
+                Object firstChoiceObj = choices.get(0);
+                if (!(firstChoiceObj instanceof Map<?, ?> firstChoice)) {
+                        throw new OpenAiServiceException("OpenRouter response choice format is invalid", null, true);
+                }
+
+                Object messageObj = firstChoice.get("message");
+                if (!(messageObj instanceof Map<?, ?> message)) {
+                        throw new OpenAiServiceException("OpenRouter response missing message payload", null, true);
+                }
+
+                Object contentObj = message.get("content");
+                if (!(contentObj instanceof String content) || content.isBlank()) {
+                        throw new OpenAiServiceException("OpenRouter response missing content text", null, true);
+                }
+
+                return content;
         }
 }

@@ -23,13 +23,13 @@ class _UserSettingsState extends State<UserSettings> {
     final double profileHeight = screenHeight * 0.09;
     final double baseFontSize = screenWidth * 0.05;
 
-    dynamic primary = Theme.of(context).colorScheme.secondary;
-    dynamic black = Theme.of(context).colorScheme.onPrimary;
-    dynamic lightGrey = Theme.of(context).colorScheme.surface;
+    final Color primary = Theme.of(context).colorScheme.secondary;
+    final Color black = Theme.of(context).colorScheme.onPrimary;
+    final Color lightGrey = Theme.of(context).colorScheme.surface;
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
-      bottomNavigationBar: NavBar(),
+      bottomNavigationBar: NavBar(selectedPage: 3),
       body: SafeArea(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 1000),
@@ -214,8 +214,6 @@ class _UserSettingsState extends State<UserSettings> {
   }
 
   void _setChangePassword() {
-    debugPrint('Change password initiated');
-
     final currentController = TextEditingController();
     final newController = TextEditingController();
     final confirmController = TextEditingController();
@@ -223,11 +221,11 @@ class _UserSettingsState extends State<UserSettings> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        dynamic primary = Theme.of(context).colorScheme.primary;
-        dynamic secondary = Theme.of(context).colorScheme.secondary;
-        dynamic tertiary = Theme.of(context).colorScheme.tertiary;
-        dynamic blackbg = Theme.of(context).colorScheme.background;
-        dynamic black = Theme.of(context).colorScheme.onPrimary;
+        final Color primary = Theme.of(context).colorScheme.primary;
+        final Color secondary = Theme.of(context).colorScheme.secondary;
+        final Color tertiary = Theme.of(context).colorScheme.tertiary;
+        final Color blackbg = Theme.of(context).colorScheme.background;
+        final Color black = Theme.of(context).colorScheme.onPrimary;
 
         return AlertDialog(
           title: Text(
@@ -244,7 +242,9 @@ class _UserSettingsState extends State<UserSettings> {
               TextField(
                 controller: currentController,
                 obscureText: true,
-                style: Theme.of(context).textTheme.bodyMedium,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: Theme.of(context).colorScheme.primary,
+                ),
                 decoration: InputDecoration(
                   hintText: 'Current Password',
                   hintStyle: TextStyle(
@@ -258,7 +258,9 @@ class _UserSettingsState extends State<UserSettings> {
               TextField(
                 controller: newController,
                 obscureText: true,
-                style: Theme.of(context).textTheme.bodyMedium,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: Theme.of(context).colorScheme.primary,
+                ),
                 decoration: InputDecoration(
                   hintText: 'New Password',
                   hintStyle: TextStyle(
@@ -272,7 +274,9 @@ class _UserSettingsState extends State<UserSettings> {
               TextField(
                 controller: confirmController,
                 obscureText: true,
-                style: Theme.of(context).textTheme.bodyMedium,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: Theme.of(context).colorScheme.primary,
+                ),
                 decoration: InputDecoration(
                   hintText: 'Confirm New Password',
                   hintStyle: TextStyle(
@@ -304,6 +308,42 @@ class _UserSettingsState extends State<UserSettings> {
                 height: 55,
                 child: ElevatedButton(
                   onPressed: () {
+                    if (newController.text.isEmpty ||
+                        confirmController.text.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          backgroundColor: Theme.of(
+                            context,
+                          ).colorScheme.background,
+                          content: Text(
+                            'Please fill in all password fields.',
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                          ),
+                        ),
+                      );
+                      return;
+                    }
+                    if (newController.text != confirmController.text) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          backgroundColor: Theme.of(
+                            context,
+                          ).colorScheme.background,
+                          content: Text(
+                            'New passwords do not match.',
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                          ),
+                        ),
+                      );
+                      return;
+                    }
+                    Navigator.of(context).pop();
                     _handleChangePassword(newController.text);
                   },
                   style: ElevatedButton.styleFrom(backgroundColor: black),
@@ -329,11 +369,33 @@ class _UserSettingsState extends State<UserSettings> {
       newPassword: newPassword,
     );
 
+    if (!mounted) return;
     if (response.statusCode == 200 || response.statusCode == 201) {
-      Navigator.pop(context);
       debugPrint('Password changed successfully');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Theme.of(context).colorScheme.background,
+          content: Text(
+            'Password changed successfully.',
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          ),
+        ),
+      );
     } else {
       debugPrint('Failed to change password');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Theme.of(context).colorScheme.background,
+          content: Text(
+            'Failed to change password. Please try again.',
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          ),
+        ),
+      );
     }
   }
 
@@ -345,11 +407,11 @@ class _UserSettingsState extends State<UserSettings> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        dynamic primary = Theme.of(context).colorScheme.primary;
-        dynamic secondary = Theme.of(context).colorScheme.secondary;
-        dynamic blackbg = Theme.of(context).colorScheme.background;
-        dynamic black = Theme.of(context).colorScheme.onPrimary;
-        dynamic red = Theme.of(context).colorScheme.error;
+        final Color primary = Theme.of(context).colorScheme.primary;
+        final Color secondary = Theme.of(context).colorScheme.secondary;
+        final Color blackbg = Theme.of(context).colorScheme.background;
+        final Color black = Theme.of(context).colorScheme.onPrimary;
+        final Color red = Theme.of(context).colorScheme.error;
 
         return AlertDialog(
           title: Text(
@@ -380,6 +442,7 @@ class _UserSettingsState extends State<UserSettings> {
             SizedBox.fromSize(size: const Size.fromHeight(10)),
             ElevatedButton(
               onPressed: () {
+                Navigator.of(context).pop();
                 _handleDeleteAccount();
               },
               style: ElevatedButton.styleFrom(backgroundColor: red),
@@ -398,6 +461,7 @@ class _UserSettingsState extends State<UserSettings> {
     try {
       final response = await AuthService().deleteUser();
 
+      if (!mounted) return;
       if (response.statusCode == 200 || response.statusCode == 201) {
         Navigator.pushAndRemoveUntil(
           context,
@@ -418,11 +482,11 @@ class _UserSettingsState extends State<UserSettings> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        dynamic primary = Theme.of(context).colorScheme.primary;
-        dynamic secondary = Theme.of(context).colorScheme.secondary;
-        dynamic black = Theme.of(context).colorScheme.onPrimary;
-        dynamic blackbg = Theme.of(context).colorScheme.background;
-        dynamic red = Theme.of(context).colorScheme.error;
+        final Color primary = Theme.of(context).colorScheme.primary;
+        final Color secondary = Theme.of(context).colorScheme.secondary;
+        final Color black = Theme.of(context).colorScheme.onPrimary;
+        final Color blackbg = Theme.of(context).colorScheme.background;
+        final Color red = Theme.of(context).colorScheme.error;
 
         return AlertDialog(
           title: Text(
@@ -450,6 +514,7 @@ class _UserSettingsState extends State<UserSettings> {
             SizedBox.fromSize(size: const Size.fromHeight(10)),
             ElevatedButton(
               onPressed: () {
+                Navigator.of(context).pop();
                 _handleLogOut();
               },
               style: ElevatedButton.styleFrom(backgroundColor: red),
@@ -468,6 +533,7 @@ class _UserSettingsState extends State<UserSettings> {
     try {
       final response = await AuthService().logout();
 
+      if (!mounted) return;
       if (response.statusCode == 200 || response.statusCode == 201) {
         // Source - https://stackoverflow.com/a/57030299
         // Posted by Paul Iluhin, modified by community. See post 'Timeline' for change history

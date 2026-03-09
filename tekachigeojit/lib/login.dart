@@ -65,6 +65,8 @@ class _LoginState extends State<Login> {
           .loginUser(email: _emailCtrl.text, password: _passwordCtrl.text)
           .timeout(const Duration(seconds: 10));
 
+      if (!mounted) return;
+
       if (response.statusCode == 200) {
         AuthService().setCredentials(
           _emailCtrl.text.trim(),
@@ -123,10 +125,10 @@ class _LoginState extends State<Login> {
     final screenHeight = MediaQuery.of(context).size.height;
     final theme = Theme.of(context);
 
-    dynamic secondary = theme.colorScheme.secondary;
-    dynamic onPrimary = theme.colorScheme.onPrimary;
-    dynamic tertiary = theme.colorScheme.tertiary;
-    dynamic surface = theme.colorScheme.surface;
+    final Color secondary = theme.colorScheme.secondary;
+    final Color onPrimary = theme.colorScheme.onPrimary;
+    final Color tertiary = theme.colorScheme.tertiary;
+    final Color surface = theme.colorScheme.surface;
 
     return Scaffold(
       backgroundColor: theme.colorScheme.background,

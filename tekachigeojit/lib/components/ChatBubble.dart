@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 class ChatBubble extends StatelessWidget {
   const ChatBubble({
     super.key,
-    required this.message_text,
+    required this.messageText,
     required this.isUser,
   });
-  final String message_text;
+  final String messageText;
   final String isUser;
 
   @override
@@ -14,12 +14,12 @@ class ChatBubble extends StatelessWidget {
     double screenwidth = MediaQuery.of(context).size.width;
     final theme = Theme.of(context);
 
-    if (isUser=="USER") {
+    if (isUser == "USER") {
       return ConstrainedBox(
         constraints: BoxConstraints(
           minWidth: 50,
           minHeight: 50,
-          maxWidth: screenwidth * 0.6,
+          maxWidth: screenwidth * 0.7,
         ),
         child: Container(
           padding: const EdgeInsets.all(12),
@@ -28,7 +28,7 @@ class ChatBubble extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
           ),
           child: Text(
-            message_text,
+            messageText,
             softWrap: true,
             style: theme.textTheme.bodySmall?.copyWith(
               color: theme.colorScheme.onPrimary,
@@ -41,7 +41,7 @@ class ChatBubble extends StatelessWidget {
         constraints: BoxConstraints(
           minWidth: 50,
           minHeight: 50,
-          maxWidth: screenwidth * 0.6,
+          maxWidth: screenwidth * 0.7,
         ),
         child: Container(
           padding: const EdgeInsets.all(12),
@@ -50,7 +50,7 @@ class ChatBubble extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
           ),
           child: Text(
-            message_text,
+            messageText,
             softWrap: true,
             style: theme.textTheme.bodySmall?.copyWith(
               color: theme.colorScheme.onPrimary,

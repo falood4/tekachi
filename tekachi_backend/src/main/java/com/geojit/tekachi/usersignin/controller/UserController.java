@@ -16,7 +16,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
-@CrossOrigin
 public class UserController {
 
     private final UserRepository repository;
@@ -97,9 +96,9 @@ public class UserController {
     @GetMapping
     public ResponseEntity<?> getAll() {
         try {
-            List<User> users = repository.findAll();
-            users.forEach(u -> u.setPassword(null));
-            return ResponseEntity.ok(users);
+            User currentUser = getAuthenticatedUser();
+            currentUser.setPassword(null);
+            return ResponseEntity.ok(List.of(currentUser));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Map.of("error", "Failed to fetch users"));
@@ -201,5 +200,14 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Map.of("error", "Delete failed: " + e.getMessage()));
         }
+    }
+
+    private User getAuthenticatedUser() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = repository.findByEmail(email);
+        if (user == null) {
+            throw new IllegalStateException("Authenticated user not found");
+        }
+        return user;
     }
 }

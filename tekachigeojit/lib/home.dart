@@ -10,9 +10,9 @@ class HomeScreen extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
     final theme = Theme.of(context);
 
-    dynamic secondary = theme.colorScheme.secondary;
-    dynamic black = theme.colorScheme.onPrimary;
-    dynamic lightGrey = theme.colorScheme.surface;
+    final Color secondary = theme.colorScheme.secondary;
+    final Color black = theme.colorScheme.onPrimary;
+    final Color lightGrey = theme.colorScheme.surface;
 
     return Scaffold(
       backgroundColor: theme.colorScheme.background,
@@ -96,7 +96,7 @@ class AppTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final theme = Theme.of(context);
-    dynamic secondary = theme.colorScheme.secondary;
+    final Color secondary = theme.colorScheme.secondary;
     return Text(
       "Tekachi",
       textAlign: TextAlign.center,
