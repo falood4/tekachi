@@ -111,7 +111,7 @@ class _ChatInterviewState extends State<ChatInterview> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_scrollController.hasClients) {
         _scrollController.animateTo(
-          _scrollController.position.maxScrollExtent,
+          _scrollController.position.pixels + 400,
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeOut,
         );

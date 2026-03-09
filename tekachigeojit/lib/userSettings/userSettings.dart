@@ -242,7 +242,9 @@ class _UserSettingsState extends State<UserSettings> {
               TextField(
                 controller: currentController,
                 obscureText: true,
-                style: Theme.of(context).textTheme.bodyMedium,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: Theme.of(context).colorScheme.primary,
+                ),
                 decoration: InputDecoration(
                   hintText: 'Current Password',
                   hintStyle: TextStyle(
@@ -256,7 +258,9 @@ class _UserSettingsState extends State<UserSettings> {
               TextField(
                 controller: newController,
                 obscureText: true,
-                style: Theme.of(context).textTheme.bodyMedium,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: Theme.of(context).colorScheme.primary,
+                ),
                 decoration: InputDecoration(
                   hintText: 'New Password',
                   hintStyle: TextStyle(
@@ -270,7 +274,9 @@ class _UserSettingsState extends State<UserSettings> {
               TextField(
                 controller: confirmController,
                 obscureText: true,
-                style: Theme.of(context).textTheme.bodyMedium,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: Theme.of(context).colorScheme.primary,
+                ),
                 decoration: InputDecoration(
                   hintText: 'Confirm New Password',
                   hintStyle: TextStyle(
@@ -305,16 +311,34 @@ class _UserSettingsState extends State<UserSettings> {
                     if (newController.text.isEmpty ||
                         confirmController.text.isEmpty) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Please fill in all password fields.'),
+                        SnackBar(
+                          backgroundColor: Theme.of(
+                            context,
+                          ).colorScheme.background,
+                          content: Text(
+                            'Please fill in all password fields.',
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                          ),
                         ),
                       );
                       return;
                     }
                     if (newController.text != confirmController.text) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('New passwords do not match.'),
+                        SnackBar(
+                          backgroundColor: Theme.of(
+                            context,
+                          ).colorScheme.background,
+                          content: Text(
+                            'New passwords do not match.',
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                          ),
                         ),
                       );
                       return;
@@ -349,13 +373,27 @@ class _UserSettingsState extends State<UserSettings> {
     if (response.statusCode == 200 || response.statusCode == 201) {
       debugPrint('Password changed successfully');
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Password changed successfully.')),
+        SnackBar(
+          backgroundColor: Theme.of(context).colorScheme.background,
+          content: Text(
+            'Password changed successfully.',
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          ),
+        ),
       );
     } else {
       debugPrint('Failed to change password');
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Failed to change password. Please try again.'),
+        SnackBar(
+          backgroundColor: Theme.of(context).colorScheme.background,
+          content: Text(
+            'Failed to change password. Please try again.',
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          ),
         ),
       );
     }
