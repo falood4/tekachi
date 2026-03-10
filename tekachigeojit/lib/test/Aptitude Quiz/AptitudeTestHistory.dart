@@ -287,14 +287,14 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
 
         return AlertDialog(
           title: Text(
-            'Clear Interview History',
+            'Clear Test History',
             style: Theme.of(
               context,
             ).textTheme.bodyLarge?.copyWith(color: primary),
           ),
           backgroundColor: blackbg,
           content: Text(
-            'Are you sure you want to clear interview history?',
+            'Are you sure you want to clear test history?',
             style: TextStyle(color: primary, fontFamily: "Trebuchet"),
           ),
           actions: [

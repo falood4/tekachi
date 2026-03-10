@@ -144,9 +144,20 @@ class _ChatInterviewState extends State<ChatInterview> {
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: secondary),
-          onPressed: () {
-            Navigator.pop(context);
-            Chatservice().clearConvId();
+          onPressed: () async {
+            if (widget.personaId == 1) {
+              Navigator.pop(context);
+            } else {
+              try {
+                await Chatservice().getVerdict();
+                debugPrint('getVerdict success');
+              } catch (e) {
+                debugPrint('getVerdict error: $e');
+              } finally {
+                Chatservice().clearConvId();
+                if (mounted) Navigator.pop(context);
+              }
+            }
           },
         ),
         title: Text(

@@ -30,6 +30,10 @@ class Chatservice {
     _convId = id;
   }
 
+  int? shareConvId() {
+    return _convId;
+  }
+
   Future<String> startConversation(int personaId) async {
     try {
       final requestHeaders = _headers();
@@ -120,6 +124,31 @@ class Chatservice {
     } catch (e) {
       throw Exception('Failed to get reply: $e');
     }
+  }
+
+  Future<void> getVerdict() async {
+    try {
+      final requestHeaders = _headers();
+      if (requestHeaders['Authorization'] == null) {
+        return Future.error('User not authenticated');
+      }
+
+      final response = await http.post(
+        Uri.parse("$_baseUrl/$_convId/messages/verdict"),
+        headers: requestHeaders,
+        body: jsonEncode({'content': "thank you"}),
+      );
+
+      if (response.statusCode == 200) {
+        debugPrint('response: ${response.body}');
+        return Future.value();
+      } else if (response.statusCode == 500) {
+        throw Exception('Server error. Please try later');
+      } else {
+        throw Exception('Failed to get verdict: HTTP ${response.statusCode}');
+      }
+    } catch (e) {}
+    return Future.error('getVerdict not implemented yet');
   }
 
   Future<List<Map<String, dynamic>>> getConversationHistory(int persona) async {

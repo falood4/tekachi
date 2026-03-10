@@ -1,5 +1,6 @@
-package com.geojit.tekachi.chatbot;
+package com.geojit.tekachi.usersignin;
 
+import com.geojit.tekachi.chatbot.OpenAiServiceException;
 import com.geojit.tekachi.chatbot.dtos.ChatRequest;
 import com.geojit.tekachi.chatbot.dtos.OpenAiMsg;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,6 +33,35 @@ public class OpenAiService {
 
                 try {
                         ChatRequest request = new ChatRequest(model, messages);
+
+                        Map<String, Object> response = webClient.post()
+                                        .uri("/chat/completions")
+                                        .bodyValue(request)
+                                        .retrieve()
+                                        .onStatus(status -> status.isError(),
+                                                        clientResponse -> clientResponse.bodyToMono(String.class)
+                                                                        .map(body -> new OpenAiServiceException(
+                                                                                        "OpenRouter Error: " + body,
+                                                                                        null,
+                                                                                        false)))
+                                        .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {
+                                        })
+                                        .block();
+
+                        return extractContentFromResponse(response);
+                } catch (OpenAiServiceException e) {
+                        throw e;
+                } catch (Exception e) {
+                        throw new OpenAiServiceException("Failed to fetch chat response from OpenRouter", e, true);
+                }
+        }
+
+        public String getVerdict(List<OpenAiMsg> messages) {
+                try {
+                        ChatRequest request = new ChatRequest(model, List.of(new OpenAiMsg("system",
+                                        "The interview has concluded. You must now verdict the user's potential as a candidate based on their perfomance. If you have already given a final reccomendation then repeat it."),
+                                        new OpenAiMsg("user",
+                                                        "Provide a ONE-WORD response for candidate: HIRED or NON-HIRED. Consider the candidate's performance in the interview and provide your verdict.")));
 
                         Map<String, Object> response = webClient.post()
                                         .uri("/chat/completions")

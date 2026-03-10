@@ -7,6 +7,7 @@ import com.geojit.tekachi.chatbot.entity.*;
 import com.geojit.tekachi.chatbot.repo.ConvoRepo;
 import com.geojit.tekachi.chatbot.repo.MsgRepo;
 import com.geojit.tekachi.chatbot.repo.PersonaRepo;
+import com.geojit.tekachi.usersignin.OpenAiService;
 import com.geojit.tekachi.usersignin.entity.User;
 import com.geojit.tekachi.usersignin.repository.UserRepository;
 
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
-import java.util.Objects;
 
 /*
 User presses start
@@ -252,6 +252,42 @@ public class ChatController {
         return new MessageResponse(response);
     }
 
+    @PostMapping("/{conversationId}/messages/verdict")
+    public String getVerdict(@PathVariable Integer conversationId, @RequestBody MessageRequest request) {
+
+        Conversation conversation = findOwnedConversation(conversationId);
+
+        Persona persona = personaRepo
+                .findByPersonaIdAndIsActiveTrue(conversation.getPersona().getPersonaId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Persona not found"));
+
+        saveUserMessage(conversationId, request.getContent());
+
+        List<Message> history = msgRepo.findRecentMessages(conversationId, PageRequest.of(0, 100));
+        Collections.reverse(history);
+
+        List<OpenAiMsg> openAiMsgs = new ArrayList<>();
+
+        openAiMsgs.add(new OpenAiMsg("system", persona.getSystemPrompt()));
+
+        for (Message msg : history) {
+            openAiMsgs.add(new OpenAiMsg(
+                    msg.getRole().name().toLowerCase(),
+                    msg.getContent()));
+        }
+
+        String response = openAiService.getVerdict(openAiMsgs);
+
+        // 5️⃣ Store assistant reply
+        saveAssistantMessage(conversationId, response);
+
+        // Save verdict to conversation
+        String verdict = response.trim().toUpperCase();
+        saveVerdictMessage(conversationId, verdict);
+
+        return verdict;
+    }
+
     @GetMapping("/conversations/{userId}/{personaId}")
     public List<ConvoHistory> getConversations(@PathVariable Long userId,
             @PathVariable Integer personaId) {
@@ -263,7 +299,8 @@ public class ChatController {
                         conversation.getConversationId(),
                         conversation.getCreatedAt(),
                         conversation.getPersona().getPersonaId(),
-                        conversation.getUserId()))
+                        conversation.getUserId(),
+                        conversation.getVerdict()))
                 .toList();
 
         return history;
@@ -355,6 +392,14 @@ public class ChatController {
         userMsg.setRole(Role.USER);
         userMsg.setContent(content);
         msgRepo.save(userMsg);
+    }
+
+    private void saveVerdictMessage(Integer conversationId, String verdict) {
+        Conversation conversation = convoRepo.findById(conversationId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Conversation not found"));
+
+        conversation.setVerdict(verdict);
+        convoRepo.save(conversation);
     }
 
 }

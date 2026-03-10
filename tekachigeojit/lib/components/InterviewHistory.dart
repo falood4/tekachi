@@ -53,7 +53,16 @@ class _InterviewHistoryState extends State<InterviewHistory> {
   String _formatDate(String dateString) {
     try {
       final date = DateTime.parse(dateString);
-      return DateFormat('MMMM dd, yyyy, HH:mm a').format(date);
+      return DateFormat('MMMM dd').format(date);
+    } catch (e) {
+      return dateString;
+    }
+  }
+
+  String _formatDate2(String dateString) {
+    try {
+      final date = DateTime.parse(dateString);
+      return DateFormat('HH:mm a').format(date);
     } catch (e) {
       return dateString;
     }
@@ -165,15 +174,30 @@ class _InterviewHistoryState extends State<InterviewHistory> {
                       ),
                     ),
                     const SizedBox(width: 16),
-                    Text(
-                      _formatDate(attempt['createdAt']),
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: primary,
-                      ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          _formatDate(attempt['createdAt']),
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: primary,
+                          ),
+                        ),
+                        Text(
+                          _formatDate2(attempt['createdAt']),
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: secondary,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-
+                SizedBox(width: 16),
+                Text(
+                  attempt['verdict'],
+                  style: theme.textTheme.headlineLarge?.copyWith(fontSize: 18),
+                ),
                 Icon(Icons.chevron_right, color: secondary),
               ],
             ),

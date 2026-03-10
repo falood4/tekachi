@@ -25,6 +25,9 @@ public class Conversation {
     @Column(name = "current_topic")
     private String currentTopic; // 🔥 ADD THIS
 
+    @Column(name = "verdict")
+    private String verdict;
+
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 }
