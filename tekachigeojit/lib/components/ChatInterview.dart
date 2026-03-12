@@ -3,12 +3,20 @@ import 'package:intl/intl.dart';
 import 'package:tekachigeojit/components/NavBar.dart';
 import 'package:tekachigeojit/components/ChatBubble.dart';
 import 'package:tekachigeojit/services/ChatService.dart';
+import 'package:tekachigeojit/services/FullTestService.dart';
+import 'package:tekachigeojit/test/3%20Step%20Placement/PlacementResult.dart';
 
 class ChatInterview extends StatefulWidget {
-  const ChatInterview({super.key, this.initialMessage, this.personaId});
+  const ChatInterview({
+    super.key,
+    this.initialMessage,
+    required this.personaId,
+    required this.is3step,
+  });
 
   final String? initialMessage;
   final int? personaId;
+  final bool is3step;
 
   @override
   State<ChatInterview> createState() => _ChatInterviewState();
@@ -58,7 +66,7 @@ class _ChatInterviewState extends State<ChatInterview> {
     setState(() {
       _messages.add(_ChatMessage(text: text, isUser: isUser));
     });
-    _scrollToBottom();
+    _scrollToBottom(isUser);
   }
 
   Future<void> sendMessage() async {
@@ -107,11 +115,17 @@ class _ChatInterviewState extends State<ChatInterview> {
     }
   }
 
-  void _scrollToBottom() {
+  void _scrollToBottom(String isUser) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_scrollController.hasClients) {
+      if (_scrollController.hasClients && isUser == "USER") {
         _scrollController.animateTo(
-          _scrollController.position.pixels + 400,
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      } else if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          _scrollController.position.pixels + 500,
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeOut,
         );
@@ -125,6 +139,61 @@ class _ChatInterviewState extends State<ChatInterview> {
       return DateFormat('hh:mm a').format(date);
     } catch (e) {
       return dateString;
+    }
+  }
+
+  Future<void> _handleContinue(BuildContext context) async {
+    try {
+      final String verdict = await Chatservice().getVerdict();
+      if (widget.personaId == 2) {
+        FullTestService().setTechnicalVerdict(verdict);
+
+        if (!mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                'Loading interview...',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
+              ),
+              duration: const Duration(seconds: 4),
+            ),
+          );
+        }
+        final String reply = await Chatservice().startConversation(3);
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (_) => ChatInterview(
+              initialMessage: reply,
+              personaId: 3,
+              is3step: true,
+            ),
+          ),
+        );
+      } else if (widget.personaId == 3) {
+        FullTestService().setHRVerdict(verdict);
+        Chatservice().clearConvId();
+
+        if (!mounted) return;
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const PlacementResult()),
+        );
+      }
+    } catch (e) {
+      debugPrint('Continue error: $e');
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Failed to proceed. Please try again.',
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: Colors.white),
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 
@@ -160,10 +229,34 @@ class _ChatInterviewState extends State<ChatInterview> {
             }
           },
         ),
+
         title: Text(
           "AI Interview",
           style: theme.textTheme.titleLarge?.copyWith(color: secondary),
         ),
+
+        actions: [
+          if ((widget.personaId == 2 || widget.personaId == 3) &&
+              widget.is3step)
+            Container(
+              margin: const EdgeInsets.only(right: 12),
+              child: ElevatedButton(
+                onPressed: () => _handleContinue(context),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: background,
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50),
+                    side: BorderSide(color: secondary, width: 1.5),
+                  ),
+                ),
+                child: Text(
+                  'Continue',
+                  style: theme.textTheme.bodyMedium?.copyWith(color: secondary),
+                ),
+              ),
+            ),
+        ],
       ),
       body: SafeArea(
         child: Column(

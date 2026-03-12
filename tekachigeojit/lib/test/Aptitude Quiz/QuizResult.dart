@@ -1,16 +1,25 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:tekachigeojit/components/ChatInterview.dart';
 import 'package:tekachigeojit/components/NavBar.dart';
 import 'package:tekachigeojit/models/AnswerSelection.dart';
-import 'package:tekachigeojit/services/HistoryService.dart';
+import 'package:tekachigeojit/services/ChatService.dart';
+import 'package:tekachigeojit/services/FullTestService.dart';
+import 'package:tekachigeojit/services/QuizHistoryService.dart';
 import 'package:tekachigeojit/services/AuthService.dart';
 import 'package:tekachigeojit/test/testHome.dart';
 
 class QuizResult extends StatefulWidget {
   final int score;
   final List<AnswerSelection> answers;
+  final bool is3step;
 
-  const QuizResult({super.key, required this.score, required this.answers});
+  const QuizResult({
+    super.key,
+    required this.score,
+    required this.answers,
+    required this.is3step,
+  });
 
   @override
   State<QuizResult> createState() => _QuizResultState();
@@ -136,30 +145,106 @@ class _QuizResultState extends State<QuizResult> {
 
                 SizedBox(height: screenWidth * 0.03),
 
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => const TestHome()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 10,
-                      horizontal: 15,
+                if (widget.is3step && widget.score >= 7)
+                  ElevatedButton(
+                    onPressed: () async {
+                      FullTestService().setAptitudeScore(widget.score);
+                      try {
+                        FullTestService().setAptitudeScore(widget.score);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'Loading interview...',
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: theme.colorScheme.onPrimary,
+                              ),
+                            ),
+                            duration: const Duration(seconds: 4),
+                          ),
+                        );
+                        final String reply = await Chatservice()
+                            .startConversation(2);
+                        if (!context.mounted) {
+                          return;
+                        }
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (_) => ChatInterview(
+                              initialMessage: reply,
+                              personaId: 2,
+                              is3step: false,
+                            ),
+                          ),
+                        );
+                      } catch (e) {
+                        if (!context.mounted) return;
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Failed to start interview: $e'),
+                            backgroundColor: Theme.of(
+                              context,
+                            ).colorScheme.error,
+                          ),
+                        );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 10,
+                        horizontal: 15,
+                      ),
+                      backgroundColor: surface,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
                     ),
-                    backgroundColor: surface,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50),
+                    child: Text(
+                      'Tech Interview',
+                      style: theme.textTheme.headlineLarge?.copyWith(
+                        color: theme.colorScheme.onPrimary,
+                        fontSize: screenWidth * 0.06,
+                      ),
                     ),
+                  )
+                else
+                  Column(
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => const TestHome(),
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 10,
+                            horizontal: 15,
+                          ),
+                          backgroundColor: surface,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                        ),
+                        child: Text(
+                          'Return to Tests',
+                          style: theme.textTheme.headlineLarge?.copyWith(
+                            color: theme.colorScheme.onPrimary,
+                            fontSize: screenWidth * 0.04,
+                          ),
+                        ),
+                      ),
+                      if (widget.is3step && widget.score < 7)
+                        Text(
+                          'You did not meet the required score to proceed to the interviews.',
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            fontStyle: FontStyle.italic,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                    ],
                   ),
-                  child: Text(
-                    'Return to Tests',
-                    style: theme.textTheme.headlineLarge?.copyWith(
-                      color: theme.colorScheme.onPrimary,
-                      fontSize: screenWidth * 0.04,
-                    ),
-                  ),
-                ),
               ],
             ),
           ),

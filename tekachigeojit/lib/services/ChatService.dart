@@ -126,7 +126,7 @@ class Chatservice {
     }
   }
 
-  Future<void> getVerdict() async {
+  Future<String> getVerdict() async {
     try {
       final requestHeaders = _headers();
       if (requestHeaders['Authorization'] == null) {
@@ -141,14 +141,16 @@ class Chatservice {
 
       if (response.statusCode == 200) {
         debugPrint('response: ${response.body}');
-        return Future.value();
+        final verdict = response.body;
+        return verdict;
       } else if (response.statusCode == 500) {
         throw Exception('Server error. Please try later');
       } else {
         throw Exception('Failed to get verdict: HTTP ${response.statusCode}');
       }
-    } catch (e) {}
-    return Future.error('getVerdict not implemented yet');
+    } catch (e) {
+      throw Exception('Failed to get verdict: $e');
+    }
   }
 
   Future<List<Map<String, dynamic>>> getConversationHistory(int persona) async {

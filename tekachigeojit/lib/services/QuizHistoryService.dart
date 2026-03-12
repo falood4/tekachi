@@ -123,7 +123,7 @@ class HistoryService {
       }
     } catch (e) {
       debugPrint('Could not get attempt history: $e');
-      rethrow;
+      return [];
     }
   }
 

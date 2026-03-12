@@ -73,6 +73,33 @@ class _QuizPageState extends State<QuizPage> {
       appBar: AppBar(
         title: Text('Quiz', style: theme.textTheme.headlineLarge),
         backgroundColor: Colors.white,
+        actions: [
+          Container(
+            margin: const EdgeInsets.only(right: 12),
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        const QuizResult(score: 0, answers: [], is3step: false),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: black,
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50),
+                  side: BorderSide(color: secondary, width: 1.5),
+                ),
+              ),
+              child: Text(
+                'Continue',
+                style: theme.textTheme.bodyMedium?.copyWith(color: secondary),
+              ),
+            ),
+          ),
+        ],
       ),
       body: isLoading || currentQuestion == null
           ? SafeArea(
@@ -195,14 +222,26 @@ class _QuizPageState extends State<QuizPage> {
       _loadRandomQuestion();
     } else {
       indices = List.generate(40, (index) => index + 1);
-
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) =>
-              QuizResult(score: totalScore, answers: _answers),
-        ),
-      );
+      if (1 == 1) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                QuizResult(score: totalScore, answers: _answers, is3step: true),
+          ),
+        );
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => QuizResult(
+              score: totalScore,
+              answers: _answers,
+              is3step: false,
+            ),
+          ),
+        );
+      }
     }
   }
 }

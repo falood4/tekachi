@@ -4,6 +4,7 @@ import 'package:tekachigeojit/test/Aptitude%20Quiz/AptitudeTest.dart';
 import 'package:tekachigeojit/test/Aptitude%20Quiz/AptitudeTestHistory.dart';
 import 'package:tekachigeojit/test/HrInterviewIntro.dart';
 import 'package:tekachigeojit/components/InterviewHistory.dart';
+import 'package:tekachigeojit/test/3%20Step%20Placement/PlacementFull.dart';
 import 'package:tekachigeojit/test/TechInterviewIntro.dart';
 
 class TestHome extends StatelessWidget {
@@ -115,7 +116,11 @@ class TestHome extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => PlacementFull()),
+                        );
+                      },
                       style: theme.elevatedButtonTheme.style,
                       child: Text(
                         'Start',

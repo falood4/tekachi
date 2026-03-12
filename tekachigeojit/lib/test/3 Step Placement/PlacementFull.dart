@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:tekachigeojit/components/NavBar.dart';
 import 'package:tekachigeojit/test/Aptitude%20Quiz/QuizPage.dart';
 
-class AptitudeTest extends StatelessWidget {
-  const AptitudeTest({super.key});
+class PlacementFull extends StatelessWidget {
+  const PlacementFull({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class AptitudeTest extends StatelessWidget {
         backgroundColor: bg,
         iconTheme: IconThemeData(color: lime),
         title: Text(
-          'Aptitude Test',
+          '3 Step Placement Test',
           style: theme.textTheme.titleLarge?.copyWith(color: lime),
         ),
         leading: IconButton(
@@ -42,7 +42,7 @@ class AptitudeTest extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'This aptitude test will measure and determine your abilities in problem-solving, logic, and reasoning in arithmetic and language',
+                  'This 3 step placement simulation will evaluate your aptitude, technical skills, and professional readiness to prepare you for real-world job placements. It includes an aptitude test, a technical interview, and an HR interview to comprehensively assess your abilities and readiness for the job market.',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: theme.colorScheme.primary,
@@ -50,13 +50,6 @@ class AptitudeTest extends StatelessWidget {
                     fontSize: 0.05 * screenWidth,
                   ),
                 ),
-
-                Image(
-                  image: Image.asset(
-                    'assets/interview_avatar/aptitude.png',
-                  ).image,
-                ),
-
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 5),
                   child: Container(
@@ -65,9 +58,7 @@ class AptitudeTest extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () {
                         Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (_) => QuizPage(),
-                          ),
+                          MaterialPageRoute(builder: (_) => QuizPage()),
                         );
                       },
                       style: theme.elevatedButtonTheme.style?.copyWith(

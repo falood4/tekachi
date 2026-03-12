@@ -85,6 +85,7 @@ class HRinterviewIntro extends StatelessWidget {
                               builder: (_) => ChatInterview(
                                 initialMessage: reply,
                                 personaId: 3,
+                                is3step: false,
                               ),
                             ),
                           );

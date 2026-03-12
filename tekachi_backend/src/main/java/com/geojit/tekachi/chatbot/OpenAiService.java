@@ -1,6 +1,5 @@
-package com.geojit.tekachi.usersignin;
+package com.geojit.tekachi.chatbot;
 
-import com.geojit.tekachi.chatbot.OpenAiServiceException;
 import com.geojit.tekachi.chatbot.dtos.ChatRequest;
 import com.geojit.tekachi.chatbot.dtos.OpenAiMsg;
 import org.springframework.beans.factory.annotation.Value;
@@ -8,6 +7,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -57,11 +57,20 @@ public class OpenAiService {
         }
 
         public String getVerdict(List<OpenAiMsg> messages) {
+
                 try {
-                        ChatRequest request = new ChatRequest(model, List.of(new OpenAiMsg("system",
-                                        "The interview has concluded. You must now verdict the user's potential as a candidate based on their perfomance. If you have already given a final reccomendation then repeat it."),
-                                        new OpenAiMsg("user",
-                                                        "Provide a ONE-WORD response for candidate: HIRED or NON-HIRED. Consider the candidate's performance in the interview and provide your verdict.")));
+
+                        List<OpenAiMsg> prompt = new ArrayList<>(messages);
+
+                        prompt.add(new OpenAiMsg(
+                                        "system",
+                                        "The interview has concluded. Based on the conversation above, return the final hiring verdict."));
+
+                        prompt.add(new OpenAiMsg(
+                                        "user",
+                                        "Respond with EXACTLY one word: HIRED or NON-HIRED. Do not explain."));
+
+                        ChatRequest request = new ChatRequest(model, prompt);
 
                         Map<String, Object> response = webClient.post()
                                         .uri("/chat/completions")
@@ -78,8 +87,7 @@ public class OpenAiService {
                                         .block();
 
                         return extractContentFromResponse(response);
-                } catch (OpenAiServiceException e) {
-                        throw e;
+
                 } catch (Exception e) {
                         throw new OpenAiServiceException("Failed to fetch chat response from OpenRouter", e, true);
                 }

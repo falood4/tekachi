@@ -5,7 +5,10 @@ class OptionModel {
   OptionModel({required this.id, required this.text});
 
   factory OptionModel.fromJson(Map<String, dynamic> json) {
-    return OptionModel(id: json['opId'] as int, text: json['op'] as String);
+    return OptionModel(
+      id: (json['opId'] as num?)?.toInt() ?? 0,
+      text: json['op'] as String? ?? '',
+    );
   }
 }
 
@@ -24,12 +27,12 @@ class QuestionModel {
 
   factory QuestionModel.fromJson(Map<String, dynamic> json) {
     return QuestionModel(
-      questionId: json['qId'] as int,
-      questionText: json['questionText'] as String,
+      questionId: (json['qId'] as num?)?.toInt() ?? 0,
+      questionText: json['questionText'] as String? ?? '',
       options: (json['options'] as List<dynamic>)
           .map((opt) => OptionModel.fromJson(opt as Map<String, dynamic>))
           .toList(),
-      correctOptionId: json['correctOptionId'] as int,
+      correctOptionId: (json['correctOptionId'] as num?)?.toInt() ?? 0,
     );
   }
 }

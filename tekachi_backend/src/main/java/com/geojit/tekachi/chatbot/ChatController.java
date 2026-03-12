@@ -7,7 +7,6 @@ import com.geojit.tekachi.chatbot.entity.*;
 import com.geojit.tekachi.chatbot.repo.ConvoRepo;
 import com.geojit.tekachi.chatbot.repo.MsgRepo;
 import com.geojit.tekachi.chatbot.repo.PersonaRepo;
-import com.geojit.tekachi.usersignin.OpenAiService;
 import com.geojit.tekachi.usersignin.entity.User;
 import com.geojit.tekachi.usersignin.repository.UserRepository;
 

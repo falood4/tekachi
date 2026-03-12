@@ -2,7 +2,6 @@ package com.geojit.tekachi.questionretrieval.entity;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.*;
@@ -22,11 +21,9 @@ public class Question {
     private String qsn;
 
     @Column(name = "q_correct_option")
-    @JsonIgnore
     private Integer qCorrectOption;
 
     @Column(name = "correct_op_id")
-    @JsonIgnore
     private Integer correctOpId;
 
     @OneToMany(mappedBy = "question", fetch = FetchType.EAGER)

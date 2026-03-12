@@ -85,6 +85,7 @@ class Techinterviewintro extends StatelessWidget {
                               builder: (_) => ChatInterview(
                                 initialMessage: reply,
                                 personaId: 2,
+                                is3step: false,
                               ),
                             ),
                           );

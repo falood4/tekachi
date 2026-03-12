@@ -112,6 +112,7 @@ class PrepHome extends StatelessWidget {
                               builder: (_) => ChatInterview(
                                 initialMessage: reply,
                                 personaId: 1,
+                                is3step: false,
                               ),
                             ),
                           );

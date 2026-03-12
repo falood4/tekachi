@@ -195,8 +195,11 @@ class _InterviewHistoryState extends State<InterviewHistory> {
                 ),
                 SizedBox(width: 16),
                 Text(
-                  attempt['verdict'],
-                  style: theme.textTheme.headlineLarge?.copyWith(fontSize: 18),
+                  attempt['verdict'] ?? 'N/A',
+                  style:
+                      (theme.textTheme.headlineLarge ??
+                              theme.textTheme.bodyLarge)
+                          ?.copyWith(fontSize: 18),
                 ),
                 Icon(Icons.chevron_right, color: secondary),
               ],
