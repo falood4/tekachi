@@ -14,21 +14,20 @@ public class Placement {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "test_id")
-    private int test_id;
+    private Integer test_id;
 
     @Column(name = "user_id")
-    private int user_id;
+    private Integer user_id;
 
     @Column(name = "attempted_on")
     LocalDateTime attempted_on;
 
     @Column(name = "apt_attempt_id")
-    private int apt_attempt;
+    private Integer apt_attempt;
 
     @Column(name = "tech_interview_id")
-    private int tech_interview;
+    private Integer tech_interview;
 
     @Column(name = "hr_interview_id")
-    private int hr_interview;
+    private Integer hr_interview;
 }
