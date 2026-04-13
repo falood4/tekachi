@@ -61,6 +61,9 @@ class _QuizResultState extends State<QuizResult> {
         );
       }
 
+      if (widget.is3step) {
+        FullTestService().setAptitudeid(attemptId);
+      }
       setState(() => _attemptSaved = true);
       debugPrint(
         'Attempt $attemptId saved with ${widget.answers.length} answers',

@@ -1,4 +1,4 @@
-package com.geojit.tekachi.topic.dtos;
+package com.geojit.tekachi.quizhistory.topic.dtos;
 
 public interface TitleView {
     int getTopicId();

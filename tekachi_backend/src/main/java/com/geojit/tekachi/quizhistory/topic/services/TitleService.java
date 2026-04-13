@@ -1,4 +1,4 @@
-package com.geojit.tekachi.topic.services;
+package com.geojit.tekachi.quizhistory.topic.services;
 
 import java.util.List;
 
@@ -6,9 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.geojit.tekachi.topic.dtos.TitleView;
-import com.geojit.tekachi.topic.entity.Title;
-import com.geojit.tekachi.topic.repo.TitleRepo;
+import com.geojit.tekachi.quizhistory.topic.dtos.TitleView;
+import com.geojit.tekachi.quizhistory.topic.entity.Title;
+import com.geojit.tekachi.quizhistory.topic.repo.TitleRepo;
 
 @Service
 public class TitleService {

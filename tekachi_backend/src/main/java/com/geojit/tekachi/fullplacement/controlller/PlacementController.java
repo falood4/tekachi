@@ -3,8 +3,12 @@ package com.geojit.tekachi.fullplacement.controlller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.geojit.tekachi.fullplacement.dtos.PlacementAttemptDetails;
+import com.geojit.tekachi.fullplacement.dtos.PlacementAttemptView;
 import com.geojit.tekachi.fullplacement.entity.Placement;
 import com.geojit.tekachi.fullplacement.service.PlacementService;
+import com.geojit.tekachi.quizhistory.services.AnswerService;
+import com.geojit.tekachi.quizhistory.services.AttemptService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,6 +16,9 @@ import java.util.Map;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.apache.catalina.connector.Response;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -19,14 +26,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RequestMapping("/placement")
 public class PlacementController {
 
-    PlacementService placementService;
+    private final PlacementService placementService;
+    private final AnswerService quizAnswerService;
 
-    PlacementController(PlacementService placementService) {
+    PlacementController(PlacementService placementService, AnswerService quizAnswerService) {
         this.placementService = placementService;
+        this.quizAnswerService = quizAnswerService;
     }
 
     @PostMapping("/new")
-    public Placement saveAttempt(@RequestBody Map<String, Integer> attempt) {
+    public Map<String, Object> saveAttempt(@RequestBody Map<String, Integer> attempt) {
         try {
             int userId = attempt.get("userId");
             int aptAttemptId = attempt.get("aptAttemptId");
@@ -36,13 +45,15 @@ public class PlacementController {
             Placement placement = new Placement();
             placement.setUser_id(userId);
             placement.setAttempted_on(LocalDateTime.now());
-            placement.setApt_attempt(aptAttemptId);
-            placement.setTech_interview(techInterviewId);
-            placement.setHr_interview(hrInterviewId);
+            placement.setApt_attempt(aptAttemptId); // quiz
+            placement.setTech_interview(techInterviewId); // tech interview
+            placement.setHr_interview(hrInterviewId); // hr interview
 
-            placementService.savePlacement(placement);
+            Placement savedPlacement = placementService.savePlacement(placement);
 
-            return placement;
+            return Map.of(
+                    "message", "3step attempt saved",
+                    "placement", savedPlacement);
 
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -50,8 +61,13 @@ public class PlacementController {
     }
 
     @GetMapping("/attempts/{user_id}")
-    public List<Placement> getAttempts(@PathVariable("user_id") int userId) {
+    public List<PlacementAttemptView> getAttempts(@PathVariable("user_id") int userId) {
         return placementService.getPlacementsByUserId(userId);
     }
 
+    @GetMapping("/attempt/{attempt_id}")
+    public PlacementAttemptDetails getAttemptTest(@PathVariable("attempt_id") int attemptId) {
+        // getOwnedAttempt(attemptId);
+        return placementService.getPlacementsByAttemptId(attemptId);
+    }
 }

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class AuthService {
-  static const String _baseUrl = 'http://10.0.2.2:8080/api/users';
+  static const String _baseUrl = 'http://10.0.2.2:8080/users';
 
   static final AuthService _instance = AuthService._internal();
 
@@ -93,7 +93,7 @@ class AuthService {
     required String email,
     required String password,
   }) async {
-    final url = Uri.parse("http://10.0.2.2:8080/api/users/login");
+    final url = Uri.parse("$_baseUrl/login");
 
     try {
       final response = await http.post(
@@ -119,7 +119,7 @@ class AuthService {
   }
 
   Future<http.Response> changePassword({required String newPassword}) async {
-    final url = Uri.parse("http://10.0.2.2:8080/api/users/change-password");
+    final url = Uri.parse("$_baseUrl/change-password");
 
     try {
       final response = await http.post(

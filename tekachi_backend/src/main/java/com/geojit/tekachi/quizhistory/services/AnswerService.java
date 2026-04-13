@@ -16,7 +16,7 @@ public class AnswerService {
         this.answerRepo = answerRepo;
     }
 
-    public List<AnswerView> getAnswers(Long attemptId) {
+    public List<AnswerView> getAnswers(long attemptId) {
         return answerRepo.findAnswersByAttemptId(attemptId);
     }
 

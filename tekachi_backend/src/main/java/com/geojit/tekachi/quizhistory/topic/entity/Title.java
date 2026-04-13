@@ -1,4 +1,4 @@
-package com.geojit.tekachi.topic.entity;
+package com.geojit.tekachi.quizhistory.topic.entity;
 
 import jakarta.persistence.*;
 

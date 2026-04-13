@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:tekachigeojit/services/FullTestService.dart';
 import 'AuthService.dart';
 
 class Chatservice {
@@ -52,6 +53,8 @@ class Chatservice {
         final String reply = data['greeting'];
         final int convId = data['conversationId'];
         _saveConvId(convId);
+        
+        FullTestService().setTechChatId(convId);
 
         return reply;
       } else if (response.statusCode == 500) {

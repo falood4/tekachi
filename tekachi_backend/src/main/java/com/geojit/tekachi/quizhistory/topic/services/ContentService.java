@@ -1,10 +1,10 @@
-package com.geojit.tekachi.topic.services;
+package com.geojit.tekachi.quizhistory.topic.services;
 
 import org.springframework.stereotype.Service;
 
-import com.geojit.tekachi.topic.dtos.ContentView;
-import com.geojit.tekachi.topic.entity.Title;
-import com.geojit.tekachi.topic.repo.ContentRepo;
+import com.geojit.tekachi.quizhistory.topic.dtos.ContentView;
+import com.geojit.tekachi.quizhistory.topic.entity.Title;
+import com.geojit.tekachi.quizhistory.topic.repo.ContentRepo;
 
 @Service
 public class ContentService {

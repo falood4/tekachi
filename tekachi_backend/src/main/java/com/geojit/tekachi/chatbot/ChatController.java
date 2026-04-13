@@ -300,7 +300,7 @@ public class ChatController {
                         conversation.getPersona().getPersonaId(),
                         conversation.getUserId(),
                         conversation.getVerdict()))
-                .toList();
+                .toList().reversed();
 
         return history;
     }
@@ -311,7 +311,7 @@ public class ChatController {
 
         List<Message> chat = msgRepo.findRecentMessages(conversationId, PageRequest.of(0, 100));
         Collections.reverse(chat);
-        return chat;
+        return chat.subList(0, Math.max(0, chat.size() - 2));
     }
 
     @Transactional

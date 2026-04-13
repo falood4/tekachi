@@ -22,6 +22,7 @@ import com.geojit.tekachi.quizhistory.services.AttemptService;
 import com.geojit.tekachi.usersignin.entity.User;
 import com.geojit.tekachi.usersignin.repository.UserRepository;
 
+
 @RestController
 public class QuizAttemptController {
     private final AttemptService quizAttemptService;
@@ -45,7 +46,7 @@ public class QuizAttemptController {
     public ResponseEntity<?> getUserAttemptHistory(@PathVariable Long userId) {
         ensurePathUserMatchesAuthenticated(userId);
 
-        List<?> history = quizAttemptService.getAttemptHistory(userId);
+        List<?> history = quizAttemptService.getAttemptHistory(userId).reversed();
         if (history == null || history.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(Map.of("message", "No attempts found for userId", "userId", userId));
@@ -66,6 +67,14 @@ public class QuizAttemptController {
 
         return ResponseEntity.ok(answers);
     }
+
+    @GetMapping("/history/{attemptId}/score")
+    public String getAttemptScore(@PathVariable Long attemptId) {
+        Attempt attempt = quizAttemptService.findById(attemptId);
+        String score = String.format("%d/%d", attempt.getCorrectAnswers(), attempt.getTotalQuestions());
+        return score;
+    }
+    
 
     @PostMapping("/history/newattempt")
     public ResponseEntity<?> storeAttempt(@RequestBody Map<String, Integer> request) {

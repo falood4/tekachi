@@ -195,7 +195,7 @@ class _InterviewHistoryState extends State<InterviewHistory> {
                 ),
                 SizedBox(width: 16),
                 Text(
-                  attempt['verdict'] ?? 'N/A',
+                  attempt['verdict'] ?? '',
                   style:
                       (theme.textTheme.headlineLarge ??
                               theme.textTheme.bodyLarge)
