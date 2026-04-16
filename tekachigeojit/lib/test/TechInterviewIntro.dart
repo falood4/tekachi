@@ -17,7 +17,7 @@ class Techinterviewintro extends StatelessWidget {
     final Color secondary = theme.colorScheme.secondary;
 
     return Scaffold(
-      bottomNavigationBar: NavBar(selectedPage: 2),
+      bottomNavigationBar: const NavBar(selectedPage: 0),
       backgroundColor: bg,
       appBar: AppBar(
         backgroundColor: bg,

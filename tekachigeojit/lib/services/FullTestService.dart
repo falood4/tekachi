@@ -111,4 +111,24 @@ class FullTestService {
       rethrow;
     }
   }
+
+  Future<dynamic> fetchHistory(int user_id) async {
+    try {
+      final response = await http.get(
+        Uri.parse('$_baseUrl/attempts/$user_id'),
+        headers: _headers(),
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        debugPrint('History fetched successfully');
+        return data;
+      } else if (response.statusCode == 500) {
+        return "Server error. Please try again";
+      }
+    } catch (e) {
+      debugPrint('Failed to fetch history: $e');
+      rethrow;
+    }
+  }
 }

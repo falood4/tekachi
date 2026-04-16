@@ -51,6 +51,7 @@ class _InterviewHistoryState extends State<InterviewHistory> {
   }
 
   String _formatDate(String dateString) {
+    //Month and Date
     try {
       final date = DateTime.parse(dateString);
       return DateFormat('MMMM dd').format(date);
@@ -60,6 +61,7 @@ class _InterviewHistoryState extends State<InterviewHistory> {
   }
 
   String _formatDate2(String dateString) {
+    //Time of Day
     try {
       final date = DateTime.parse(dateString);
       return DateFormat('HH:mm a').format(date);
@@ -99,6 +101,9 @@ class _InterviewHistoryState extends State<InterviewHistory> {
         icon: Icon(Icons.delete, color: red),
         onPressed: _confirmClearConvoHistory,
         style: ButtonStyle(
+          padding: WidgetStateProperty.all<EdgeInsets>(
+            const EdgeInsets.all(16),
+          ),
           backgroundColor: WidgetStateProperty.all<Color>(
             theme.colorScheme.primary,
           ),
@@ -137,10 +142,8 @@ class _InterviewHistoryState extends State<InterviewHistory> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ChatHistory(
-                    conv_id: attempt['conversationId'],
-                    date: attempt['createdAt'],
-                  ),
+                  builder: (context) =>
+                      ChatHistory(conv_id: attempt['conversationId']),
                 ),
               );
             },

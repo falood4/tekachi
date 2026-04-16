@@ -7,7 +7,9 @@ import 'package:tekachigeojit/test/Aptitude%20Quiz/QuizResult.dart';
 import 'package:tekachigeojit/services/QsnService.dart';
 
 class QuizPage extends StatefulWidget {
-  const QuizPage({super.key});
+  const QuizPage({super.key, required this.is3step});
+
+  final bool is3step;
 
   @override
   State<QuizPage> createState() => _QuizPageState();
@@ -80,8 +82,11 @@ class _QuizPageState extends State<QuizPage> {
               onPressed: () {
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
-                    builder: (context) =>
-                        const QuizResult(score: 0, answers: [], is3step: false),
+                    builder: (context) => QuizResult(
+                      score: 0,
+                      answers: [],
+                      is3step: widget.is3step,
+                    ),
                   ),
                 );
               },
@@ -222,7 +227,7 @@ class _QuizPageState extends State<QuizPage> {
       _loadRandomQuestion();
     } else {
       indices = List.generate(40, (index) => index + 1);
-      if (1 == 1) {
+      if (widget.is3step == true) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(

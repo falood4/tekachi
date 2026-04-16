@@ -7,14 +7,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.geojit.tekachi.fullplacement.dtos.PlacementAttemptDetails;
-import com.geojit.tekachi.fullplacement.dtos.PlacementAttemptView;
 import com.geojit.tekachi.fullplacement.entity.Placement;
 
 @Repository
 public interface PlacementRepo extends JpaRepository<Placement, Integer> {
-    @Query(value = "SELECT test_id as placementTestId, attempted_on as attemptedOn FROM placementfulltest WHERE user_id = :userId", nativeQuery = true)
-    List<PlacementAttemptView> findByUserId(int userId);
-
     @Query(value = "select pt.test_id as testId, \r\n" + //
             "       pt.user_id as userId, \r\n" + //
             "       pt.attempted_on as attemptedOn, \r\n" + //
@@ -28,6 +24,6 @@ public interface PlacementRepo extends JpaRepository<Placement, Integer> {
             "join aptitude_attempts as aa on aa.attempt_id = pt.apt_attempt_id\r\n" + //
             "join conversations as c1 on c1.conversation_id = pt.tech_interview_id\r\n" + //
             "join conversations as c2 on c2.conversation_id = pt.hr_interview_id\r\n" + //
-            "where pt.test_id = :testId", nativeQuery = true)
-    PlacementAttemptDetails findByAttempt(int testId);
+            "where pt.user_id = :userId", nativeQuery = true)
+    List<PlacementAttemptDetails> findByUserId(int userId);
 }

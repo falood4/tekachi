@@ -311,8 +311,51 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
             SizedBox.fromSize(size: const Size.fromHeight(10)),
             ElevatedButton(
               onPressed: () async {
-                HistoryService().deleteAttempt;
-                Navigator.of(context).pop();
+                try {
+                  final response = await HistoryService().deleteAttempt();
+                  if (!mounted) return;
+                  if (response.statusCode == 200 ||
+                      response.statusCode == 204) {
+                    Navigator.of(context).pop();
+                    setState(() {
+                      _attempts = [];
+                      _isLoading = false;
+                    });
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          'Test history cleared.',
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodySmall?.copyWith(color: Colors.black),
+                        ),
+                      ),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          'Failed to clear history: HTTP ${response.statusCode}',
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodySmall?.copyWith(color: Colors.black),
+                        ),
+                      ),
+                    );
+                  }
+                } catch (e) {
+                  if (!mounted) return;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        'Failed to clear history: $e',
+                        style: Theme.of(
+                          context,
+                        ).textTheme.bodySmall?.copyWith(color: Colors.black),
+                      ),
+                    ),
+                  );
+                }
               },
               style: ElevatedButton.styleFrom(backgroundColor: red),
               child: Text(

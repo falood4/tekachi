@@ -20,7 +20,7 @@ class PrepHome extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: theme.colorScheme.background,
-      bottomNavigationBar: const NavBar(),
+      bottomNavigationBar: const NavBar(selectedPage: 1),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.all(screenWidth * 0.05),

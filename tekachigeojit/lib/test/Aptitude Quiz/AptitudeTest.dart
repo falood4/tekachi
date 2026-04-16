@@ -15,7 +15,7 @@ class AptitudeTest extends StatelessWidget {
     final Color lime = theme.colorScheme.secondary;
 
     return Scaffold(
-      bottomNavigationBar: NavBar(selectedPage: 2),
+      bottomNavigationBar: const NavBar(selectedPage: 0),
       backgroundColor: bg,
       appBar: AppBar(
         backgroundColor: bg,
@@ -66,7 +66,7 @@ class AptitudeTest extends StatelessWidget {
                       onPressed: () {
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
-                            builder: (_) => QuizPage(),
+                            builder: (_) => QuizPage(is3step: false),
                           ),
                         );
                       },

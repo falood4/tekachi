@@ -130,6 +130,9 @@ class HistoryService {
   Future<http.Response> deleteAttempt() async {
     try {
       final user_id = AuthService().shareUserId();
+      if (user_id == null) {
+        throw Exception('User ID not available');
+      }
       final response = await http.delete(
         Uri.parse('$_baseUrl/$user_id'),
         headers: _headers(),

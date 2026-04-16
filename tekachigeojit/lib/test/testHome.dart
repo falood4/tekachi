@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tekachigeojit/components/NavBar.dart';
+import 'package:tekachigeojit/test/3%20Step%20Placement/PlacementHistory.dart';
 import 'package:tekachigeojit/test/Aptitude%20Quiz/AptitudeTest.dart';
 import 'package:tekachigeojit/test/Aptitude%20Quiz/AptitudeTestHistory.dart';
 import 'package:tekachigeojit/test/HrInterviewIntro.dart';
@@ -93,7 +94,7 @@ class TestHome extends StatelessWidget {
               const SizedBox(height: 20),
 
               Container(
-                height: screenHeight * 0.2,
+                height: screenHeight * 0.24,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(18),
                   color: lime,
@@ -126,6 +127,33 @@ class TestHome extends StatelessWidget {
                         'Start',
                         style: theme.textTheme.headlineLarge?.copyWith(
                           fontSize: 22,
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(height: 5),
+
+                    ElevatedButton(
+                      onPressed: () async {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => PlacementHistory()),
+                        );
+                      },
+                      style: theme.elevatedButtonTheme.style?.copyWith(
+                        padding: WidgetStateProperty.all<EdgeInsets>(
+                          const EdgeInsets.symmetric(
+                            horizontal: 24,
+                            vertical: 12,
+                          ),
+                        ),
+                        backgroundColor: WidgetStateProperty.all<Color>(
+                          theme.colorScheme.surface,
+                        ),
+                      ),
+                      child: Text(
+                        'Archive',
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontSize: 16,
                         ),
                       ),
                     ),

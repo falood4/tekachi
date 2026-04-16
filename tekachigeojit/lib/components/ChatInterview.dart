@@ -146,7 +146,9 @@ class _ChatInterviewState extends State<ChatInterview> {
     try {
       final String verdict = await Chatservice().getVerdict();
       if (widget.personaId == 2) {
+        FullTestService().setTechnicalVerdict(verdict);
         FullTestService().setTechChatId(Chatservice().shareConvId());
+        Chatservice().clearConvId();
 
         if (!mounted) {
           ScaffoldMessenger.of(context).showSnackBar(

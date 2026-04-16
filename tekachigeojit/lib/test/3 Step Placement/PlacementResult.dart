@@ -25,7 +25,7 @@ class PlacementResult extends StatelessWidget {
         technicalVerdict == 'Selected' && hrVerdict == 'Selected';
 
     return Scaffold(
-      bottomNavigationBar: const NavBar(selectedPage: 2),
+      bottomNavigationBar: const NavBar(selectedPage: 0),
       backgroundColor: background,
       body: SafeArea(
         child: Container(

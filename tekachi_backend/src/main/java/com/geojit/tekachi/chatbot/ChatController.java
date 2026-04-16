@@ -311,7 +311,7 @@ public class ChatController {
 
         List<Message> chat = msgRepo.findRecentMessages(conversationId, PageRequest.of(0, 100));
         Collections.reverse(chat);
-        return chat.subList(0, Math.max(0, chat.size() - 2));
+        return chat;
     }
 
     @Transactional

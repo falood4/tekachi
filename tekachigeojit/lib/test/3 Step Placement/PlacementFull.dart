@@ -15,7 +15,7 @@ class PlacementFull extends StatelessWidget {
     final Color lime = theme.colorScheme.secondary;
 
     return Scaffold(
-      bottomNavigationBar: NavBar(selectedPage: 2),
+      bottomNavigationBar: const NavBar(selectedPage: 0),
       backgroundColor: bg,
       appBar: AppBar(
         backgroundColor: bg,
@@ -58,7 +58,9 @@ class PlacementFull extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () {
                         Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(builder: (_) => QuizPage()),
+                          MaterialPageRoute(
+                            builder: (_) => QuizPage(is3step: true),
+                          ),
                         );
                       },
                       style: theme.elevatedButtonTheme.style?.copyWith(

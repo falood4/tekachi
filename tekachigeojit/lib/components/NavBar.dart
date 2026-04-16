@@ -4,7 +4,7 @@ import 'package:tekachigeojit/test/testHome.dart';
 import 'package:tekachigeojit/userSettings/userSettings.dart';
 
 class NavBar extends StatelessWidget {
-  const NavBar({super.key, this.selectedPage = 1});
+  const NavBar({super.key, this.selectedPage = 0});
 
   /// Which tab is currently active: 1 = Prep, 2 = Test, 3 = Profile.
   final int selectedPage;

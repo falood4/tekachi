@@ -4,11 +4,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.geojit.tekachi.fullplacement.dtos.PlacementAttemptDetails;
-import com.geojit.tekachi.fullplacement.dtos.PlacementAttemptView;
 import com.geojit.tekachi.fullplacement.entity.Placement;
 import com.geojit.tekachi.fullplacement.service.PlacementService;
 import com.geojit.tekachi.quizhistory.services.AnswerService;
-import com.geojit.tekachi.quizhistory.services.AttemptService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,9 +14,6 @@ import java.util.Map;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.apache.catalina.connector.Response;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -61,13 +56,8 @@ public class PlacementController {
     }
 
     @GetMapping("/attempts/{user_id}")
-    public List<PlacementAttemptView> getAttempts(@PathVariable("user_id") int userId) {
+    public List<PlacementAttemptDetails> getAttemptTest(@PathVariable("user_id") int userId) {
+        // getOwnedAttempt(userId);
         return placementService.getPlacementsByUserId(userId);
     }
-
-    @GetMapping("/attempt/{attempt_id}")
-    public PlacementAttemptDetails getAttemptTest(@PathVariable("attempt_id") int attemptId) {
-        // getOwnedAttempt(attemptId);
-        return placementService.getPlacementsByAttemptId(attemptId);
-    }
-}
+} 

@@ -85,7 +85,7 @@ class _QuizResultState extends State<QuizResult> {
     final surface = theme.colorScheme.surface;
 
     return Scaffold(
-      bottomNavigationBar: const NavBar(selectedPage: 2),
+      bottomNavigationBar: const NavBar(selectedPage: 0),
       backgroundColor: background,
       body: SafeArea(
         child: Container(
@@ -114,6 +114,7 @@ class _QuizResultState extends State<QuizResult> {
                 ),
                 scoreRemark(widget.score, screenWidth * 0.05),
                 SizedBox(height: screenWidth * 0.05),
+
                 ElevatedButton(
                   onPressed: () => startReview(context),
                   style: ElevatedButton.styleFrom(
@@ -151,7 +152,6 @@ class _QuizResultState extends State<QuizResult> {
                 if (widget.is3step && widget.score >= 7)
                   ElevatedButton(
                     onPressed: () async {
-                      FullTestService().setAptitudeScore(widget.score);
                       try {
                         FullTestService().setAptitudeScore(widget.score);
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -175,7 +175,7 @@ class _QuizResultState extends State<QuizResult> {
                             builder: (_) => ChatInterview(
                               initialMessage: reply,
                               personaId: 2,
-                              is3step: false,
+                              is3step: true,
                             ),
                           ),
                         );
@@ -209,44 +209,40 @@ class _QuizResultState extends State<QuizResult> {
                       ),
                     ),
                   )
-                else
-                  Column(
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) => const TestHome(),
-                            ),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 10,
-                            horizontal: 15,
-                          ),
-                          backgroundColor: surface,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50),
-                          ),
+                else if (widget.is3step && widget.score < 7)
+                  Text(
+                    'You did not meet the required score to proceed to the interviews.',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      fontStyle: FontStyle.italic,
+                    ),
+                    textAlign: TextAlign.center,
+                  )
+                else if (!widget.is3step)
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => const TestHome(),
                         ),
-                        child: Text(
-                          'Return to Tests',
-                          style: theme.textTheme.headlineLarge?.copyWith(
-                            color: theme.colorScheme.onPrimary,
-                            fontSize: screenWidth * 0.04,
-                          ),
-                        ),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 10,
+                        horizontal: 15,
                       ),
-                      if (widget.is3step && widget.score < 7)
-                        Text(
-                          'You did not meet the required score to proceed to the interviews.',
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            fontStyle: FontStyle.italic,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                    ],
+                      backgroundColor: surface,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                    ),
+                    child: Text(
+                      'Return to Tests',
+                      style: theme.textTheme.headlineLarge?.copyWith(
+                        color: theme.colorScheme.onPrimary,
+                        fontSize: screenWidth * 0.04,
+                      ),
+                    ),
                   ),
               ],
             ),

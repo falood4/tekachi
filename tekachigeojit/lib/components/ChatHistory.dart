@@ -4,9 +4,8 @@ import 'package:tekachigeojit/components/ChatBubble.dart';
 import 'package:tekachigeojit/services/ChatService.dart';
 
 class ChatHistory extends StatefulWidget {
-  const ChatHistory({super.key, required this.conv_id, required this.date});
+  const ChatHistory({super.key, required this.conv_id});
   final int conv_id;
-  final String date;
 
   @override
   State<ChatHistory> createState() => _ChatHistoryState();
@@ -44,15 +43,6 @@ class _ChatHistoryState extends State<ChatHistory> {
     }
   }
 
-  String _formatDate(String dateString) {
-    try {
-      final date = DateTime.parse(dateString);
-      return DateFormat('MMM dd, yyyy, hh:mm').format(date);
-    } catch (e) {
-      return dateString;
-    }
-  }
-
   String _formatTime(String dateString) {
     try {
       final date = DateTime.parse(dateString);
@@ -73,7 +63,7 @@ class _ChatHistoryState extends State<ChatHistory> {
       appBar: AppBar(
         backgroundColor: bg,
         title: Text(
-          _formatDate(widget.date),
+          "Chat History",
           style: theme.textTheme.titleLarge?.copyWith(color: secondary),
         ),
         iconTheme: IconThemeData(color: secondary),
