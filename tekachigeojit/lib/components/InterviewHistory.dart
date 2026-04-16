@@ -142,8 +142,10 @@ class _InterviewHistoryState extends State<InterviewHistory> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>
-                      ChatHistory(conv_id: attempt['conversationId']),
+                  builder: (context) => ChatHistory(
+                    conv_id: attempt['conversationId'],
+                    personaId: widget.personaId,
+                  ),
                 ),
               );
             },

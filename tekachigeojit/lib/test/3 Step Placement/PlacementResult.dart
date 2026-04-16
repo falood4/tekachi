@@ -21,8 +21,7 @@ class PlacementResult extends StatelessWidget {
     final String technicalVerdict = service.getTechnicalVerdict();
     final String hrVerdict = service.getHRVerdict();
 
-    final bool isPassed =
-        technicalVerdict == 'Selected' && hrVerdict == 'Selected';
+    final bool isPassed = technicalVerdict == 'HIRED' && hrVerdict == 'HIRED';
 
     return Scaffold(
       bottomNavigationBar: const NavBar(selectedPage: 0),
@@ -97,9 +96,7 @@ class PlacementResult extends StatelessWidget {
                     _buildScoreRow(
                       'Technical Interview',
                       technicalVerdict,
-                      technicalVerdict == 'Selected'
-                          ? Colors.green
-                          : Colors.red,
+                      technicalVerdict == 'HIRED' ? Colors.green : Colors.red,
                       screenWidth,
                       primary,
                     ),
@@ -107,7 +104,7 @@ class PlacementResult extends StatelessWidget {
                     _buildScoreRow(
                       'HR Interview',
                       hrVerdict,
-                      hrVerdict == 'Selected' ? Colors.green : Colors.red,
+                      hrVerdict == 'HIRED' ? Colors.green : Colors.red,
                       screenWidth,
                       primary,
                     ),
@@ -119,6 +116,7 @@ class PlacementResult extends StatelessWidget {
 
               ElevatedButton(
                 onPressed: () {
+                  FullTestService().saveAttempt();
                   Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(builder: (_) => const TestHome()),
                     (route) => false,

@@ -4,8 +4,9 @@ import 'package:tekachigeojit/components/ChatBubble.dart';
 import 'package:tekachigeojit/services/ChatService.dart';
 
 class ChatHistory extends StatefulWidget {
-  const ChatHistory({super.key, required this.conv_id});
+  const ChatHistory({super.key, required this.conv_id, this.personaId});
   final int conv_id;
+  final int? personaId;
 
   @override
   State<ChatHistory> createState() => _ChatHistoryState();
@@ -77,9 +78,17 @@ class _ChatHistoryState extends State<ChatHistory> {
       return const Center(child: CircularProgressIndicator());
     }
 
+    final int trimmedCount = (widget.personaId == 2 || widget.personaId == 3)
+        ? 2
+        : 0;
+    final int itemCount = (_attempts.length - trimmedCount).clamp(
+      0,
+      _attempts.length,
+    );
+
     return ListView.builder(
       padding: const EdgeInsets.all(16),
-      itemCount: _attempts.length,
+      itemCount: itemCount,
       itemBuilder: (context, index) {
         final attempt = _attempts[index];
         return _buildMessage(

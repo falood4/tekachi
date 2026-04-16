@@ -58,6 +58,6 @@ public class PlacementController {
     @GetMapping("/attempts/{user_id}")
     public List<PlacementAttemptDetails> getAttemptTest(@PathVariable("user_id") int userId) {
         // getOwnedAttempt(userId);
-        return placementService.getPlacementsByUserId(userId);
+        return placementService.getPlacementsByUserId(userId).reversed();
     }
-} 
+}

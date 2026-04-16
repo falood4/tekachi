@@ -55,8 +55,9 @@ class NavBar extends StatelessWidget {
                     size: screenHeight * 0.07,
                   ),
                   onPressed: () {
-                    Navigator.of(context).pushReplacement(
+                    Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(builder: (context) => const PrepHome()),
+                      (route) => false,
                     );
                   },
                 ),
@@ -97,8 +98,9 @@ class NavBar extends StatelessWidget {
                     size: screenHeight * 0.07,
                   ),
                   onPressed: () {
-                    Navigator.of(context).pushReplacement(
+                    Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(builder: (context) => const TestHome()),
+                      (route) => false,
                     );
                   },
                 ),
@@ -139,10 +141,11 @@ class NavBar extends StatelessWidget {
                     size: screenHeight * 0.07,
                   ),
                   onPressed: () {
-                    Navigator.of(context).pushReplacement(
+                    Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
                         builder: (context) => const UserSettings(),
                       ),
+                      (route) => false,
                     );
                   },
                 ),

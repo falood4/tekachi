@@ -145,7 +145,15 @@ class _PlacementHistoryState extends State<PlacementHistory> {
             _formatDate(attemptedOn),
             style: theme.textTheme.titleMedium?.copyWith(color: lime),
           ),
-          Text("HIRED", style: theme.textTheme.titleSmall),
+
+          if (hrVerdict == 'HIRED' && techVerdict == 'HIRED')
+            Text("HIRED", style: theme.textTheme.titleSmall)
+          else
+            Text(
+              "NOT HIRED",
+              style: theme.textTheme.titleSmall?.copyWith(color: Colors.red),
+            ),
+
           Container(
             margin: EdgeInsets.only(top: 20, bottom: 5),
             width: double.infinity,
@@ -182,7 +190,7 @@ class _PlacementHistoryState extends State<PlacementHistory> {
             ),
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               SizedBox(
                 width: 160,
@@ -199,7 +207,8 @@ class _PlacementHistoryState extends State<PlacementHistory> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ChatHistory(conv_id: tech_id),
+                        builder: (context) =>
+                            ChatHistory(conv_id: tech_id, personaId: 2),
                       ),
                     );
                   },
@@ -220,7 +229,7 @@ class _PlacementHistoryState extends State<PlacementHistory> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  ChatHistory(conv_id: tech_id),
+                                  ChatHistory(conv_id: tech_id, personaId: 2),
                             ),
                           );
                         },
@@ -251,7 +260,8 @@ class _PlacementHistoryState extends State<PlacementHistory> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ChatHistory(conv_id: hr_id),
+                        builder: (context) =>
+                            ChatHistory(conv_id: hr_id, personaId: 3),
                       ),
                     );
                   },
@@ -271,7 +281,8 @@ class _PlacementHistoryState extends State<PlacementHistory> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ChatHistory(conv_id: hr_id),
+                              builder: (context) =>
+                                  ChatHistory(conv_id: hr_id, personaId: 3),
                             ),
                           );
                         },

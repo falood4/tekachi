@@ -50,14 +50,17 @@ class FullTestService {
 
   void setAptitudeScore(int score) {
     _aptitudeScore = score;
+    debugPrint('Aptitude score set to: $score');
   }
 
   void setTechnicalVerdict(String verdict) {
     _technicalVerdict = verdict;
+    debugPrint('Technical verdict set to: $verdict');
   }
 
   void setHRVerdict(String verdict) {
     _hrVerdict = verdict;
+    debugPrint('HR verdict set to: $verdict');
   }
 
   int getAptitudeScore() {
@@ -72,7 +75,7 @@ class FullTestService {
     return _hrVerdict ?? 'Not evaluated';
   }
 
-  final _baseUrl = "http://localhost:8080/placement";
+  final _baseUrl = "http://10.0.2.2:8080/placement";
 
   String? get _token => AuthService().shareToken();
   int? user_id = AuthService().shareUserId();
@@ -112,7 +115,7 @@ class FullTestService {
     }
   }
 
-  Future<dynamic> fetchHistory(int user_id) async {
+  Future<List<Map<String, dynamic>>> fetchHistory(int user_id) async {
     try {
       final response = await http.get(
         Uri.parse('$_baseUrl/attempts/$user_id'),
@@ -120,15 +123,19 @@ class FullTestService {
       );
 
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
+        final decoded = jsonDecode(response.body);
+        if (decoded is List) {
+          return decoded.cast<Map<String, dynamic>>();
+        }
         debugPrint('History fetched successfully');
-        return data;
+        return <Map<String, dynamic>>[];
       } else if (response.statusCode == 500) {
-        return "Server error. Please try again";
+        return <Map<String, dynamic>>[];
       }
     } catch (e) {
       debugPrint('Failed to fetch history: $e');
       rethrow;
     }
+    return <Map<String, dynamic>>[];
   }
 }

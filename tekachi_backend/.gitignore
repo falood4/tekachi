@@ -34,3 +34,29 @@ build/
 
 # Do not track local application properties containing secrets
 src/main/resources/application.properties
+
+# Java crash dumps
+hs_err_pid*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+.env.local
+
+# Build/cache
+*.class
+*.jar
+*.war
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.swp
+*.swo
+*~
