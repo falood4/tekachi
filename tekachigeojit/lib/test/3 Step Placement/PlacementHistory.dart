@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:tekachigeojit/components/ChatHistory.dart';
 import 'package:tekachigeojit/services/AuthService.dart';
 import 'package:tekachigeojit/services/FullTestService.dart';
+import 'package:tekachigeojit/test/3%20Step%20Placement/AptitudeHistory3Step.dart';
 
 class PlacementHistory extends StatefulWidget {
   const PlacementHistory({super.key});
@@ -103,8 +104,9 @@ class _PlacementHistoryState extends State<PlacementHistory> {
         itemBuilder: (context, index) {
           final attempt = _attempts[index];
           return attemptCard(
-            attempt['attemptedOn'],
             attempt['testId'],
+            attempt['attemptedOn'],
+            attempt['attemptId'],
             attempt['score'],
             attempt['techConversationId'],
             attempt['techVerdict'],
@@ -117,8 +119,9 @@ class _PlacementHistoryState extends State<PlacementHistory> {
   }
 
   Widget attemptCard(
-    String attemptedOn,
     int testId,
+    String attemptedOn,
+    int attemptId,
     String score,
     int tech_id,
     String techVerdict,
@@ -178,7 +181,15 @@ class _PlacementHistoryState extends State<PlacementHistory> {
                     style: theme.textTheme.bodyMedium?.copyWith(),
                   ),
                   ElevatedButton(
-                    onPressed: onPressed,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              Aptitudehistory3step(attemptId: attemptId),
+                        ),
+                      );
+                    },
                     style: ElevatedButton.styleFrom(backgroundColor: bg),
                     child: Text(
                       score,
