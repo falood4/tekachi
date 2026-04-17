@@ -95,10 +95,10 @@ class PrepHome extends StatelessWidget {
                             content: Text(
                               'Loading chat...',
                               style: theme.textTheme.bodySmall?.copyWith(
-                                color: theme.colorScheme.secondary,
+                                color: Colors.black,
                               ),
                             ),
-                            backgroundColor: theme.colorScheme.primary,
+                            backgroundColor: const Color(0xFF8DD300),
                             duration: Duration(seconds: 10),
                           ),
                         );
@@ -121,6 +121,7 @@ class PrepHome extends StatelessWidget {
                           ScaffoldMessenger.of(context).hideCurrentSnackBar();
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
+                              backgroundColor: const Color(0xFF8DD300),
                               content: Text(
                                 'Could not start the interview. Please try again.',
                                 style: theme.textTheme.bodySmall?.copyWith(

@@ -312,17 +312,11 @@ class _UserSettingsState extends State<UserSettings> {
                         confirmController.text.isEmpty) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          backgroundColor: Theme.of(
-                            context,
-                          ).colorScheme.surface,
+                          backgroundColor: const Color(0xFF8DD300),
                           content: Text(
                             'Please fill in all password fields.',
                             style: Theme.of(context).textTheme.bodySmall
-                                ?.copyWith(
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.onPrimary,
-                                ),
+                                ?.copyWith(color: Colors.black),
                           ),
                         ),
                       );
@@ -331,17 +325,11 @@ class _UserSettingsState extends State<UserSettings> {
                     if (newController.text != confirmController.text) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          backgroundColor: Theme.of(
-                            context,
-                          ).colorScheme.surface,
+                          backgroundColor: const Color(0xFF8DD300),
                           content: Text(
                             'New passwords do not match.',
                             style: Theme.of(context).textTheme.bodySmall
-                                ?.copyWith(
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.onPrimary,
-                                ),
+                                ?.copyWith(color: Colors.black),
                           ),
                         ),
                       );
@@ -378,12 +366,12 @@ class _UserSettingsState extends State<UserSettings> {
       debugPrint('Password changed successfully');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          backgroundColor: Theme.of(context).colorScheme.surface,
+          backgroundColor: const Color(0xFF8DD300),
           content: Text(
             'Password changed successfully.',
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: Theme.of(context).colorScheme.onPrimary,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: Colors.black),
           ),
         ),
       );
@@ -391,12 +379,12 @@ class _UserSettingsState extends State<UserSettings> {
       debugPrint('Failed to change password');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          backgroundColor: Theme.of(context).colorScheme.surface,
+          backgroundColor: const Color(0xFF8DD300),
           content: Text(
             'Failed to change password. Please try again.',
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: Theme.of(context).colorScheme.onPrimary,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: Colors.black),
           ),
         ),
       );

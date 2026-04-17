@@ -22,7 +22,7 @@ public class JwtService {
     @Value("${jwt.secret}")
     private String jwtSecret;
 
-    @Value("${jwt.expiration:36000000}")
+    @Value("${jwt.expiration:36000000}") //
     private long jwtExpiration;
 
     @PostConstruct

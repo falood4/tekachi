@@ -6,8 +6,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.geojit.tekachi.usersignin.repository.UserRepository;
+import com.geojit.tekachi.quizhistory.services.AttemptService;
 import com.geojit.tekachi.usersignin.entity.User;
 import com.geojit.tekachi.usersignin.service.UserService;
+
+import lombok.extern.slf4j.Slf4j;
+
 import com.geojit.tekachi.usersignin.service.JwtService;
 import com.geojit.tekachi.usersignin.service.TokenBlacklistService;
 
@@ -16,6 +20,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
+@Slf4j
 public class UserController {
 
     private final UserRepository repository;
@@ -23,12 +28,15 @@ public class UserController {
     private final JwtService jwtService;
     private final TokenBlacklistService tokenBlacklistService;
 
+    private final AttemptService quizAttemptService;
+
     public UserController(UserRepository repository, UserService userService, JwtService jwtService,
-            TokenBlacklistService tokenBlacklistService) {
+            TokenBlacklistService tokenBlacklistService, AttemptService quizAttemptService) {
         this.repository = repository;
         this.userService = userService;
         this.jwtService = jwtService;
         this.tokenBlacklistService = tokenBlacklistService;
+        this.quizAttemptService = quizAttemptService;
     }
 
     @PostMapping("/register")
@@ -138,8 +146,9 @@ public class UserController {
 
             return ResponseEntity.ok(Map.of("message", "Logout successful. Token revoked."));
         } catch (Exception e) {
+            log.error("Exception {}", e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("error", "Logout failed"));
+                    .body(Map.of("error", "Logout failed " + e.getMessage()));
         }
     }
 
@@ -193,6 +202,8 @@ public class UserController {
                         .body(Map.of("error", "User not found"));
             }
 
+            // Delete quiz attempt history for the user
+            quizAttemptService.deleteAttemptHistory(user.getId());
             // Delete user account
             repository.deleteById(user.getId());
             return ResponseEntity.ok(Map.of("message", "User account deleted successfully"));

@@ -67,6 +67,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
     if (_emailCtrl.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
+          backgroundColor: const Color(0xFF8DD300),
           content: Text(
             'Please enter an email',
             style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
@@ -79,6 +80,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
     if (!_isValidEmail(_emailCtrl.text)) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
+          backgroundColor: const Color(0xFF8DD300),
           content: Text(
             'Please enter a valid email address',
             style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
@@ -91,6 +93,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
     if (_passwordCtrl.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
+          backgroundColor: const Color(0xFF8DD300),
           content: Text(
             'Please enter a password',
             style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
@@ -103,6 +106,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
     if (_passwordCtrl.text.length < 6) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
+          backgroundColor: const Color(0xFF8DD300),
           content: Text(
             'Password must be at least 6 characters',
             style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
@@ -146,6 +150,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
       } else if (response.statusCode == 409) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
+            backgroundColor: const Color(0xFF8DD300),
             content: Text(
               'Email already exists',
               style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
@@ -156,6 +161,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
+            backgroundColor: const Color(0xFF8DD300),
             content: Text(
               'Sign up failed. Please try again.',
               style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
@@ -167,6 +173,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
+          backgroundColor: const Color(0xFF8DD300),
           content: Text(
             'Network error. Please check your connection and try again.',
             style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
@@ -177,6 +184,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
+          backgroundColor: const Color(0xFF8DD300),
           content: Text(
             'An unexpected error occurred: $e',
             style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),

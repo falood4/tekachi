@@ -66,10 +66,11 @@ class HRinterviewIntro extends StatelessWidget {
                         try {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
+                              backgroundColor: const Color(0xFF8DD300),
                               content: Text(
                                 'Loading interview...',
                                 style: theme.textTheme.bodySmall?.copyWith(
-                                  color: theme.colorScheme.onPrimary,
+                                  color: Colors.black,
                                 ),
                               ),
                               duration: const Duration(seconds: 4),
@@ -93,6 +94,7 @@ class HRinterviewIntro extends StatelessWidget {
                           if (!context.mounted) return;
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
+                              backgroundColor: const Color(0xFF8DD300),
                               content: Text(
                                 'Could not start the interview. Please try again.',
                                 style: theme.textTheme.bodySmall?.copyWith(

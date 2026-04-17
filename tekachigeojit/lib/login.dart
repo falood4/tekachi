@@ -27,6 +27,7 @@ class _LoginState extends State<Login> {
     if (_emailCtrl.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
+          backgroundColor: const Color(0xFF8DD300),
           content: Text(
             'Please enter an email',
             style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
@@ -39,6 +40,7 @@ class _LoginState extends State<Login> {
     if (!_isValidEmail(_emailCtrl.text)) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
+          backgroundColor: const Color(0xFF8DD300),
           content: Text(
             'Please enter a valid email address',
             style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
@@ -51,6 +53,7 @@ class _LoginState extends State<Login> {
     if (_passwordCtrl.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
+          backgroundColor: const Color(0xFF8DD300),
           content: Text(
             'Please enter a password',
             style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
@@ -82,6 +85,7 @@ class _LoginState extends State<Login> {
       } else if (response.statusCode == 401) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
+            backgroundColor: const Color(0xFF8DD300),
             content: Text(
               'Wrong email or password',
               style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
@@ -91,6 +95,7 @@ class _LoginState extends State<Login> {
       } else if (response.statusCode == 400) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
+            backgroundColor: const Color(0xFF8DD300),
             content: Text(
               'Cannot connect to server. Please try again later.',
               style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
@@ -102,6 +107,7 @@ class _LoginState extends State<Login> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
+          backgroundColor: const Color(0xFF8DD300),
           content: Text(
             "An error occurred: $e",
             style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),

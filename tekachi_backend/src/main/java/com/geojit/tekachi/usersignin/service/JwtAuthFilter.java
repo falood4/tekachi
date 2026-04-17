@@ -46,10 +46,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7);
 
-            // CHECK IF TOKEN IS BLACKLISTED
+            // cehck if token blacklisted
             if (tokenBlacklistService.isTokenBlacklisted(token)) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.getWriter().write("Token has been revoked");
+                response.getWriter().write("Token blacklisted");
                 return;
             }
 

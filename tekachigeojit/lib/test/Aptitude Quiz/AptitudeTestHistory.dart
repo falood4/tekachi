@@ -323,6 +323,7 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
                     });
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
+                        backgroundColor: const Color(0xFF8DD300),
                         content: Text(
                           'Test history cleared.',
                           style: Theme.of(
@@ -334,6 +335,7 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
+                        backgroundColor: const Color(0xFF8DD300),
                         content: Text(
                           'Failed to clear history: HTTP ${response.statusCode}',
                           style: Theme.of(
@@ -347,6 +349,7 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
                   if (!mounted) return;
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
+                      backgroundColor: const Color(0xFF8DD300),
                       content: Text(
                         'Failed to clear history: $e',
                         style: Theme.of(

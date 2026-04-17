@@ -2,7 +2,6 @@ package com.geojit.tekachi.fullplacement.controlller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.service.annotation.DeleteExchange;
 
 import com.geojit.tekachi.fullplacement.dtos.PlacementAttemptDetails;
 import com.geojit.tekachi.fullplacement.entity.Placement;

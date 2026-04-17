@@ -75,7 +75,7 @@ class _ChatInterviewState extends State<ChatInterview> {
     if (messageText.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          backgroundColor: Color(0xFF141414),
+          backgroundColor: const Color(0xFF8DD300),
           content: Text(
             'Your reply is empty',
             style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
@@ -104,6 +104,7 @@ class _ChatInterviewState extends State<ChatInterview> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
+          backgroundColor: const Color(0xFF8DD300),
           content: Text(
             'An error occurred while sending the message. Please try again.',
             style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
@@ -153,11 +154,12 @@ class _ChatInterviewState extends State<ChatInterview> {
         if (!mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
+              backgroundColor: const Color(0xFF8DD300),
               content: Text(
                 'Loading interview...',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Theme.of(context).colorScheme.onPrimary,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(color: Colors.black),
               ),
               duration: const Duration(seconds: 4),
             ),
@@ -192,9 +194,9 @@ class _ChatInterviewState extends State<ChatInterview> {
             'Failed to proceed. Please try again.',
             style: Theme.of(
               context,
-            ).textTheme.bodySmall?.copyWith(color: Colors.white),
+            ).textTheme.bodySmall?.copyWith(color: Colors.black),
           ),
-          backgroundColor: Colors.red,
+          backgroundColor: const Color(0xFF8DD300),
         ),
       );
     }
@@ -244,7 +246,21 @@ class _ChatInterviewState extends State<ChatInterview> {
             Container(
               margin: const EdgeInsets.only(right: 12),
               child: ElevatedButton(
-                onPressed: () => _handleContinue(context),
+                onPressed: () {
+                  _handleContinue(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      backgroundColor: const Color(0xFF8DD300),
+                      content: Text(
+                        'Loading interview...',
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: Colors.black,
+                        ),
+                      ),
+                      duration: const Duration(seconds: 4),
+                    ),
+                  );
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: background,
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),

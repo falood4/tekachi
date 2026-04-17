@@ -3,6 +3,7 @@ package com.geojit.tekachi.usersignin.service;
 import com.geojit.tekachi.usersignin.entity.BlacklistedToken;
 import com.geojit.tekachi.usersignin.repository.BlacklistedTokenRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -22,6 +23,7 @@ public class TokenBlacklistService {
         this.jwtService = jwtService;
     }
 
+    @Transactional
     public void blacklistToken(String token) {
         if (token == null || token.isBlank()) {
             return;
@@ -48,6 +50,7 @@ public class TokenBlacklistService {
         return blacklistedTokenRepository.existsByTokenHashAndExpiresAtAfter(hashToken(token), LocalDateTime.now());
     }
 
+    @Transactional
     public void removeToken(String token) {
         if (token == null || token.isBlank()) {
             return;

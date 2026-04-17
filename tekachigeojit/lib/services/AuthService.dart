@@ -145,7 +145,7 @@ class AuthService {
         headers: _headers(),
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode >= 200 && response.statusCode < 300) {
         clearCredentials();
         debugPrint('Logout Successful');
       }

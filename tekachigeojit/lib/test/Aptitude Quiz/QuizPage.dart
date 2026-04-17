@@ -52,9 +52,10 @@ class _QuizPageState extends State<QuizPage> {
         final theme = Theme.of(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
+            backgroundColor: const Color(0xFF8DD300),
             content: Text(
               'Error loading question: $e',
-              style: theme.textTheme.bodySmall?.copyWith(color: Colors.red),
+              style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
             ),
           ),
         );
