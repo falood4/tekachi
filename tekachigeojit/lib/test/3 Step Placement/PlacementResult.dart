@@ -43,10 +43,10 @@ class PlacementResult extends StatelessWidget {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: isPassed
-                      ? Colors.green.withOpacity(0.15)
+                      ? Color(0xFF8DD300).withOpacity(0.15)
                       : Colors.red.withOpacity(0.15),
                   border: Border.all(
-                    color: isPassed ? Colors.green : Colors.red,
+                    color: isPassed ? Color(0xFF8DD300) : Colors.red,
                     width: 4,
                   ),
                 ),
@@ -54,7 +54,7 @@ class PlacementResult extends StatelessWidget {
                   child: Icon(
                     isPassed ? Icons.check_circle : Icons.cancel,
                     size: screenWidth * 0.15,
-                    color: isPassed ? Colors.green : Colors.red,
+                    color: isPassed ? Color(0xFF8DD300) : Colors.red,
                   ),
                 ),
               ),
@@ -64,7 +64,7 @@ class PlacementResult extends StatelessWidget {
               Text(
                 isPassed ? 'PLACED!' : 'NOT PLACED',
                 style: theme.textTheme.headlineLarge?.copyWith(
-                  color: isPassed ? Colors.green : Colors.red,
+                  color: isPassed ? Color(0xFF8DD300) : Colors.red,
                   fontSize: screenWidth * 0.07,
                   fontWeight: FontWeight.bold,
                   fontFamily: 'RussoOne',
@@ -77,7 +77,7 @@ class PlacementResult extends StatelessWidget {
                 height: screenHeight * 0.3,
                 padding: EdgeInsets.all(screenWidth * 0.05),
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.onPrimary.withValues(alpha: 0.8),
+                  color: theme.colorScheme.secondary,
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(color: secondary, width: 2),
                 ),
@@ -86,25 +86,30 @@ class PlacementResult extends StatelessWidget {
                   children: [
                     // Aptitude Score
                     _buildScoreRow(
+                      context,
                       'Aptitude Test',
                       '$aptitudeScore/15',
-                      aptitudeScore >= 8 ? Colors.green : Colors.orange,
+                      aptitudeScore >= 8 ? Color(0xFF8DD300) : Colors.red,
                       screenWidth,
                       primary,
                     ),
                     // Technical Interview
                     _buildScoreRow(
+                      context,
                       'Technical Interview',
                       technicalVerdict,
-                      technicalVerdict == 'HIRED' ? Colors.green : Colors.red,
+                      technicalVerdict == 'HIRED'
+                          ? Color(0xFF8DD300)
+                          : Colors.red,
                       screenWidth,
                       primary,
                     ),
                     // HR Interview
                     _buildScoreRow(
+                      context,
                       'HR Interview',
                       hrVerdict,
-                      hrVerdict == 'HIRED' ? Colors.green : Colors.red,
+                      hrVerdict == 'HIRED' ? Color(0xFF8DD300) : Colors.red,
                       screenWidth,
                       primary,
                     ),
@@ -148,6 +153,7 @@ class PlacementResult extends StatelessWidget {
   }
 
   Widget _buildScoreRow(
+    BuildContext context,
     String title,
     String value,
     Color valueColor,
@@ -174,9 +180,9 @@ class PlacementResult extends StatelessWidget {
             vertical: screenWidth * 0.02,
           ),
           decoration: BoxDecoration(
-            color: valueColor.withOpacity(0.15),
+            color: Theme.of(context).colorScheme.background,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: valueColor.withOpacity(0.5), width: 1.5),
+            border: Border.all(color: Theme.of(context).colorScheme.background),
           ),
           child: Text(
             value,

@@ -15,8 +15,8 @@ class FullTestService {
 
   //IDs
   int? _aptitudeid;
-  int? _tech_chat_id;
-  int? _hr_chat_id;
+  int? _tech_chat_id = null;
+  int? _hr_chat_id = null;
 
   void setAptitudeid(int? id) {
     _aptitudeid = id; //set in QuizResult

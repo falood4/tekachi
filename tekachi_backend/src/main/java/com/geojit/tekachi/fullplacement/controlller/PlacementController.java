@@ -2,6 +2,7 @@ package com.geojit.tekachi.fullplacement.controlller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.service.annotation.DeleteExchange;
 
 import com.geojit.tekachi.fullplacement.dtos.PlacementAttemptDetails;
 import com.geojit.tekachi.fullplacement.entity.Placement;
@@ -14,6 +15,7 @@ import java.util.Map;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -32,17 +34,17 @@ public class PlacementController {
     @PostMapping("/new")
     public Map<String, Object> saveAttempt(@RequestBody Map<String, Integer> attempt) {
         try {
-            int userId = attempt.get("userId");
-            int aptAttemptId = attempt.get("aptAttemptId");
-            int techInterviewId = attempt.get("techInterviewId");
-            int hrInterviewId = attempt.get("hrInterviewId");
+            Integer userId = attempt.get("userId");
+            Integer aptAttemptId = attempt.get("aptAttemptId");
+            Integer techInterviewId = attempt.get("techInterviewId");
+            Integer hrInterviewId = attempt.get("hrInterviewId");
 
             Placement placement = new Placement();
-            placement.setUser_id(userId);
-            placement.setAttempted_on(LocalDateTime.now());
-            placement.setApt_attempt(aptAttemptId); // quiz
-            placement.setTech_interview(techInterviewId); // tech interview
-            placement.setHr_interview(hrInterviewId); // hr interview
+            placement.setUserId(userId);
+            placement.setAttemptedOn(LocalDateTime.now());
+            placement.setAptAttemptId(aptAttemptId); // quiz
+            placement.setTechInterviewId(techInterviewId); // tech interview
+            placement.setHrInterviewId(hrInterviewId); // hr interview
 
             Placement savedPlacement = placementService.savePlacement(placement);
 
@@ -56,8 +58,18 @@ public class PlacementController {
     }
 
     @GetMapping("/attempts/{user_id}")
-    public List<PlacementAttemptDetails> getAttemptTest(@PathVariable("user_id") int userId) {
+    public List<PlacementAttemptDetails> getAttempts(@PathVariable("user_id") int userId) {
         // getOwnedAttempt(userId);
         return placementService.getPlacementsByUserId(userId).reversed();
+    }
+
+    @DeleteMapping("attempts/{user_id}")
+    public Map<String, String> deleteAttempts(@PathVariable("user_id") int userId) {
+        try {
+            placementService.deletePlacementsByUserId(userId);
+            return Map.of("message", "All attempts deleted for user id: " + userId);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

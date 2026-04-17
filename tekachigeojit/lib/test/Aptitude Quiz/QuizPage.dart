@@ -54,7 +54,7 @@ class _QuizPageState extends State<QuizPage> {
           SnackBar(
             content: Text(
               'Error loading question: $e',
-              style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
+              style: theme.textTheme.bodySmall?.copyWith(color: Colors.red),
             ),
           ),
         );

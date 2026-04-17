@@ -150,30 +150,29 @@ class _LoginState extends State<Login> {
                 SizedBox(
                   width: screenWidth * 0.6,
                   height: screenHeight * 0.06,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: surface,
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 15,
-                    ),
-                    child: TextField(
-                      focusNode: _emailFocus,
-                      keyboardType: TextInputType.emailAddress,
-                      textInputAction: TextInputAction.next,
-                      controller: _emailCtrl,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                      decoration: InputDecoration(
-                        hintText: "E-mail",
-                        hintStyle: TextStyle(
-                          fontSize: screenWidth * 0.04,
-                          fontFamily: "Trebuchet",
-                          letterSpacing: 0.1,
-                          color: tertiary,
-                        ),
-                        border: InputBorder.none,
+                  child: TextField(
+                    focusNode: _emailFocus,
+                    keyboardType: TextInputType.emailAddress,
+                    textInputAction: TextInputAction.next,
+                    controller: _emailCtrl,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: surface,
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 14,
+                      ),
+                      hintText: "E-mail",
+                      hintStyle: TextStyle(
+                        fontSize: screenWidth * 0.04,
+                        fontFamily: "Trebuchet",
+                        letterSpacing: 0.1,
+                        color: tertiary,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(50),
+                        borderSide: BorderSide.none,
                       ),
                     ),
                   ),

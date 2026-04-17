@@ -53,7 +53,7 @@ class Chatservice {
         final String reply = data['greeting'];
         final int convId = data['conversationId'];
         _saveConvId(convId);
-        
+
         FullTestService().setTechChatId(convId);
 
         return reply;
@@ -185,7 +185,7 @@ class Chatservice {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getChatHistory(int convId) async {
+  Future<List<Map<String, dynamic>>> getChatHistory(int? convId) async {
     try {
       final requestHeaders = _headers();
       if (requestHeaders['Authorization'] == null) {

@@ -59,6 +59,7 @@ class _PlacementHistoryState extends State<PlacementHistory> {
     final theme = Theme.of(context);
     final Color bg = theme.colorScheme.background;
     final Color lime = theme.colorScheme.secondary;
+    final Color surface = theme.colorScheme.surface;
 
     return Scaffold(
       appBar: AppBar(
@@ -97,7 +98,9 @@ class _PlacementHistoryState extends State<PlacementHistory> {
     if (_isLoading) {
       return const Center(child: CircularProgressIndicator());
     } else if (_attempts.isEmpty) {
-      return const Center(child: Text('No attempts found'));
+      return const Center(
+        child: Text('No attempts found', style: TextStyle(color: Colors.white)),
+      );
     } else {
       return ListView.builder(
         itemCount: _attempts.length,
@@ -121,12 +124,12 @@ class _PlacementHistoryState extends State<PlacementHistory> {
   Widget attemptCard(
     int testId,
     String attemptedOn,
-    int attemptId,
-    String score,
-    int tech_id,
-    String techVerdict,
-    int hr_id,
-    String hrVerdict,
+    int? attemptId,
+    String? score,
+    int? tech_id,
+    String? techVerdict,
+    int? hr_id,
+    String? hrVerdict,
   ) {
     final theme = Theme.of(context);
     final Color bg = theme.colorScheme.background;
@@ -177,22 +180,24 @@ class _PlacementHistoryState extends State<PlacementHistory> {
                 children: [
                   Text(
                     "Aptitude\nTest",
+                    style: theme.textTheme.bodyMedium,
                     textAlign: TextAlign.center,
-                    style: theme.textTheme.bodyMedium?.copyWith(),
                   ),
+
                   ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              Aptitudehistory3step(attemptId: attemptId),
-                        ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(backgroundColor: bg),
+                    onPressed: attemptId == null
+                        ? null
+                        : () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    Aptitudehistory3step(attemptId: attemptId!),
+                              ),
+                            );
+                          },
                     child: Text(
-                      score,
+                      attemptId == null ? "FAILED" : (score ?? "INCOMPLETE"),
                       style: theme.textTheme.titleLarge?.copyWith(color: lime),
                     ),
                   ),
@@ -214,15 +219,17 @@ class _PlacementHistoryState extends State<PlacementHistory> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            ChatHistory(conv_id: tech_id, personaId: 2),
-                      ),
-                    );
-                  },
+                  onPressed: tech_id == null
+                      ? null
+                      : () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  ChatHistory(conv_id: tech_id, personaId: 2),
+                            ),
+                          );
+                        },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -235,17 +242,22 @@ class _PlacementHistoryState extends State<PlacementHistory> {
                             vertical: 4,
                           ),
                         ),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  ChatHistory(conv_id: tech_id, personaId: 2),
-                            ),
-                          );
-                        },
+                        onPressed: tech_id == null
+                            ? null
+                            : () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ChatHistory(
+                                      conv_id: tech_id,
+                                      personaId: 2,
+                                    ),
+                                  ),
+                                );
+                              },
+
                         child: Text(
-                          techVerdict,
+                          techVerdict ?? "FAILED",
                           style: theme.textTheme.titleLarge?.copyWith(
                             color: lime,
                             fontSize: 16,
@@ -267,15 +279,17 @@ class _PlacementHistoryState extends State<PlacementHistory> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            ChatHistory(conv_id: hr_id, personaId: 3),
-                      ),
-                    );
-                  },
+                  onPressed: hr_id == null
+                      ? null
+                      : () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  ChatHistory(conv_id: hr_id, personaId: 3),
+                            ),
+                          );
+                        },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -288,17 +302,21 @@ class _PlacementHistoryState extends State<PlacementHistory> {
                             vertical: 4,
                           ),
                         ),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  ChatHistory(conv_id: hr_id, personaId: 3),
-                            ),
-                          );
-                        },
+                        onPressed: hr_id == null
+                            ? null
+                            : () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ChatHistory(
+                                      conv_id: hr_id,
+                                      personaId: 3,
+                                    ),
+                                  ),
+                                );
+                              },
                         child: Text(
-                          hrVerdict,
+                          hrVerdict ?? "FAILED",
                           style: theme.textTheme.titleLarge?.copyWith(
                             color: lime,
                             fontSize: 16,

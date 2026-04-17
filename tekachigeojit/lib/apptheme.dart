@@ -54,7 +54,7 @@ class AppTheme {
   static const Color _cardLight = Color(0xFFD9D9D9);
   static const Color _white = Colors.white;
   static const Color _black = Colors.black;
-  static const Color _tertiary = const Color.fromARGB(255, 132, 132, 132);
+  static const Color _tertiary = Color.fromARGB(255, 132, 132, 132);
 
   static ThemeData darkTheme = ThemeData(
     useMaterial3: true,
@@ -132,7 +132,7 @@ class AppTheme {
     useMaterial3: true,
     brightness: Brightness.light,
 
-    scaffoldBackgroundColor: _cardLight,
+    scaffoldBackgroundColor: _white,
 
     colorScheme: const ColorScheme.light(
       primary: _black,

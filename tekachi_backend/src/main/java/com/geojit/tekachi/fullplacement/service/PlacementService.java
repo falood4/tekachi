@@ -3,6 +3,7 @@ package com.geojit.tekachi.fullplacement.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.geojit.tekachi.fullplacement.dtos.PlacementAttemptDetails;
 import com.geojit.tekachi.fullplacement.entity.Placement;
@@ -23,5 +24,10 @@ public class PlacementService {
 
     public Placement savePlacement(Placement placement) {
         return placementRepo.save(placement);
+    }
+
+    @Transactional
+    public void deletePlacementsByUserId(int userId) {
+        placementRepo.deleteByUserId(userId);
     }
 }

@@ -5,7 +5,7 @@ import 'package:tekachigeojit/services/ChatService.dart';
 
 class ChatHistory extends StatefulWidget {
   const ChatHistory({super.key, required this.conv_id, this.personaId});
-  final int conv_id;
+  final int? conv_id;
   final int? personaId;
 
   @override

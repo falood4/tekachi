@@ -21,9 +21,11 @@ public interface PlacementRepo extends JpaRepository<Placement, Integer> {
             "       c2.conversation_id as hrConversationId, \r\n" + //
             "       c2.verdict as hrVerdict \r\n" + //
             "from placementfulltest as pt\r\n" + //
-            "join aptitude_attempts as aa on aa.attempt_id = pt.apt_attempt_id\r\n" + //
-            "join conversations as c1 on c1.conversation_id = pt.tech_interview_id\r\n" + //
-            "join conversations as c2 on c2.conversation_id = pt.hr_interview_id\r\n" + //
+            "left join aptitude_attempts as aa on aa.attempt_id = pt.apt_attempt_id\r\n" + //
+            "left join conversations as c1 on c1.conversation_id = pt.tech_interview_id\r\n" + //
+            "left join conversations as c2 on c2.conversation_id = pt.hr_interview_id\r\n" + //
             "where pt.user_id = :userId", nativeQuery = true)
     List<PlacementAttemptDetails> findByUserId(int userId);
+
+    long deleteByUserId(int userId);
 }

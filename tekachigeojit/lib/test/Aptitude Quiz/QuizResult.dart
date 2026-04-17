@@ -159,7 +159,7 @@ class _QuizResultState extends State<QuizResult> {
                             content: Text(
                               'Loading interview...',
                               style: theme.textTheme.bodySmall?.copyWith(
-                                color: theme.colorScheme.onPrimary,
+                                color: theme.colorScheme.secondary,
                               ),
                             ),
                             duration: const Duration(seconds: 4),

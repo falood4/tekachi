@@ -42,8 +42,8 @@ class _Aptitudehistory3stepState extends State<Aptitudehistory3step> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: bg,
         iconTheme: IconThemeData(color: lime),
+        backgroundColor: bg,
         title: Text(
           'Aptitude Answers',
           style: theme.textTheme.titleLarge?.copyWith(color: lime),
@@ -55,6 +55,7 @@ class _Aptitudehistory3stepState extends State<Aptitudehistory3step> {
           },
         ),
       ),
+      backgroundColor: bg,
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : _answers.isEmpty

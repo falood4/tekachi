@@ -218,32 +218,31 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                   SizedBox(
                     width: screenWidth * 0.6,
                     height: screenHeight * 0.06,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 15,
-                      ),
-                      decoration: BoxDecoration(
-                        color: surface,
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      child: TextField(
-                        focusNode: _emailFocus,
-                        keyboardType: TextInputType.emailAddress,
-                        textInputAction: TextInputAction.next,
-                        controller: _emailCtrl,
-                        decoration: InputDecoration(
-                          hintText: "E-mail",
-                          hintStyle: TextStyle(
-                            fontSize: screenWidth * 0.04,
-                            fontFamily: "Trebuchet",
-                            letterSpacing: 0.1,
-                            color: tertiary,
-                          ),
-                          border: InputBorder.none,
+                    child: TextField(
+                      focusNode: _emailFocus,
+                      keyboardType: TextInputType.emailAddress,
+                      textInputAction: TextInputAction.next,
+                      controller: _emailCtrl,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: surface,
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 14,
                         ),
-                        style: Theme.of(context).textTheme.bodyMedium,
+                        hintText: "E-mail",
+                        hintStyle: TextStyle(
+                          fontSize: screenWidth * 0.04,
+                          fontFamily: "Trebuchet",
+                          letterSpacing: 0.1,
+                          color: tertiary,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50),
+                          borderSide: BorderSide.none,
+                        ),
                       ),
+                      style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   ),
 
