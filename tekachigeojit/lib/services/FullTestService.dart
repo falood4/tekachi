@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:tekachigeojit/services/AuthService.dart';
+import 'package:tekachigeojit/services/ApiConfig.dart';
 
 class FullTestService {
   static final FullTestService _instance = FullTestService._internal();
@@ -75,7 +76,7 @@ class FullTestService {
     return _hrVerdict ?? 'Not evaluated';
   }
 
-  final _baseUrl = "http://10.0.2.2:8080/placement";
+  late final String _baseUrl = '${ApiConfig.baseUrl}/placement';
 
   String? get _token => AuthService().shareToken();
   int? user_id = AuthService().shareUserId();

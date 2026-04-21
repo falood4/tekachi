@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:tekachigeojit/components/NavBar.dart';
-import 'package:tekachigeojit/components/ChatBubble.dart';
+import 'package:tekachigeojit/components/Widgets/NavBar.dart';
+import 'package:tekachigeojit/components/Widgets/ChatBubble.dart';
 import 'package:tekachigeojit/services/ChatService.dart';
 import 'package:tekachigeojit/services/FullTestService.dart';
-import 'package:tekachigeojit/test/3%20Step%20Placement/PlacementResult.dart';
+import 'package:tekachigeojit/test_interview/3%20Step%20Placement/PlacementResult.dart';
 
 class ChatInterview extends StatefulWidget {
   const ChatInterview({

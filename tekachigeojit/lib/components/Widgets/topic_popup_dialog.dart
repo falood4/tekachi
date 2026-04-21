@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:tekachigeojit/components/TopicPopup.dart';
+import 'package:tekachigeojit/components/Widgets/TopicPopup.dart';
 
 Future<void> showTopicPopupDialog(
   BuildContext context, {

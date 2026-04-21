@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:tekachigeojit/components/ChatHistory.dart';
+import 'package:tekachigeojit/components/ChatPages/ChatHistory.dart';
 import 'package:tekachigeojit/services/AuthService.dart';
 import 'package:tekachigeojit/services/FullTestService.dart';
-import 'package:tekachigeojit/test/3%20Step%20Placement/AptitudeHistory3Step.dart';
+import 'package:tekachigeojit/test_interview/3%20Step%20Placement/AptitudeHistory3Step.dart';
 
 class PlacementHistory extends StatefulWidget {
   const PlacementHistory({super.key});
@@ -59,7 +59,6 @@ class _PlacementHistoryState extends State<PlacementHistory> {
     final theme = Theme.of(context);
     final Color bg = theme.colorScheme.background;
     final Color lime = theme.colorScheme.secondary;
-    final Color surface = theme.colorScheme.surface;
 
     return Scaffold(
       appBar: AppBar(
@@ -192,7 +191,7 @@ class _PlacementHistoryState extends State<PlacementHistory> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    Aptitudehistory3step(attemptId: attemptId!),
+                                    Aptitudehistory3step(attemptId: attemptId),
                               ),
                             );
                           },

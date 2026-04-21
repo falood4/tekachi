@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:tekachigeojit/components/InterviewHistory.dart';
+import 'package:tekachigeojit/components/ChatPages/InterviewHistory.dart';
 import 'package:tekachigeojit/prep/HRQuestions.dart';
 import 'package:tekachigeojit/prep/Techincal%20Training/TechnicalHome.dart';
 import 'package:tekachigeojit/services/ChatService.dart';
-import 'package:tekachigeojit/components/ChatInterview.dart';
+import 'package:tekachigeojit/components/ChatPages/ChatInterview.dart';
 import './Aptitude Training/AptitudeHome.dart';
-import 'package:tekachigeojit/components/NavBar.dart';
+import 'package:tekachigeojit/components/Widgets/NavBar.dart';
 
 class PrepHome extends StatelessWidget {
   const PrepHome({super.key});
@@ -64,7 +64,7 @@ class PrepHome extends StatelessWidget {
               const SizedBox(height: 20),
 
               Container(
-                height: screenHeight * 0.25,
+                height: screenHeight * 0.26,
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(18),

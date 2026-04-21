@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tekachigeojit/services/ChatService.dart';
-import 'package:tekachigeojit/components/ChatHistory.dart';
+import 'package:tekachigeojit/components/ChatPages/ChatHistory.dart';
 
 class InterviewHistory extends StatefulWidget {
   const InterviewHistory({

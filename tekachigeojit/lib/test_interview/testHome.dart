@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:tekachigeojit/components/NavBar.dart';
-import 'package:tekachigeojit/test/3%20Step%20Placement/PlacementHistory.dart';
-import 'package:tekachigeojit/test/Aptitude%20Quiz/AptitudeTest.dart';
-import 'package:tekachigeojit/test/Aptitude%20Quiz/AptitudeTestHistory.dart';
-import 'package:tekachigeojit/test/HrInterviewIntro.dart';
-import 'package:tekachigeojit/components/InterviewHistory.dart';
-import 'package:tekachigeojit/test/3%20Step%20Placement/PlacementFull.dart';
-import 'package:tekachigeojit/test/TechInterviewIntro.dart';
+import 'package:tekachigeojit/components/Widgets/NavBar.dart';
+import 'package:tekachigeojit/test_interview/3%20Step%20Placement/PlacementHistory.dart';
+import 'package:tekachigeojit/test_interview/Aptitude%20Quiz/AptitudeTest.dart';
+import 'package:tekachigeojit/test_interview/Aptitude%20Quiz/AptitudeTestHistory.dart';
+import 'package:tekachigeojit/test_interview/HrInterviewIntro.dart';
+import 'package:tekachigeojit/components/ChatPages/InterviewHistory.dart';
+import 'package:tekachigeojit/test_interview/3%20Step%20Placement/PlacementFull.dart';
+import 'package:tekachigeojit/test_interview/TechInterviewIntro.dart';
 
 class TestHome extends StatelessWidget {
   const TestHome({super.key});

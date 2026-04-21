@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:tekachigeojit/models/QuestionModel.dart';
 import 'package:tekachigeojit/models/AnswerSelection.dart';
-import 'package:tekachigeojit/test/Aptitude%20Quiz/QuizResult.dart';
+import 'package:tekachigeojit/test_interview/Aptitude%20Quiz/QuizResult.dart';
 import 'package:tekachigeojit/services/QsnService.dart';
 
 class QuizPage extends StatefulWidget {
@@ -81,15 +81,7 @@ class _QuizPageState extends State<QuizPage> {
             margin: const EdgeInsets.only(right: 12),
             child: ElevatedButton(
               onPressed: () {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (context) => QuizResult(
-                      score: 0,
-                      answers: [],
-                      is3step: widget.is3step,
-                    ),
-                  ),
-                );
+                _confirmContinue();
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: black,
@@ -249,5 +241,66 @@ class _QuizPageState extends State<QuizPage> {
         );
       }
     }
+  }
+
+  void _confirmContinue() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        final Color primary = Theme.of(context).colorScheme.primary;
+        final Color secondary = Theme.of(context).colorScheme.secondary;
+        final Color blackbg = Theme.of(context).colorScheme.background;
+        final Color black = Theme.of(context).colorScheme.onPrimary;
+        final Color red = Theme.of(context).colorScheme.error;
+
+        return AlertDialog(
+          title: Text(
+            'Quit Quiz?',
+            style: Theme.of(
+              context,
+            ).textTheme.bodyLarge?.copyWith(color: primary),
+          ),
+          backgroundColor: blackbg,
+          content: Text(
+            'Are you sure you want to quit your quiz?',
+            style: Theme.of(
+              context,
+            ).textTheme.bodyLarge?.copyWith(color: primary),
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              style: ElevatedButton.styleFrom(backgroundColor: secondary),
+              child: Text(
+                'CANCEL',
+                style: TextStyle(color: black, fontFamily: "DelaGothicOne"),
+              ),
+            ),
+
+            SizedBox.fromSize(size: const Size.fromHeight(10)),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => QuizResult(
+                      score: 0,
+                      answers: [],
+                      is3step: widget.is3step,
+                    ),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(backgroundColor: red),
+              child: Text(
+                'YES',
+                style: TextStyle(color: primary, fontFamily: "DelaGothicOne"),
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

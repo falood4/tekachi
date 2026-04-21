@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tekachigeojit/login.dart';
-import 'package:tekachigeojit/signup.dart';
+import 'package:tekachigeojit/startscreens/login.dart';
+import 'package:tekachigeojit/startscreens/signup.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

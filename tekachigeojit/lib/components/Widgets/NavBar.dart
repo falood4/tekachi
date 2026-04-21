@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tekachigeojit/prep/prepHome.dart';
-import 'package:tekachigeojit/test/testHome.dart';
+import 'package:tekachigeojit/test_interview/testHome.dart';
 import 'package:tekachigeojit/userSettings/userSettings.dart';
 
 class NavBar extends StatelessWidget {

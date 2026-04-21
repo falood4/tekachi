@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:tekachigeojit/components/NavBar.dart';
+import 'package:tekachigeojit/components/Widgets/NavBar.dart';
 
 class DataInterpretation extends StatelessWidget {
   const DataInterpretation({super.key});

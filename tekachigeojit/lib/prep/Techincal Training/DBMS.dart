@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tekachigeojit/components/NavBar.dart';
+import 'package:tekachigeojit/components/Widgets/NavBar.dart';
 import 'package:tekachigeojit/services/TopicService.dart';
-import 'package:tekachigeojit/components/topic_popup_dialog.dart';
+import 'package:tekachigeojit/components/Widgets/topic_popup_dialog.dart';
 
 class DBMS extends StatefulWidget {
   const DBMS({super.key});

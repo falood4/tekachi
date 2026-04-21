@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tekachigeojit/components/NavBar.dart';
-import 'package:tekachigeojit/test/Aptitude%20Quiz/QuizPage.dart';
+import 'package:tekachigeojit/components/Widgets/NavBar.dart';
+import 'package:tekachigeojit/test_interview/Aptitude%20Quiz/QuizPage.dart';
 
 class PlacementFull extends StatelessWidget {
   const PlacementFull({super.key});

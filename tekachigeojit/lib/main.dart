@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tekachigeojit/apptheme.dart';
-import 'package:tekachigeojit/home.dart';
+import 'package:tekachigeojit/startscreens/home.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

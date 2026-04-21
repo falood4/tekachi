@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:tekachigeojit/components/ChatBubble.dart';
+import 'package:tekachigeojit/components/Widgets/ChatBubble.dart';
 import 'package:tekachigeojit/services/ChatService.dart';
 
 class ChatHistory extends StatefulWidget {

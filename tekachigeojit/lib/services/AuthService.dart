@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import 'ApiConfig.dart';
+
 class AuthService {
-  static const String _baseUrl = 'http://10.0.2.2:8080/users';
+  static String get _baseUrl => '${ApiConfig.baseUrl}/users';
 
   static final AuthService _instance = AuthService._internal();
 

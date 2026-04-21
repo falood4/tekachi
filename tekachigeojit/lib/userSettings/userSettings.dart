@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tekachigeojit/apptheme.dart';
-import 'package:tekachigeojit/components/NavBar.dart';
-import 'package:tekachigeojit/home.dart';
+import 'package:tekachigeojit/components/Widgets/NavBar.dart';
+import 'package:tekachigeojit/startscreens/home.dart';
 import 'package:tekachigeojit/services/AuthService.dart';
 
 class UserSettings extends StatefulWidget {

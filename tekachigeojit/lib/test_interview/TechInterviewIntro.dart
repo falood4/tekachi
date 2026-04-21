@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tekachigeojit/components/NavBar.dart';
+import 'package:tekachigeojit/components/Widgets/NavBar.dart';
 import 'package:tekachigeojit/services/ChatService.dart';
-import 'package:tekachigeojit/components/ChatInterview.dart';
+import 'package:tekachigeojit/components/ChatPages/ChatInterview.dart';
 
 class Techinterviewintro extends StatelessWidget {
   const Techinterviewintro({super.key});
@@ -57,7 +57,7 @@ class Techinterviewintro extends StatelessWidget {
                 ),
 
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  padding: const EdgeInsets.symmetric(vertical: 3),
                   child: Container(
                     margin: EdgeInsets.symmetric(vertical: 18),
                     width: screenWidth * 0.45,

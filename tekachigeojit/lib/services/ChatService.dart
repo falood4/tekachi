@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
-import 'package:tekachigeojit/services/FullTestService.dart';
 import 'AuthService.dart';
+import 'ApiConfig.dart';
 
 class Chatservice {
-  static const String _baseUrl = 'http://10.0.2.2:8080/chat';
+  static String get _baseUrl => '${ApiConfig.baseUrl}/chat';
 
   static final Chatservice _instance = Chatservice._internal();
 
@@ -53,8 +53,6 @@ class Chatservice {
         final String reply = data['greeting'];
         final int convId = data['conversationId'];
         _saveConvId(convId);
-
-        FullTestService().setTechChatId(convId);
 
         return reply;
       } else if (response.statusCode == 500) {

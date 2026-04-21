@@ -4,7 +4,7 @@ import 'package:tekachigeojit/prep/Aptitude%20Training/LogicalReasoning.dart';
 import 'package:tekachigeojit/prep/Aptitude%20Training/VerbalReasoning.dart';
 import 'package:tekachigeojit/prep/prepHome.dart';
 import 'ArithmeticAptitude.dart';
-import 'package:tekachigeojit/components/NavBar.dart';
+import 'package:tekachigeojit/components/Widgets/NavBar.dart';
 
 class AptitudeHome extends StatelessWidget {
   const AptitudeHome({super.key});

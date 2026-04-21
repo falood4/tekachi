@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tekachigeojit/components/NavBar.dart';
+import 'package:tekachigeojit/components/Widgets/NavBar.dart';
 import 'package:tekachigeojit/services/FullTestService.dart';
-import 'package:tekachigeojit/test/testHome.dart';
+import 'package:tekachigeojit/test_interview/testHome.dart';
 
 class PlacementResult extends StatelessWidget {
   const PlacementResult({super.key});

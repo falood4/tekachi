@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'AuthService.dart';
 import '../models/QuestionModel.dart';
+import 'ApiConfig.dart';
 
 class QsnService {
-  static const String _baseUrl = 'http://10.0.2.2:8080/questions';
+  static String get _baseUrl => '${ApiConfig.baseUrl}/questions';
   static final QsnService _instance = QsnService._internal();
 
   factory QsnService() {

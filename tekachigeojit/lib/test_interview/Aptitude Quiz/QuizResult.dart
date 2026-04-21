@@ -1,13 +1,13 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:tekachigeojit/components/ChatInterview.dart';
-import 'package:tekachigeojit/components/NavBar.dart';
+import 'package:tekachigeojit/components/ChatPages/ChatInterview.dart';
+import 'package:tekachigeojit/components/Widgets/NavBar.dart';
 import 'package:tekachigeojit/models/AnswerSelection.dart';
 import 'package:tekachigeojit/services/ChatService.dart';
 import 'package:tekachigeojit/services/FullTestService.dart';
 import 'package:tekachigeojit/services/QuizHistoryService.dart';
 import 'package:tekachigeojit/services/AuthService.dart';
-import 'package:tekachigeojit/test/testHome.dart';
+import 'package:tekachigeojit/test_interview/testHome.dart';
 
 class QuizResult extends StatefulWidget {
   final int score;

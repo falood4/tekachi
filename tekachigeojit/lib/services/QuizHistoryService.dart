@@ -2,9 +2,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:tekachigeojit/services/AuthService.dart';
+import 'package:tekachigeojit/services/ApiConfig.dart';
 
 class HistoryService {
-  static const String _baseUrl = 'http://10.0.2.2:8080/history';
+  static String get _baseUrl => '${ApiConfig.baseUrl}/history';
   static final HistoryService _instance = HistoryService._internal();
   factory HistoryService() {
     return _instance;

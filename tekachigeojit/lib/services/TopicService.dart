@@ -3,9 +3,10 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:tekachigeojit/services/AuthService.dart';
 import 'package:flutter/foundation.dart';
+import 'package:tekachigeojit/services/ApiConfig.dart';
 
 class Topicservice {
-  static const String _baseUrl = 'http://10.0.2.2:8080';
+  static String get _baseUrl => ApiConfig.baseUrl;
 
   String? get _token => AuthService().shareToken();
   Map<String, String> _headers() {

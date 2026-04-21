@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tekachigeojit/components/NavBar.dart';
+import 'package:tekachigeojit/components/Widgets/NavBar.dart';
 
 class HrTrainingScreen extends StatelessWidget {
   const HrTrainingScreen({super.key});

@@ -4,7 +4,7 @@ import 'package:tekachigeojit/prep/Techincal%20Training/DStopics.dart';
 import 'package:tekachigeojit/prep/Techincal%20Training/OOPtopics.dart';
 import 'package:tekachigeojit/prep/Techincal%20Training/OStopics.dart';
 import 'package:tekachigeojit/prep/prepHome.dart';
-import 'package:tekachigeojit/components/NavBar.dart';
+import 'package:tekachigeojit/components/Widgets/NavBar.dart';
 
 class TechnicalHome extends StatelessWidget {
   const TechnicalHome({super.key});
