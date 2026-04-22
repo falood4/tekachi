@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tekachigeojit/apptheme.dart';
 import 'package:tekachigeojit/components/NavBar.dart';
 import 'package:tekachigeojit/home.dart';
+import 'package:tekachigeojit/profile/ProfileAutofillPage.dart';
 import 'package:tekachigeojit/services/AuthService.dart';
 
 class UserSettings extends StatefulWidget {
@@ -155,6 +156,11 @@ class _UserSettingsState extends State<UserSettings> {
                         ),
 
                         _settingsItem(
+                          "Profile autofill",
+                          icon: Icons.description_outlined,
+                          onPressed: _openProfileAutofill,
+                        ),
+                        _settingsItem(
                           "Log Out",
                           icon: Icons.logout,
                           onPressed: _confirmLogout,
@@ -210,6 +216,12 @@ class _UserSettingsState extends State<UserSettings> {
           ],
         ),
       ),
+    );
+  }
+
+  void _openProfileAutofill() {
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => const ProfileAutofillPage()),
     );
   }
 
