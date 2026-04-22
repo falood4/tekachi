@@ -258,8 +258,10 @@ public class UserController {
     public ResponseEntity<?> refreshToken(@RequestBody Map<String, String> request) {
 
         try {
+            String oldToken = request.get("old_token");
             String refreshToken = request.get("refresh_token");
 
+            // CHECK VALIDITY OF REFRESH TOKEN
             if (refreshToken == null || !jwtService.isTokenValid(refreshToken)) {
                 return ResponseEntity.badRequest()
                         .body(Map.of("error", "Valid Refresh token is required"));
@@ -268,14 +270,31 @@ public class UserController {
 
             if (!"refresh".equals(type)) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                        .body(Map.of("error", "Invalid token type"));
+                        .body(Map.of("error", "Refresh token required"));
             }
             if (tokenBlacklistService.isTokenBlacklisted(refreshToken)) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                        .body(Map.of("error", "Token is blacklisted. Please login again."));
+                        .body(Map.of("error", "Refresh token is blacklisted. Please login again."));
+            }
+
+            // CHECK IF OLD TOKEN IS STILL VALID, IF YES THEN BLACKLIST IT
+            if (oldToken != null && jwtService.isTokenValid(oldToken)) {
+                tokenBlacklistService.blacklistToken(oldToken);
             }
 
             String email = jwtService.extractUsername(refreshToken);
+
+            // Blacklist old access token only if it is valid, is an access token,
+            // and belongs to the same user as the refresh token.
+            if (oldToken != null && jwtService.isTokenValid(oldToken)) {
+                String oldType = jwtService.extractClaim(oldToken, claims -> claims.get("type", String.class));
+                String oldEmail = jwtService.extractUsername(oldToken);
+
+                if ("access".equals(oldType) && email.equals(oldEmail)) {
+                    tokenBlacklistService.blacklistToken(oldToken);
+                }
+            }
+
             User user = repository.findByEmail(email);
             if (user == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)

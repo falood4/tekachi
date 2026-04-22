@@ -76,6 +76,15 @@ class _LoginState extends State<Login> {
           _passwordCtrl.text.trim(),
         );
         debugPrint('Login successful');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: const Color(0xFF8DD300),
+            content: Text(
+              'Logging in...',
+              style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
+            ),
+          ),
+        );
 
         Navigator.pushAndRemoveUntil(
           context,
@@ -109,11 +118,12 @@ class _LoginState extends State<Login> {
         SnackBar(
           backgroundColor: const Color(0xFF8DD300),
           content: Text(
-            "An error occurred: $e",
+            "An error occurred. $e",
             style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
           ),
         ),
       );
+      debugPrintStack(label: 'Login error: $e');
     }
   }
 

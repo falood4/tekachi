@@ -336,7 +336,10 @@ class _UserSettingsState extends State<UserSettings> {
                       return;
                     }
                     Navigator.of(context).pop();
-                    _handleChangePassword(newController.text);
+                    _handleChangePassword(
+                      currentController.text,
+                      newController.text,
+                    );
                   },
                   style: ElevatedButton.styleFrom(backgroundColor: black),
                   child: Text(
@@ -356,8 +359,12 @@ class _UserSettingsState extends State<UserSettings> {
     );
   }
 
-  Future<void> _handleChangePassword(String newPassword) async {
+  Future<void> _handleChangePassword(
+    String oldPassword,
+    String newPassword,
+  ) async {
     final response = await AuthService().changePassword(
+      oldPassword: oldPassword,
       newPassword: newPassword,
     );
 

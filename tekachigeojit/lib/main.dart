@@ -6,6 +6,7 @@ import 'package:tekachigeojit/startscreens/home.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
   runApp(const TekachiGeo());
 }
 

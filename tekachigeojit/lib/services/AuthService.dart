@@ -17,23 +17,26 @@ class AuthService {
 
   // Stored credentials and token for logout
   String? _email;
-  String? _password;
-  String? _token;
+  String? _access_token;
+  String? _refresh_token;
   int? _userId;
 
   void setCredentials(String email, String password) {
     _email = email;
-    _password = password;
   }
 
   void clearCredentials() {
     _email = null;
-    _password = null;
-    _token = null;
+    _access_token = null;
   }
 
-  void setToken(String token, int userID) {
-    _token = token;
+  Future<void> setToken(
+    String access_token,
+    String refresh_token,
+    int userID,
+  ) async {
+    _access_token = access_token;
+    _refresh_token = refresh_token;
     _userId = userID;
   }
 
@@ -42,7 +45,11 @@ class AuthService {
   }
 
   String? shareToken() {
-    return _token;
+    return _access_token;
+  }
+
+  String? shareRefreshToken() {
+    return _refresh_token;
   }
 
   String? shareEmail() {
@@ -50,8 +57,8 @@ class AuthService {
   }
 
   bool isLoggedIn() {
-    return _token != null &&
-        _token!.isNotEmpty &&
+    return _access_token != null &&
+        _access_token!.isNotEmpty &&
         _email != null &&
         _email!.isNotEmpty;
   }
@@ -59,8 +66,8 @@ class AuthService {
   /// Build headers with Content-Type and Authorization
   Map<String, String> _headers() {
     final headers = {'Content-Type': 'application/json'};
-    if (_token != null && _token!.isNotEmpty) {
-      headers['Authorization'] = 'Bearer $_token';
+    if (_access_token != null && _access_token!.isNotEmpty) {
+      headers['Authorization'] = 'Bearer $_access_token';
     }
     return headers;
   }
@@ -81,9 +88,10 @@ class AuthService {
       }
 
       final data = jsonDecode(response.body);
-      final token = data['token'];
+      final a_token = data['access_token'];
+      final r_token = data['refresh_token'];
       final userID = data['id'];
-      AuthService().setToken(token, userID);
+      AuthService().setToken(a_token, r_token, userID);
 
       return response;
     } catch (e) {
@@ -109,9 +117,10 @@ class AuthService {
       }
 
       final data = jsonDecode(response.body);
-      final token = data['token'];
+      final a_token = data['access_token'];
+      final r_token = data['refresh_token'];
       final userID = data['id'];
-      setToken(token, userID);
+      setToken(a_token, r_token, userID);
 
       return response;
     } catch (e) {
@@ -120,7 +129,10 @@ class AuthService {
     }
   }
 
-  Future<http.Response> changePassword({required String newPassword}) async {
+  Future<http.Response> changePassword({
+    required String oldPassword,
+    required String newPassword,
+  }) async {
     final url = Uri.parse("$_baseUrl/change-password");
 
     try {
@@ -128,7 +140,7 @@ class AuthService {
         url,
         headers: _headers(),
         body: jsonEncode({
-          "oldPassword": _password,
+          "oldPassword": oldPassword,
           "newPassword": newPassword,
         }),
       );
@@ -174,6 +186,25 @@ class AuthService {
       return response;
     } catch (e) {
       debugPrint('Deletion error: $e');
+      rethrow;
+    }
+  }
+
+  Future<http.Response> tokenRefresh() async {
+    try {
+      final response = await http.post(
+        Uri.parse('$_baseUrl/refresh'),
+        headers: _headers(),
+      );
+
+      if (response.statusCode == 200) {
+        clearCredentials();
+        debugPrint('New tokens generated successfully');
+      }
+
+      return response;
+    } catch (e) {
+      debugPrint('Token generation failed: $e');
       rethrow;
     }
   }
