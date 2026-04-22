@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
 import com.geojit.tekachi.quizhistory.dtos.AttemptView;
 import com.geojit.tekachi.quizhistory.entity.Attempt;
 import com.geojit.tekachi.quizhistory.repository.AttemptRepo;
@@ -24,7 +23,7 @@ public class AttemptService {
         return attemptedRepo.findAttemptByUserId(userId);
     }
 
-    public Attempt findById(Long id) {
+    public Attempt findById(Long id) { 
         return attemptedRepo.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Atttempt not found"));
     }

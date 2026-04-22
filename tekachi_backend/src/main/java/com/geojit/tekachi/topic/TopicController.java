@@ -1,4 +1,4 @@
-package com.geojit.tekachi.quizhistory.topic;
+package com.geojit.tekachi.topic;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.geojit.tekachi.quizhistory.topic.entity.Title;
-import com.geojit.tekachi.quizhistory.topic.services.ContentService;
-import com.geojit.tekachi.quizhistory.topic.services.TitleService;
+import com.geojit.tekachi.topic.entity.Title;
+import com.geojit.tekachi.topic.services.ContentService;
+import com.geojit.tekachi.topic.services.TitleService;
 
 @RestController
 public class TopicController {

@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import com.geojit.tekachi.questionretrieval.entity.Option;
-import com.geojit.tekachi.questionretrieval.service.OptionService;
+import com.geojit.tekachi.questionretrieval.repository.service.OptionService;
 
 @RestController
 @RequestMapping("/")

@@ -22,8 +22,11 @@ public class JwtService {
     @Value("${jwt.secret}")
     private String jwtSecret;
 
-    @Value("${jwt.expiration:36000000}") //
+    @Value("${jwt.expiration:15000}") // 6 secs
     private long jwtExpiration;
+
+    @Value("${jwt.rfrsh.expiration:86400000}") // 1 day
+    private long refreshExpiration;
 
     @PostConstruct
     private void validateSecret() {
@@ -37,13 +40,18 @@ public class JwtService {
         }
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateAccessToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, userDetails.getUsername());
+        return createAccessToken(claims, userDetails.getUsername());
     }
 
-    public String generateToken(String username, Map<String, Object> claims) {
-        return createToken(claims, username);
+    public String generateAccessToken(String username, Map<String, Object> claims) {
+        Map<String, Object> safeClaims = (claims == null) ? new HashMap<>() : new HashMap<>(claims);
+        return createAccessToken(safeClaims, username);
+    }
+
+    public String generateRefreshToken(String username, Map<String, Object> claims) {
+        return createRefreshToken(claims, username);
     }
 
     public String extractUsername(String token) {
@@ -53,6 +61,7 @@ public class JwtService {
     public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
+
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
@@ -79,12 +88,29 @@ public class JwtService {
         return extractExpiration(token).before(new Date());
     }
 
-    private String createToken(Map<String, Object> claims, String subject) {
+    private String createAccessToken(Map<String, Object> claims, String subject) {
+        Map<String, Object> safeClaims = new HashMap<>(claims);
         Date now = new Date();
+        safeClaims.put("type", "access");
         Date expiryDate = new Date(now.getTime() + jwtExpiration);
 
         return Jwts.builder()
-                .setClaims(claims)
+                .setClaims(safeClaims)
+                .setSubject(subject)
+                .setIssuedAt(now)
+                .setExpiration(expiryDate)
+                .signWith(getSigningKey(), SignatureAlgorithm.HS512)
+                .compact();
+    }
+
+    private String createRefreshToken(Map<String, Object> claims, String subject) {
+        Date now = new Date();
+        Map<String, Object> safeClaims = new HashMap<>(claims);
+        safeClaims.put("type", "refresh");
+        Date expiryDate = new Date(now.getTime() + refreshExpiration);
+
+        return Jwts.builder()
+                .setClaims(safeClaims)
                 .setSubject(subject)
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)

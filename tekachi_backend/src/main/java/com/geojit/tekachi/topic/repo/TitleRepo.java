@@ -1,4 +1,4 @@
-package com.geojit.tekachi.quizhistory.topic.repo;
+package com.geojit.tekachi.topic.repo;
 
 import java.util.List;
 
@@ -7,8 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.geojit.tekachi.quizhistory.topic.dtos.TitleView;
-import com.geojit.tekachi.quizhistory.topic.entity.Title;
+import com.geojit.tekachi.topic.dtos.TitleView;
+import com.geojit.tekachi.topic.entity.Title;
 
 @Repository
 public interface TitleRepo extends JpaRepository<Title, Long> {

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -59,11 +60,26 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 return;
             }
 
+            // Check token type - only allow access tokens
+            String tokenType = jwtService.extractClaim(token, claims -> claims.get("type", String.class));
+            if (!"access".equals(tokenType)) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getWriter().write("Refresh token detected. Access token required.");
+                return;
+            }
+
             email = jwtService.extractEmail(token);
         }
 
         if (StringUtils.hasText(token)) {
-            UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
+            UserDetails userDetails;
+            try {
+                userDetails = customUserDetailsService.loadUserByUsername(email);
+            } catch (UsernameNotFoundException ex) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getWriter().write("Invalid token subject");
+                return;
+            }
 
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                     userDetails,

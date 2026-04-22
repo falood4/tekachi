@@ -1,4 +1,4 @@
-package com.geojit.tekachi.questionretrieval.service;
+package com.geojit.tekachi.questionretrieval.repository.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

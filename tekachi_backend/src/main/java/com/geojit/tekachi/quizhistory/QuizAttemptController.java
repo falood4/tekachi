@@ -16,9 +16,9 @@ import com.geojit.tekachi.questionretrieval.repository.OptionRepo;
 import com.geojit.tekachi.questionretrieval.repository.QuestionRepo;
 import com.geojit.tekachi.quizhistory.entity.Answer;
 import com.geojit.tekachi.quizhistory.entity.Attempt;
-import com.geojit.tekachi.quizhistory.repository.AttemptRepo;
 import com.geojit.tekachi.quizhistory.services.AnswerService;
 import com.geojit.tekachi.quizhistory.services.AttemptService;
+import com.geojit.tekachi.quizhistory.repository.AttemptRepo;
 import com.geojit.tekachi.usersignin.entity.User;
 import com.geojit.tekachi.usersignin.repository.UserRepository;
 

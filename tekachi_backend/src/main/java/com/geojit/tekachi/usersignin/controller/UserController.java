@@ -61,13 +61,15 @@ public class UserController {
             user.setPassword(password);
 
             User registeredUser = userService.register(user);
-            String token = jwtService.generateToken(email, Map.of("userId", registeredUser.getId()));
+            String access_token = jwtService.generateAccessToken(email, Map.of("userId", registeredUser.getId()));
+            String refresh_token = jwtService.generateRefreshToken(email, Map.of("userId", registeredUser.getId()));
 
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(Map.of(
                             "id", registeredUser.getId(),
                             "email", registeredUser.getEmail(),
-                            "token", token,
+                            "access_token", access_token,
+                            "refresh_token", refresh_token,
                             "message", "User registered successfully"));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.CONFLICT)
@@ -88,12 +90,14 @@ public class UserController {
 
             User user = userService.login(email, password);
 
-            String token = jwtService.generateToken(email, Map.of("userId", user.getId()));
+            String access_token = jwtService.generateAccessToken(email, Map.of("userId", user.getId()));
+            String refresh_token = jwtService.generateRefreshToken(email, Map.of("userId", user.getId()));
 
             return ResponseEntity.ok(Map.of(
                     "id", user.getId(),
                     "email", user.getEmail(),
-                    "token", token,
+                    "access_token", access_token,
+                    "refresh_token", refresh_token,
                     "message", "Login successful"));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
@@ -134,15 +138,43 @@ public class UserController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(@RequestHeader("Authorization") String authHeader) {
+    public ResponseEntity<?> logout(@RequestHeader("Authorization") String authHeader,
+            @RequestBody Map<String, String> request) {
         try {
             if (authHeader == null || !authHeader.startsWith("Bearer ")) {
                 return ResponseEntity.badRequest()
                         .body(Map.of("error", "Missing or invalid token"));
             }
 
-            String token = authHeader.substring(7);
-            tokenBlacklistService.blacklistToken(token);
+            String access_token = authHeader.substring(7);
+            String refresh_token = request.get("refresh_token");
+            if (refresh_token == null || refresh_token.isBlank()) {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("error", "Valid Refresh token is required"));
+            }
+
+            // Check refresh token validity before extracting claims
+            if (!jwtService.isTokenValid(refresh_token)) {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("error", "Valid Refresh token is required"));
+            }
+
+            String tokenType = jwtService.extractClaim(refresh_token, claims -> claims.get("type", String.class));
+            if (!"refresh".equals(tokenType)) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(Map.of("error", "Invalid token type"));
+            }
+
+            // Check if refresh token belongs to authenticated user
+            String email = SecurityContextHolder.getContext().getAuthentication().getName();
+            String refreshTokenEmail = jwtService.extractUsername(refresh_token);
+            if (!email.equals(refreshTokenEmail)) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(Map.of("error", "Token mismatch. Refresh token not authorized."));
+            }
+
+            tokenBlacklistService.blacklistToken(access_token);
+            tokenBlacklistService.blacklistToken(refresh_token);
 
             return ResponseEntity.ok(Map.of("message", "Logout successful. Token revoked."));
         } catch (Exception e) {
@@ -221,4 +253,50 @@ public class UserController {
         }
         return user;
     }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<?> refreshToken(@RequestBody Map<String, String> request) {
+
+        try {
+            String refreshToken = request.get("refresh_token");
+
+            if (refreshToken == null || !jwtService.isTokenValid(refreshToken)) {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("error", "Valid Refresh token is required"));
+            }
+            String type = jwtService.extractClaim(refreshToken, claims -> claims.get("type", String.class));
+
+            if (!"refresh".equals(type)) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(Map.of("error", "Invalid token type"));
+            }
+            if (tokenBlacklistService.isTokenBlacklisted(refreshToken)) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(Map.of("error", "Token is blacklisted. Please login again."));
+            }
+
+            String email = jwtService.extractUsername(refreshToken);
+            User user = repository.findByEmail(email);
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(Map.of("error", "User not found"));
+            }
+
+            String newAccessToken = jwtService.generateAccessToken(email, Map.of("userId", user.getId()));
+            String newRefreshToken = jwtService.generateRefreshToken(email, Map.of("userId", user.getId()));
+            final TokenBlacklistService blacklistService = tokenBlacklistService;
+            blacklistService.blacklistToken(refreshToken);
+
+            return ResponseEntity.ok(Map.of(
+                    "access_token", newAccessToken,
+                    "refresh_token", newRefreshToken,
+                    "message", "Token refreshed successfully"));
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("error", "Could not refresh token: " + e.getMessage()));
+        }
+
+    }
+
 }
