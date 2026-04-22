@@ -28,6 +28,8 @@ class AuthService {
   void clearCredentials() {
     _email = null;
     _access_token = null;
+    _refresh_token = null;
+    _userId = null;
   }
 
   Future<void> setToken(
@@ -145,6 +147,22 @@ class AuthService {
         }),
       );
 
+      if (response.statusCode == 401) {
+        debugPrint('Password change failed: Unauthorized. Refreshing...');
+        bool tokenFreshFlag = await tokenRefresh();
+        if (tokenFreshFlag) {
+          debugPrint('Token refreshed successfully. Retrying password change.');
+          return await changePassword(
+            oldPassword: oldPassword,
+            newPassword: newPassword,
+          );
+        } else {
+          debugPrint('Token refresh failed. Please log in again.');
+          clearCredentials();
+          return http.Response('{"error": "Unauthorized"}', 401);
+        }
+      }
+
       return response;
     } catch (e) {
       debugPrintStack(label: 'Password not changed due to error: $e');
@@ -157,11 +175,23 @@ class AuthService {
       final response = await http.post(
         Uri.parse('$_baseUrl/logout'),
         headers: _headers(),
+        body: jsonEncode({"refresh_token": _refresh_token}),
       );
 
       if (response.statusCode >= 200 && response.statusCode < 300) {
         clearCredentials();
         debugPrint('Logout Successful');
+      } else if (response.statusCode == 401) {
+        debugPrint('Logout failed: Unauthorized. Refreshing...');
+        bool tokenFreshFlag = await tokenRefresh();
+        if (tokenFreshFlag) {
+          debugPrint('Token refreshed successfully. Retrying logout.');
+          return await logout();
+        } else {
+          debugPrint('Token refresh failed. Please log in again.');
+          clearCredentials();
+          return http.Response('{"error": "Unauthorized"}', 401);
+        }
       }
 
       return response;
@@ -181,6 +211,19 @@ class AuthService {
       if (response.statusCode == 200) {
         clearCredentials();
         debugPrint('Account Deleted Successfully');
+      } else if (response.statusCode == 401) {
+        debugPrint('Account deletion failed: Unauthorized. Refreshing...');
+        bool tokenFreshFlag = await tokenRefresh();
+        if (tokenFreshFlag) {
+          debugPrint(
+            'Token refreshed successfully. Retrying account deletion.',
+          );
+          return await deleteUser();
+        } else {
+          debugPrint('Token refresh failed. Please log in again.');
+          clearCredentials();
+          return http.Response('{"error": "Unauthorized"}', 401);
+        }
       }
 
       return response;
@@ -190,19 +233,40 @@ class AuthService {
     }
   }
 
-  Future<http.Response> tokenRefresh() async {
+  Future<bool> tokenRefresh() async {
     try {
+      if (_refresh_token == null || _refresh_token!.isEmpty) {
+        debugPrint('Token refresh failed: missing refresh token.');
+        return false;
+      }
+
       final response = await http.post(
         Uri.parse('$_baseUrl/refresh'),
-        headers: _headers(),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'refresh_token': _refresh_token,
+          'old_token': _access_token,
+        }),
       );
 
       if (response.statusCode == 200) {
-        clearCredentials();
         debugPrint('New tokens generated successfully');
+        final data = jsonDecode(response.body);
+        String a_token = data['access_token'];
+        String r_token = data['refresh_token'];
+        if (_userId == null) {
+          debugPrint('Token refresh failed: missing user id in session.');
+          return false;
+        }
+        setToken(a_token, r_token, _userId!);
+        return true;
+      } else if (response.statusCode == 401) {
+        debugPrint('Token refresh failed: Unauthorized. Clearing credentials.');
+        clearCredentials();
+        return false;
       }
 
-      return response;
+      return false;
     } catch (e) {
       debugPrint('Token generation failed: $e');
       rethrow;

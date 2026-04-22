@@ -276,12 +276,6 @@ public class UserController {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                         .body(Map.of("error", "Refresh token is blacklisted. Please login again."));
             }
-
-            // CHECK IF OLD TOKEN IS STILL VALID, IF YES THEN BLACKLIST IT
-            if (oldToken != null && jwtService.isTokenValid(oldToken)) {
-                tokenBlacklistService.blacklistToken(oldToken);
-            }
-
             String email = jwtService.extractUsername(refreshToken);
 
             // Blacklist old access token only if it is valid, is an access token,

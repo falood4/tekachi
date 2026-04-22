@@ -22,10 +22,10 @@ public class JwtService {
     @Value("${jwt.secret}")
     private String jwtSecret;
 
-    @Value("${jwt.expiration:15000}") // 6 secs
+    @Value("${jwt.expiration:30000}") // 5 minutes
     private long jwtExpiration;
 
-    @Value("${jwt.rfrsh.expiration:86400000}") // 1 day
+    @Value("${jwt.rfrsh.expiration:259200000}") // 3 days
     private long refreshExpiration;
 
     @PostConstruct

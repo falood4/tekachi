@@ -38,5 +38,10 @@
     "name": "rfrsh.secret",
     "type": "java.lang.String",
     "description": "A description for 'rfrsh.secret'"
+  },
+  {
+    "name": "jwt.rfrsh.expiration",
+    "type": "java.lang.String",
+    "description": "A description for 'jwt.rfrsh.expiration'"
   }
 ]}

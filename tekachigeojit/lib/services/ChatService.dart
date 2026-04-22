@@ -55,8 +55,19 @@ class Chatservice {
         _saveConvId(convId);
 
         return reply;
-      } else if (response.statusCode == 500) {
-        throw Exception('Server error. Please try later');
+      } else if (response.statusCode == 401) {
+        debugPrint(
+          'Conversation initiation failed: Unauthorized. Refreshing...',
+        );
+        bool tokenFreshFlag = await AuthService().tokenRefresh();
+        if (tokenFreshFlag) {
+          debugPrint(
+            'Token refreshed successfully. Retrying conversation initiation.',
+          );
+          return await startConversation(personaId);
+        } else {
+          throw Exception('Failed to refresh token. Please log in again.');
+        }
       } else {
         throw Exception(
           'Failed to start conversation: HTTP ${response.statusCode}',
@@ -87,8 +98,15 @@ class Chatservice {
         final data = jsonDecode(response.body);
         final String reply = data['reply'];
         return reply;
-      } else if (response.statusCode == 500) {
-        throw Exception('Server error. Please try later');
+      } else if (response.statusCode == 401) {
+        debugPrint('Message Request failed: Unauthorized. Refreshing...');
+        bool tokenFreshFlag = await AuthService().tokenRefresh();
+        if (tokenFreshFlag) {
+          debugPrint('Token refreshed successfully. Retrying sending request.');
+          return await newTechMessage(userMsg);
+        } else {
+          throw Exception('Failed to refresh token. Please log in again.');
+        }
       } else {
         throw Exception('Failed to get reply: HTTP ${response.statusCode}');
       }
@@ -117,8 +135,15 @@ class Chatservice {
         final data = jsonDecode(response.body);
         final String reply = data['reply'];
         return reply;
-      } else if (response.statusCode == 500) {
-        throw Exception('Server error. Please try later');
+      } else if (response.statusCode == 401) {
+        debugPrint('Message Request failed: Unauthorized. Refreshing...');
+        bool tokenFreshFlag = await AuthService().tokenRefresh();
+        if (tokenFreshFlag) {
+          debugPrint('Token refreshed successfully. Retrying sending request.');
+          return await newHrMessage(userMsg);
+        } else {
+          throw Exception('Failed to refresh token. Please log in again.');
+        }
       } else {
         throw Exception('Failed to get reply: HTTP ${response.statusCode}');
       }
@@ -144,8 +169,15 @@ class Chatservice {
         debugPrint('response: ${response.body}');
         final verdict = response.body;
         return verdict;
-      } else if (response.statusCode == 500) {
-        throw Exception('Server error. Please try later');
+      } else if (response.statusCode == 401) {
+        debugPrint('Verdict Request failed: Unauthorized. Refreshing...');
+        bool tokenFreshFlag = await AuthService().tokenRefresh();
+        if (tokenFreshFlag) {
+          debugPrint('Token refreshed successfully. Retrying Verdict request.');
+          return await getVerdict();
+        } else {
+          throw Exception('Failed to refresh token. Please log in again.');
+        }
       } else {
         throw Exception('Failed to get verdict: HTTP ${response.statusCode}');
       }
