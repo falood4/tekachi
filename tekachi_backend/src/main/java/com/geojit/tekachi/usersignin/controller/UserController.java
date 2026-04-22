@@ -7,7 +7,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.geojit.tekachi.usersignin.repository.UserRepository;
 import com.geojit.tekachi.quizhistory.services.AttemptService;
+import com.geojit.tekachi.usersignin.dto.UserProfileRequest;
 import com.geojit.tekachi.usersignin.entity.User;
+import com.geojit.tekachi.usersignin.service.UserProfileService;
 import com.geojit.tekachi.usersignin.service.UserService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -27,15 +29,18 @@ public class UserController {
     private final UserService userService;
     private final JwtService jwtService;
     private final TokenBlacklistService tokenBlacklistService;
+    private final UserProfileService userProfileService;
 
     private final AttemptService quizAttemptService;
 
     public UserController(UserRepository repository, UserService userService, JwtService jwtService,
-            TokenBlacklistService tokenBlacklistService, AttemptService quizAttemptService) {
+            TokenBlacklistService tokenBlacklistService, UserProfileService userProfileService,
+            AttemptService quizAttemptService) {
         this.repository = repository;
         this.userService = userService;
         this.jwtService = jwtService;
         this.tokenBlacklistService = tokenBlacklistService;
+        this.userProfileService = userProfileService;
         this.quizAttemptService = quizAttemptService;
     }
 
@@ -149,6 +154,28 @@ public class UserController {
             log.error("Exception {}", e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Map.of("error", "Logout failed " + e.getMessage()));
+        }
+    }
+
+    @GetMapping("/profile")
+    public ResponseEntity<?> getProfile() {
+        try {
+            User user = getAuthenticatedUser();
+            return ResponseEntity.ok(userProfileService.getProfile(user));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Failed to fetch user profile"));
+        }
+    }
+
+    @PutMapping("/profile")
+    public ResponseEntity<?> updateProfile(@RequestBody UserProfileRequest request) {
+        try {
+            User user = getAuthenticatedUser();
+            return ResponseEntity.ok(userProfileService.updateProfile(user, request));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Failed to update user profile"));
         }
     }
 
