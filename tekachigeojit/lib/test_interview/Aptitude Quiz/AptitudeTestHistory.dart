@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tekachigeojit/services/QuizHistoryService.dart';
+import 'package:tekachigeojit/services/quiz/QuizHistoryService.dart';
 import 'package:intl/intl.dart';
 
 class AptitudeTestHistory extends StatefulWidget {

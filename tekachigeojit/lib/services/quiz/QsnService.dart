@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'AuthService.dart';
-import '../models/QuestionModel.dart';
-import 'ApiConfig.dart';
+import '../AuthService.dart';
+import '../../models/QuestionModel.dart';
+import '../ApiConfig.dart';
 
 class QsnService {
   static String get _baseUrl => '${ApiConfig.baseUrl}/questions';

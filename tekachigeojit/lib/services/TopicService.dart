@@ -1,67 +1,51 @@
-import 'dart:convert';
-import 'dart:io';
-import 'package:http/http.dart' as http;
-import 'package:tekachigeojit/services/AuthService.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:tekachigeojit/services/ApiConfig.dart';
+import 'package:tekachigeojit/services/token_dio/DioClient.dart';
+import 'package:tekachigeojit/services/token_dio/TokenManager.dart';
 
 class Topicservice {
   static String get _baseUrl => ApiConfig.baseUrl;
 
-  String? get _token => AuthService().shareToken();
-  Map<String, String> _headers() {
-    final headers = {'Content-Type': 'application/json'};
-    if (_token != null && _token!.isNotEmpty) {
-      headers['Authorization'] = 'Bearer $_token';
-    }
-    return headers;
+  final dio = DioClient().dio;
+  final TokenManager _tokenManager = TokenManager();
+  bool get _isAuthenticated {
+    final token = _tokenManager.accessToken;
+    return token != null && token.isNotEmpty;
   }
 
   Future<Map<String, int>> fetchTopicsMap(int low, int high) async {
-    final response = await http.get(
-      Uri.parse('$_baseUrl/topics?low=$low&high=$high'),
-      headers: _headers(),
-    );
+    try {
+      if (!_isAuthenticated) {
+        throw StateError('User not authenticated');
+      }
 
-    if (response.statusCode == 200) {
-      final decoded = jsonDecode(response.body);
+      final response = await dio.get('$_baseUrl/topics?low=$low&high=$high');
 
-      // Convert dynamic map → Map<String, int>
-      return Map<String, int>.from(decoded);
-    } else {
-      throw Exception('Failed to load topics');
+      if (response.statusCode == 200) {
+        final decoded = response.data;
+        return Map<String, int>.from(decoded);
+      } else {
+        throw Exception('Failed to load topics: HTTP ${response.statusCode}');
+      }
+    } on StateError {
+      rethrow;
+    } catch (e) {
+      throw Exception('Failed to load topics: $e');
     }
   }
 
   Future<String> fetchTopicContent(int topicId) async {
-    final url = Uri.parse('$_baseUrl/topics/$topicId');
-
     try {
-      final response = await http.get(url, headers: _headers());
+      if (!_isAuthenticated) {
+        throw StateError('User not authenticated');
+      }
+
+      final response = await dio.get('$_baseUrl/topics/$topicId');
 
       if (response.statusCode == 200) {
-        final body = response.body.trim();
+        String body = response.data.toString().trim();
         if (body.isEmpty) return 'No content found.';
-
-        // Backend might return either plain text or JSON.
-        try {
-          final decoded = jsonDecode(body);
-          if (decoded is Map) {
-            final candidates = <dynamic>[
-              decoded['content_text'],
-              decoded['contentText'],
-              decoded['content'],
-              decoded['text'],
-            ];
-            for (final candidate in candidates) {
-              if (candidate is String && candidate.trim().isNotEmpty) {
-                return candidate;
-              }
-            }
-          }
-        } catch (_) {
-          // Not JSON; treat as plain text.
-        }
 
         return body;
       }
@@ -70,20 +54,18 @@ class Topicservice {
         return 'Content not available.';
       }
 
-      if (response.statusCode == 401 || response.statusCode == 403) {
-        return 'Please log in to view this content.';
+      return 'Content not available.';
+    } on StateError {
+      rethrow;
+    } on DioException catch (e) {
+      final statusCode = e.response?.statusCode;
+      if (statusCode == 404 || statusCode == 204) {
+        return 'Content not available.';
       }
-
-      debugPrint(
-        'Topic content failed: ${response.statusCode} ${response.reasonPhrase} '
-        'url=$url body=${response.body}',
-      );
-      return 'Failed to load topic content (HTTP ${response.statusCode}).';
-    } on SocketException catch (e) {
-      debugPrint('Topic content network error: $e url=$url');
-      return 'Network error. Please check your connection and try again.';
+      debugPrint('Topic content error: ${e.message}');
+      return 'Something went wrong while loading this topic.';
     } catch (e) {
-      debugPrint('Topic content error: $e url=$url');
+      debugPrint('Topic content error: $e');
       return 'Something went wrong while loading this topic.';
     }
   }

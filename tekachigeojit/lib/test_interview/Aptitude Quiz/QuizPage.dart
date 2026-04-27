@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:tekachigeojit/models/QuestionModel.dart';
 import 'package:tekachigeojit/models/AnswerSelection.dart';
 import 'package:tekachigeojit/test_interview/Aptitude%20Quiz/QuizResult.dart';
-import 'package:tekachigeojit/services/QsnService.dart';
+import 'package:tekachigeojit/services/quiz/QsnService.dart';
 
 class QuizPage extends StatefulWidget {
   const QuizPage({super.key, required this.is3step});
@@ -81,7 +81,11 @@ class _QuizPageState extends State<QuizPage> {
             margin: const EdgeInsets.only(right: 12),
             child: ElevatedButton(
               onPressed: () {
-                _confirmContinue();
+                if (widget.is3step) {
+                  _skipToResults();
+                } else {
+                  _confirmContinue();
+                }
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: black,
@@ -91,8 +95,9 @@ class _QuizPageState extends State<QuizPage> {
                   side: BorderSide(color: secondary, width: 1.5),
                 ),
               ),
+
               child: Text(
-                'Continue',
+                widget.is3step ? 'Continue' : 'Quit',
                 style: theme.textTheme.bodyMedium?.copyWith(color: secondary),
               ),
             ),
@@ -241,6 +246,19 @@ class _QuizPageState extends State<QuizPage> {
         );
       }
     }
+  }
+
+  void _skipToResults() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => QuizResult(
+          score: totalScore,
+          answers: _answers,
+          is3step: widget.is3step,
+        ),
+      ),
+    );
   }
 
   void _confirmContinue() {

@@ -1,7 +1,6 @@
-import 'dart:convert';
 import 'package:flutter/cupertino.dart';
-import 'package:http/http.dart' as http;
-import 'AuthService.dart';
+import 'package:tekachigeojit/services/token_dio/DioClient.dart';
+import 'package:tekachigeojit/services/token_dio/TokenManager.dart';
 import 'ApiConfig.dart';
 
 class Chatservice {
@@ -15,16 +14,14 @@ class Chatservice {
 
   Chatservice._internal();
 
-  String? get _token => AuthService().shareToken();
-  int? get _userId => AuthService().shareUserId();
   int? _convId;
 
-  Map<String, String> _headers() {
-    final headers = {'Content-Type': 'application/json'};
-    if (_token != null && _token!.isNotEmpty) {
-      headers['Authorization'] = 'Bearer $_token';
-    }
-    return headers;
+  final dio = DioClient().dio;
+  final TokenManager _tokenManager = TokenManager();
+
+  bool get _isAuthenticated {
+    final token = _tokenManager.accessToken;
+    return token != null && token.isNotEmpty;
   }
 
   void _saveConvId(int id) {
@@ -37,37 +34,23 @@ class Chatservice {
 
   Future<String> startConversation(int personaId) async {
     try {
-      final requestHeaders = _headers();
-      if (requestHeaders['Authorization'] == null) {
+      if (!_isAuthenticated) {
+        debugPrint('User not authenticated');
         return Future.error('User not authenticated');
       }
 
-      final response = await http.post(
-        Uri.parse("$_baseUrl/start"),
-        headers: requestHeaders,
-        body: jsonEncode({'userId': _userId, 'personaId': personaId}),
+      final response = await dio.post(
+        '$_baseUrl/start',
+        data: {'userId': _tokenManager.userId, 'personaId': personaId},
       );
 
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
+        final data = response.data;
         final String reply = data['greeting'];
         final int convId = data['conversationId'];
         _saveConvId(convId);
 
         return reply;
-      } else if (response.statusCode == 401) {
-        debugPrint(
-          'Conversation initiation failed: Unauthorized. Refreshing...',
-        );
-        bool tokenFreshFlag = await AuthService().tokenRefresh();
-        if (tokenFreshFlag) {
-          debugPrint(
-            'Token refreshed successfully. Retrying conversation initiation.',
-          );
-          return await startConversation(personaId);
-        } else {
-          throw Exception('Failed to refresh token. Please log in again.');
-        }
       } else {
         throw Exception(
           'Failed to start conversation: HTTP ${response.statusCode}',
@@ -80,33 +63,22 @@ class Chatservice {
 
   Future<String> newTechMessage(String userMsg) async {
     try {
-      final requestHeaders = _headers();
-      if (requestHeaders['Authorization'] == null) {
+      if (!_isAuthenticated) {
         return Future.error('User not authenticated');
       }
       if (_convId == null) {
         throw Exception('No active conversation. Please start a new session.');
       }
 
-      final response = await http.post(
-        Uri.parse("$_baseUrl/$_convId/tech/message"),
-        headers: requestHeaders,
-        body: jsonEncode({'content': userMsg}),
+      final response = await dio.post(
+        '$_baseUrl/$_convId/tech/message',
+        data: {'content': userMsg},
       );
 
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
+        final data = response.data;
         final String reply = data['reply'];
         return reply;
-      } else if (response.statusCode == 401) {
-        debugPrint('Message Request failed: Unauthorized. Refreshing...');
-        bool tokenFreshFlag = await AuthService().tokenRefresh();
-        if (tokenFreshFlag) {
-          debugPrint('Token refreshed successfully. Retrying sending request.');
-          return await newTechMessage(userMsg);
-        } else {
-          throw Exception('Failed to refresh token. Please log in again.');
-        }
       } else {
         throw Exception('Failed to get reply: HTTP ${response.statusCode}');
       }
@@ -117,33 +89,22 @@ class Chatservice {
 
   Future<String> newHrMessage(String userMsg) async {
     try {
-      final requestHeaders = _headers();
-      if (requestHeaders['Authorization'] == null) {
+      if (!_isAuthenticated) {
         return Future.error('User not authenticated');
       }
       if (_convId == null) {
         throw Exception('No active conversation. Please start a new session.');
       }
 
-      final response = await http.post(
-        Uri.parse("$_baseUrl/$_convId/hrmentor/message"),
-        headers: requestHeaders,
-        body: jsonEncode({'content': userMsg}),
+      final response = await dio.post(
+        '$_baseUrl/$_convId/hrmentor/message',
+        data: {'content': userMsg},
       );
 
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
+        final data = response.data;
         final String reply = data['reply'];
         return reply;
-      } else if (response.statusCode == 401) {
-        debugPrint('Message Request failed: Unauthorized. Refreshing...');
-        bool tokenFreshFlag = await AuthService().tokenRefresh();
-        if (tokenFreshFlag) {
-          debugPrint('Token refreshed successfully. Retrying sending request.');
-          return await newHrMessage(userMsg);
-        } else {
-          throw Exception('Failed to refresh token. Please log in again.');
-        }
       } else {
         throw Exception('Failed to get reply: HTTP ${response.statusCode}');
       }
@@ -154,30 +115,22 @@ class Chatservice {
 
   Future<String> getVerdict() async {
     try {
-      final requestHeaders = _headers();
-      if (requestHeaders['Authorization'] == null) {
+      if (!_isAuthenticated) {
         return Future.error('User not authenticated');
       }
+      if (_convId == null) {
+        throw Exception('No active conversation. Please start a new session.');
+      }
 
-      final response = await http.post(
-        Uri.parse("$_baseUrl/$_convId/messages/verdict"),
-        headers: requestHeaders,
-        body: jsonEncode({'content': "thank you"}),
+      final response = await dio.post(
+        '$_baseUrl/$_convId/messages/verdict',
+        data: {'content': 'thank you'},
       );
 
       if (response.statusCode == 200) {
-        debugPrint('response: ${response.body}');
-        final verdict = response.body;
+        debugPrint('response: ${response.data}');
+        final verdict = response.data.toString();
         return verdict;
-      } else if (response.statusCode == 401) {
-        debugPrint('Verdict Request failed: Unauthorized. Refreshing...');
-        bool tokenFreshFlag = await AuthService().tokenRefresh();
-        if (tokenFreshFlag) {
-          debugPrint('Token refreshed successfully. Retrying Verdict request.');
-          return await getVerdict();
-        } else {
-          throw Exception('Failed to refresh token. Please log in again.');
-        }
       } else {
         throw Exception('Failed to get verdict: HTTP ${response.statusCode}');
       }
@@ -188,20 +141,21 @@ class Chatservice {
 
   Future<List<Map<String, dynamic>>> getConversationHistory(int persona) async {
     try {
-      final requestHeaders = _headers();
-      if (requestHeaders['Authorization'] == null) {
+      if (!_isAuthenticated) {
         return Future.error('User not authenticated');
       }
 
-      final int? userId = AuthService().shareUserId();
+      final int? userId = _tokenManager.userId;
+      if (userId == null) {
+        return Future.error('User not authenticated');
+      }
 
-      final response = await http.get(
-        Uri.parse("$_baseUrl/conversations/$userId/$persona"),
-        headers: requestHeaders,
+      final response = await dio.get(
+        '$_baseUrl/conversations/$userId/$persona',
       );
 
       if (response.statusCode == 200) {
-        final List<dynamic> data = jsonDecode(response.body);
+        final List<dynamic> data = response.data as List<dynamic>;
         return data.map((item) => item as Map<String, dynamic>).toList();
       } else if (response.statusCode == 500) {
         throw Exception('Server error. Please try later');
@@ -217,18 +171,14 @@ class Chatservice {
 
   Future<List<Map<String, dynamic>>> getChatHistory(int? convId) async {
     try {
-      final requestHeaders = _headers();
-      if (requestHeaders['Authorization'] == null) {
+      if (!_isAuthenticated) {
         return Future.error('User not authenticated');
       }
 
-      final response = await http.get(
-        Uri.parse("$_baseUrl/$convId/messages"),
-        headers: requestHeaders,
-      );
+      final response = await dio.get('$_baseUrl/$convId/messages');
 
       if (response.statusCode == 200) {
-        final List<dynamic> data = jsonDecode(response.body);
+        final List<dynamic> data = response.data as List<dynamic>;
         return data.map((item) => item as Map<String, dynamic>).toList();
       } else if (response.statusCode == 500) {
         throw Exception('Server error. Please try later');
@@ -243,15 +193,11 @@ class Chatservice {
   }
 
   Future<void> clearChatHistory(int convId) async {
-    final requestHeaders = _headers();
-    if (requestHeaders['Authorization'] == null) {
+    if (!_isAuthenticated) {
       debugPrint('User not authenticated');
       return;
     }
-    final response = await http.delete(
-      Uri.parse("$_baseUrl/$convId/messages/clear"),
-      headers: requestHeaders,
-    );
+    final response = await dio.delete('$_baseUrl/$convId/messages/clear');
 
     if (response.statusCode == 200) {
       debugPrint('Conversation history cleared');
@@ -265,16 +211,18 @@ class Chatservice {
   }
 
   Future<void> clearConvoHistory(int persona) async {
-    final requestHeaders = _headers();
-    if (requestHeaders['Authorization'] == null) {
+    if (!_isAuthenticated) {
       debugPrint('User not authenticated');
       return;
     }
 
-    final int? userId = AuthService().shareUserId();
-    final response = await http.delete(
-      Uri.parse("$_baseUrl/conversations/$userId/$persona/clear"),
-      headers: requestHeaders,
+    final int? userId = _tokenManager.userId;
+    if (userId == null) {
+      debugPrint('User not authenticated');
+      return;
+    }
+    final response = await dio.delete(
+      '$_baseUrl/conversations/$userId/$persona/clear',
     );
 
     if (response.statusCode == 200) {

@@ -5,7 +5,7 @@ import 'package:tekachigeojit/components/Widgets/NavBar.dart';
 import 'package:tekachigeojit/models/AnswerSelection.dart';
 import 'package:tekachigeojit/services/ChatService.dart';
 import 'package:tekachigeojit/services/FullTestService.dart';
-import 'package:tekachigeojit/services/QuizHistoryService.dart';
+import 'package:tekachigeojit/services/quiz/QuizHistoryService.dart';
 import 'package:tekachigeojit/services/AuthService.dart';
 import 'package:tekachigeojit/test_interview/testHome.dart';
 

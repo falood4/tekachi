@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tekachigeojit/services/QuizHistoryService.dart';
+import 'package:tekachigeojit/services/quiz/QuizHistoryService.dart';
 
 class Aptitudehistory3step extends StatefulWidget {
   const Aptitudehistory3step({super.key, required this.attemptId});

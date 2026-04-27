@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:tekachigeojit/services/token_dio/TokenManager.dart';
 
 import 'ApiConfig.dart';
 
@@ -93,7 +94,7 @@ class AuthService {
       final a_token = data['access_token'];
       final r_token = data['refresh_token'];
       final userID = data['id'];
-      AuthService().setToken(a_token, r_token, userID);
+      TokenManager().setTokens(a_token, r_token, userID);
 
       return response;
     } catch (e) {
@@ -122,7 +123,7 @@ class AuthService {
       final a_token = data['access_token'];
       final r_token = data['refresh_token'];
       final userID = data['id'];
-      setToken(a_token, r_token, userID);
+      TokenManager().setTokens(a_token, r_token, userID);
 
       return response;
     } catch (e) {
@@ -258,7 +259,7 @@ class AuthService {
           debugPrint('Token refresh failed: missing user id in session.');
           return false;
         }
-        setToken(a_token, r_token, _userId!);
+        TokenManager().setTokens(a_token, r_token, _userId!);
         return true;
       } else if (response.statusCode == 401) {
         debugPrint('Token refresh failed: Unauthorized. Clearing credentials.');
