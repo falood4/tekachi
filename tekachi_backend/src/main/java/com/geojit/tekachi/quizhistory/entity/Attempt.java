@@ -9,7 +9,6 @@ import com.geojit.tekachi.usersignin.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Formula;
 
 @Entity
 @Table(name = "aptitude_attempts")
@@ -35,7 +34,7 @@ public class Attempt {
     @Column(name = "correct_answers", nullable = false)
     private int correctAnswers;
 
-    @Formula("score")
+    @Column(name = "score")
     private String score;
 
     @JsonManagedReference

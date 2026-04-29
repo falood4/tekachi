@@ -1,11 +1,16 @@
 package com.geojit.tekachi.fullplacement.controlller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.geojit.tekachi.fullplacement.dtos.PlacementAttemptDetails;
 import com.geojit.tekachi.fullplacement.entity.Placement;
 import com.geojit.tekachi.fullplacement.service.PlacementService;
+import com.geojit.tekachi.usersignin.entity.User;
+import com.geojit.tekachi.usersignin.repository.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,9 +27,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class PlacementController {
 
     private final PlacementService placementService;
+    private final UserRepository userRepository;
 
-    PlacementController(PlacementService placementService) {
+    PlacementController(PlacementService placementService, UserRepository userRepository) {
         this.placementService = placementService;
+        this.userRepository = userRepository;
     }
 
     @PostMapping("/new")
@@ -55,17 +62,33 @@ public class PlacementController {
 
     @GetMapping("/attempts/{user_id}")
     public List<PlacementAttemptDetails> getAttempts(@PathVariable("user_id") int userId) {
-        // getOwnedAttempt(userId);
+        ensurePathUserMatchesAuthenticated(userId);
         return placementService.getPlacementsByUserId(userId).reversed();
     }
 
-    @DeleteMapping("attempts/{user_id}")
+    @DeleteMapping("/attempts/{user_id}")
     public Map<String, String> deleteAttempts(@PathVariable("user_id") int userId) {
         try {
+            ensurePathUserMatchesAuthenticated(userId);
             placementService.deletePlacementsByUserId(userId);
             return Map.of("message", "All attempts deleted for user id: " + userId);
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private User getAuthenticatedUser() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Authenticated user not found");
+        }
+        return user;
+    }
+
+    private void ensurePathUserMatchesAuthenticated(int userId) {
+        if (getAuthenticatedUser().getId().intValue() != userId) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Cannot access another user's placement attempts");
         }
     }
 }

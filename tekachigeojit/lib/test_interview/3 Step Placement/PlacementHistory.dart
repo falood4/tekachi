@@ -109,7 +109,7 @@ class _PlacementHistoryState extends State<PlacementHistory> {
             attempt['testId'],
             attempt['attemptedOn'],
             attempt['attemptId'],
-            attempt['score'],
+            attempt['score']?.toString(),
             attempt['techConversationId'],
             attempt['techVerdict'],
             attempt['hrConversationId'],
@@ -197,7 +197,10 @@ class _PlacementHistoryState extends State<PlacementHistory> {
                           },
                     child: Text(
                       attemptId == null ? "FAILED" : (score ?? "INCOMPLETE"),
-                      style: theme.textTheme.titleLarge?.copyWith(color: lime),
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        color: lime,
+                        fontSize: 20,
+                      ),
                     ),
                   ),
                 ],
@@ -333,5 +336,119 @@ class _PlacementHistoryState extends State<PlacementHistory> {
     );
   }
 
-  void onPressed() {}
+  void onPressed() {
+    final theme = Theme.of(context);
+    final Color primary = theme.colorScheme.primary;
+    final Color secondary = theme.colorScheme.secondary;
+    final Color background = theme.colorScheme.background;
+    final Color error = theme.colorScheme.error;
+    final Color onPrimary = theme.colorScheme.onPrimary;
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: background,
+          title: Text(
+            'Clear 3 Step History',
+            style: theme.textTheme.bodyLarge?.copyWith(color: primary),
+          ),
+          content: Text(
+            'Are you sure you want to clear all attempts?',
+            style: theme.textTheme.bodyLarge?.copyWith(color: primary),
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              style: ElevatedButton.styleFrom(backgroundColor: secondary),
+              child: Text(
+                'CANCEL',
+                style: TextStyle(color: onPrimary, fontFamily: 'DelaGothicOne'),
+              ),
+            ),
+            SizedBox.fromSize(size: const Size.fromHeight(10)),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _deleteHistory();
+              },
+              style: ElevatedButton.styleFrom(backgroundColor: error),
+              child: Text(
+                'CLEAR',
+                style: TextStyle(color: primary, fontFamily: 'DelaGothicOne'),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _deleteHistory() async {
+    if (user_id == null) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: const Color(0xFF8DD300),
+          content: Text(
+            'User not authenticated.',
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: Colors.black),
+          ),
+        ),
+      );
+      return;
+    }
+
+    try {
+      final response = await fullTestService.deleteAttempts(user_id!);
+      if (!mounted) return;
+
+      if (response.statusCode == 200 || response.statusCode == 204) {
+        setState(() {
+          _attempts = [];
+          _isLoading = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: const Color(0xFF8DD300),
+            content: Text(
+              '3 step history cleared.',
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall?.copyWith(color: Colors.black),
+            ),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: const Color(0xFF8DD300),
+            content: Text(
+              'Failed to clear history: HTTP ${response.statusCode}',
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall?.copyWith(color: Colors.black),
+            ),
+          ),
+        );
+      }
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: const Color(0xFF8DD300),
+          content: Text(
+            'Failed to clear history: $e',
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: Colors.black),
+          ),
+        ),
+      );
+    }
+  }
 }

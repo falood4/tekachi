@@ -105,6 +105,7 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
       itemCount: _attempts.length,
       itemBuilder: (context, index) {
         final attempt = _attempts[index];
+        final String scoreText = (attempt['score'])?.toString() ?? '0/15';
         return Padding(
           padding: const EdgeInsets.only(bottom: 12),
           child: ElevatedButton(
@@ -152,7 +153,7 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
                 Row(
                   children: [
                     Text(
-                      attempt['score'],
+                      scoreText,
                       style: theme.textTheme.headlineLarge?.copyWith(
                         fontSize: 22,
                       ),

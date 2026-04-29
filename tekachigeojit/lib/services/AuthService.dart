@@ -1,6 +1,7 @@
 import 'dart:convert';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:tekachigeojit/services/token_dio/DioClient.dart';
 import 'package:tekachigeojit/services/token_dio/TokenManager.dart';
 
 import 'ApiConfig.dart';
@@ -15,6 +16,14 @@ class AuthService {
   }
 
   AuthService._internal();
+
+  final Dio _dio = DioClient().dio;
+  final Dio _plainDio = Dio(
+    BaseOptions(
+      headers: {'Content-Type': 'application/json'},
+      validateStatus: (status) => status != null && status < 600,
+    ),
+  );
 
   // Stored credentials and token for logout
   String? _email;
@@ -31,6 +40,7 @@ class AuthService {
     _access_token = null;
     _refresh_token = null;
     _userId = null;
+    TokenManager().clear();
   }
 
   Future<void> setToken(
@@ -41,18 +51,25 @@ class AuthService {
     _access_token = access_token;
     _refresh_token = refresh_token;
     _userId = userID;
+    TokenManager().setTokens(access_token, refresh_token, userID);
   }
 
   int? shareUserId() {
-    return _userId;
+    return _userId ?? TokenManager().userId;
   }
 
   String? shareToken() {
-    return _access_token;
+    if (_access_token != null && _access_token!.isNotEmpty) {
+      return _access_token;
+    }
+    return TokenManager().shareToken();
   }
 
   String? shareRefreshToken() {
-    return _refresh_token;
+    if (_refresh_token != null && _refresh_token!.isNotEmpty) {
+      return _refresh_token;
+    }
+    return TokenManager().shareRefreshToken();
   }
 
   String? shareEmail() {
@@ -66,168 +83,155 @@ class AuthService {
         _email!.isNotEmpty;
   }
 
-  /// Build headers with Content-Type and Authorization
-  Map<String, String> _headers() {
-    final headers = {'Content-Type': 'application/json'};
-    if (_access_token != null && _access_token!.isNotEmpty) {
-      headers['Authorization'] = 'Bearer $_access_token';
+  Map<String, dynamic> _decodeJson(dynamic data) {
+    if (data is Map<String, dynamic>) {
+      return data;
     }
-    return headers;
+    if (data is String && data.isNotEmpty) {
+      return jsonDecode(data) as Map<String, dynamic>;
+    }
+    return <String, dynamic>{};
   }
 
-  static Future<http.Response> signup({
+  Response _fallbackResponse(String path, Object error) {
+    return Response(
+      requestOptions: RequestOptions(path: path),
+      statusCode: 500,
+      data: {'error': error.toString()},
+    );
+  }
+
+  static Future<Response> signup({
     required String email,
     required String password,
   }) async {
     try {
-      final response = await http.post(
-        Uri.parse('$_baseUrl/register'),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'email': email, 'password': password}),
+      final service = AuthService();
+      final response = await service._plainDio.post(
+        '$_baseUrl/register',
+        data: {'email': email, 'password': password},
       );
 
       if (response.statusCode == 409) {
-        return http.Response('{"error": "Email already exists"}', 409);
+        return response;
       }
 
-      final data = jsonDecode(response.body);
-      final a_token = data['access_token'];
-      final r_token = data['refresh_token'];
-      final userID = data['id'];
-      TokenManager().setTokens(a_token, r_token, userID);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final data = service._decodeJson(response.data);
+        final a_token = data['access_token'];
+        final r_token = data['refresh_token'];
+        final userID = data['id'];
+        await service.setToken(a_token, r_token, userID);
+      }
 
       return response;
+    } on DioException catch (e) {
+      return e.response ??
+          AuthService()._fallbackResponse('$_baseUrl/register', e);
     } catch (e) {
-      return http.Response('{"error": "Signup failed"}', 500);
+      return AuthService()._fallbackResponse('$_baseUrl/register', e);
     }
   }
 
-  Future<http.Response> loginUser({
+  Future<Response> loginUser({
     required String email,
     required String password,
   }) async {
-    final url = Uri.parse("$_baseUrl/login");
+    final String path = '$_baseUrl/login';
 
     try {
-      final response = await http.post(
-        url,
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode({"email": email.trim(), "password": password.trim()}),
+      final response = await _plainDio.post(
+        path,
+        data: {"email": email.trim(), "password": password.trim()},
       );
 
       if (response.statusCode == 401) {
         return response;
       }
 
-      final data = jsonDecode(response.body);
-      final a_token = data['access_token'];
-      final r_token = data['refresh_token'];
-      final userID = data['id'];
-      TokenManager().setTokens(a_token, r_token, userID);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final data = _decodeJson(response.data);
+        final a_token = data['access_token'];
+        final r_token = data['refresh_token'];
+        final userID = data['id'];
+        await setToken(a_token, r_token, userID);
+      }
 
       return response;
+    } on DioException catch (e) {
+      return e.response ?? _fallbackResponse(path, e);
     } catch (e) {
       debugPrintStack(label: 'Login error: $e');
       rethrow;
     }
   }
 
-  Future<http.Response> changePassword({
+  Future<Response> changePassword({
     required String oldPassword,
     required String newPassword,
   }) async {
-    final url = Uri.parse("$_baseUrl/change-password");
+    final String path = '$_baseUrl/change-password';
 
     try {
-      final response = await http.post(
-        url,
-        headers: _headers(),
-        body: jsonEncode({
-          "oldPassword": oldPassword,
-          "newPassword": newPassword,
-        }),
+      return await _dio.post(
+        path,
+        data: {"oldPassword": oldPassword, "newPassword": newPassword},
       );
-
-      if (response.statusCode == 401) {
-        debugPrint('Password change failed: Unauthorized. Refreshing...');
-        bool tokenFreshFlag = await tokenRefresh();
-        if (tokenFreshFlag) {
-          debugPrint('Token refreshed successfully. Retrying password change.');
-          return await changePassword(
-            oldPassword: oldPassword,
-            newPassword: newPassword,
-          );
-        } else {
-          debugPrint('Token refresh failed. Please log in again.');
-          clearCredentials();
-          return http.Response('{"error": "Unauthorized"}', 401);
-        }
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 401) {
+        debugPrint('Password change failed: Unauthorized.');
+        clearCredentials();
       }
-
-      return response;
+      return e.response ?? _fallbackResponse(path, e);
     } catch (e) {
       debugPrintStack(label: 'Password not changed due to error: $e');
       rethrow;
     }
   }
 
-  Future<http.Response> logout() async {
+  Future<Response> logout() async {
+    final String path = '$_baseUrl/logout';
     try {
-      final response = await http.post(
-        Uri.parse('$_baseUrl/logout'),
-        headers: _headers(),
-        body: jsonEncode({"refresh_token": _refresh_token}),
+      final response = await _dio.post(
+        path,
+        data: {"refresh_token": shareRefreshToken()},
       );
 
-      if (response.statusCode >= 200 && response.statusCode < 300) {
+      if (response.statusCode == 200) {
         clearCredentials();
         debugPrint('Logout Successful');
-      } else if (response.statusCode == 401) {
-        debugPrint('Logout failed: Unauthorized. Refreshing...');
-        bool tokenFreshFlag = await tokenRefresh();
-        if (tokenFreshFlag) {
-          debugPrint('Token refreshed successfully. Retrying logout.');
-          return await logout();
-        } else {
-          debugPrint('Token refresh failed. Please log in again.');
-          clearCredentials();
-          return http.Response('{"error": "Unauthorized"}', 401);
-        }
       }
 
       return response;
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 401) {
+        debugPrint('Logout failed: Unauthorized.');
+        clearCredentials();
+      }
+      return e.response ?? _fallbackResponse(path, e);
     } catch (e) {
       debugPrint('Logout error: $e');
       rethrow;
     }
   }
 
-  Future<http.Response> deleteUser() async {
+  Future<Response> deleteUser() async {
+    final String path = '$_baseUrl/delete';
     try {
-      final response = await http.delete(
-        Uri.parse('$_baseUrl/delete'),
-        headers: _headers(),
-      );
+      final response = await _dio.delete(path);
 
       if (response.statusCode == 200) {
         clearCredentials();
         debugPrint('Account Deleted Successfully');
-      } else if (response.statusCode == 401) {
-        debugPrint('Account deletion failed: Unauthorized. Refreshing...');
-        bool tokenFreshFlag = await tokenRefresh();
-        if (tokenFreshFlag) {
-          debugPrint(
-            'Token refreshed successfully. Retrying account deletion.',
-          );
-          return await deleteUser();
-        } else {
-          debugPrint('Token refresh failed. Please log in again.');
-          clearCredentials();
-          return http.Response('{"error": "Unauthorized"}', 401);
-        }
       }
 
       return response;
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 401) {
+        debugPrint('Account deletion failed: Unauthorized.');
+        clearCredentials();
+      }
+      return e.response ?? _fallbackResponse(path, e);
     } catch (e) {
       debugPrint('Deletion error: $e');
       rethrow;
@@ -236,30 +240,28 @@ class AuthService {
 
   Future<bool> tokenRefresh() async {
     try {
-      if (_refresh_token == null || _refresh_token!.isEmpty) {
+      final refreshToken = shareRefreshToken();
+      if (refreshToken == null || refreshToken.isEmpty) {
         debugPrint('Token refresh failed: missing refresh token.');
         return false;
       }
 
-      final response = await http.post(
-        Uri.parse('$_baseUrl/refresh'),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          'refresh_token': _refresh_token,
-          'old_token': _access_token,
-        }),
+      final response = await _plainDio.post(
+        '$_baseUrl/refresh',
+        data: {'refresh_token': refreshToken, 'old_token': shareToken()},
       );
 
       if (response.statusCode == 200) {
         debugPrint('New tokens generated successfully');
-        final data = jsonDecode(response.body);
+        final data = _decodeJson(response.data);
         String a_token = data['access_token'];
         String r_token = data['refresh_token'];
-        if (_userId == null) {
+        final userId = shareUserId();
+        if (userId == null) {
           debugPrint('Token refresh failed: missing user id in session.');
           return false;
         }
-        TokenManager().setTokens(a_token, r_token, _userId!);
+        await setToken(a_token, r_token, userId);
         return true;
       } else if (response.statusCode == 401) {
         debugPrint('Token refresh failed: Unauthorized. Clearing credentials.');

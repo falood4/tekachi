@@ -1,9 +1,10 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:tekachigeojit/services/AuthService.dart';
 import 'package:tekachigeojit/services/ApiConfig.dart';
+import 'package:tekachigeojit/services/token_dio/DioClient.dart';
 
 class FullTestService {
   static final FullTestService _instance = FullTestService._internal();
@@ -13,6 +14,8 @@ class FullTestService {
   }
 
   FullTestService._internal();
+
+  final Dio _dio = DioClient().dio;
 
   //IDs
   int? _aptitudeid;
@@ -78,38 +81,37 @@ class FullTestService {
 
   late final String _baseUrl = '${ApiConfig.baseUrl}/placement';
 
-  String? get _token => AuthService().shareToken();
   int? user_id = AuthService().shareUserId();
-
-  Map<String, String> _headers() {
-    final headers = {'Content-Type': 'application/json'};
-    if (_token != null && _token!.isNotEmpty) {
-      headers['Authorization'] = 'Bearer $_token';
-    }
-    return headers;
-  }
 
   Future<dynamic> saveAttempt() async {
     try {
-      final response = await http.post(
-        Uri.parse('$_baseUrl/new'),
-        headers: _headers(),
-        body: jsonEncode({
+      final response = await _dio.post(
+        '$_baseUrl/new',
+        data: {
           "userId": user_id,
           "aptAttemptId": getAptitudeid(),
           "techInterviewId": getTechChatId(),
           "hrInterviewId": getHrChatId(),
-        }),
+        },
       );
 
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
+        final decoded = response.data;
+        final data = decoded is String
+            ? jsonDecode(decoded) as Map<String, dynamic>
+            : decoded as Map<String, dynamic>;
         debugPrint(data['message']);
 
         return data;
       } else if (response.statusCode == 500) {
         return "Server error. Please try again";
       }
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 500) {
+        return "Server error. Please try again";
+      }
+      debugPrint('Attempt could not be saved: $e');
+      rethrow;
     } catch (e) {
       debugPrint('Attempt could not be saved: $e');
       rethrow;
@@ -118,13 +120,12 @@ class FullTestService {
 
   Future<List<Map<String, dynamic>>> fetchHistory(int user_id) async {
     try {
-      final response = await http.get(
-        Uri.parse('$_baseUrl/attempts/$user_id'),
-        headers: _headers(),
-      );
+      final response = await _dio.get('$_baseUrl/attempts/$user_id');
 
       if (response.statusCode == 200) {
-        final decoded = jsonDecode(response.body);
+        final decoded = response.data is String
+            ? jsonDecode(response.data as String)
+            : response.data;
         if (decoded is List) {
           return decoded.cast<Map<String, dynamic>>();
         }
@@ -133,10 +134,31 @@ class FullTestService {
       } else if (response.statusCode == 500) {
         return <Map<String, dynamic>>[];
       }
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 500) {
+        return <Map<String, dynamic>>[];
+      }
+      debugPrint('Failed to fetch history: $e');
+      rethrow;
     } catch (e) {
       debugPrint('Failed to fetch history: $e');
       rethrow;
     }
     return <Map<String, dynamic>>[];
+  }
+
+  Future<Response> deleteAttempts(int userId) async {
+    try {
+      return await _dio.delete('$_baseUrl/attempts/$userId');
+    } on DioException catch (e) {
+      if (e.response != null) {
+        return e.response!;
+      }
+      debugPrint('Failed to delete attempts: $e');
+      rethrow;
+    } catch (e) {
+      debugPrint('Failed to delete attempts: $e');
+      rethrow;
+    }
   }
 }

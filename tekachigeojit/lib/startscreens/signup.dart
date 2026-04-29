@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 import 'package:tekachigeojit/startscreens/home.dart';
 import 'package:tekachigeojit/prep/prepHome.dart';
 import 'package:tekachigeojit/services/AuthService.dart';
@@ -169,7 +169,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
           ),
         );
       }
-    } on http.ClientException catch (_) {
+    } on DioException catch (_) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

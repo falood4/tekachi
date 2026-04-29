@@ -18,7 +18,7 @@ public class Message {
     @Column(name = "conversation_id", nullable = false)
     private Integer conversationId;
 
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = RoleConverter.class)
     @Column(name = "role", nullable = false)
     private Role role;
 

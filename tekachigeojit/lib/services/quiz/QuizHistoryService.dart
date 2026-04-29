@@ -1,8 +1,9 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:tekachigeojit/services/AuthService.dart';
 import 'package:tekachigeojit/services/ApiConfig.dart';
+import 'package:tekachigeojit/services/token_dio/DioClient.dart';
 
 class HistoryService {
   static String get _baseUrl => '${ApiConfig.baseUrl}/history';
@@ -13,15 +14,7 @@ class HistoryService {
 
   HistoryService._internal();
 
-  String? get _token => AuthService().shareToken();
-
-  Map<String, String> _headers() {
-    final headers = {'Content-Type': 'application/json'};
-    if (_token != null && _token!.isNotEmpty) {
-      headers['Authorization'] = 'Bearer $_token';
-    }
-    return headers;
-  }
+  final Dio _dio = DioClient().dio;
 
   Future<List<Map<String, dynamic>>> getAttemptHistory([int? user_id]) async {
     final uid = user_id ?? AuthService().shareUserId();
@@ -30,13 +23,13 @@ class HistoryService {
     }
 
     try {
-      final response = await http.get(
-        Uri.parse('$_baseUrl/$uid/attempts'),
-        headers: _headers(),
-      );
+      final response = await _dio.get('$_baseUrl/$uid/attempts');
 
       if (response.statusCode == 200) {
-        final List<dynamic> data = jsonDecode(response.body);
+        final decoded = response.data is String
+            ? jsonDecode(response.data as String)
+            : response.data;
+        final List<dynamic> data = decoded as List<dynamic>;
         return data
             .map(
               (item) => {
@@ -47,46 +40,60 @@ class HistoryService {
               },
             )
             .toList();
-      } else {
-        throw Exception('${response.statusCode}');
       }
+      throw Exception('${response.statusCode}');
+    } on DioException catch (e) {
+      final status = e.response?.statusCode;
+      if (status != null) {
+        debugPrint('Could not get attempt history: HTTP $status');
+        rethrow;
+      }
+      debugPrint('Could not get attempt history: $e');
+      rethrow;
     } catch (e) {
       debugPrint('Could not get attempt history: $e');
       rethrow;
     }
   }
 
-  Future<http.Response> saveAttempt(int user_id, int score) async {
+  Future<Response> saveAttempt(int user_id, int score) async {
     try {
-      final response = await http.post(
-        Uri.parse('$_baseUrl/newattempt'),
-        headers: _headers(),
-        body: jsonEncode({"user": user_id, "correctAnswers": score}),
+      return await _dio.post(
+        '$_baseUrl/newattempt',
+        data: {"user": user_id, "correctAnswers": score},
       );
-
-      return response;
+    } on DioException catch (e) {
+      if (e.response != null) {
+        return e.response!;
+      }
+      debugPrintStack(label: 'Attempt could not be saved: $e');
+      rethrow;
     } catch (e) {
       debugPrintStack(label: 'Attempt could not be saved: $e');
       rethrow;
     }
   }
 
-  Future<http.Response> saveAnswer({
+  Future<Response> saveAnswer({
     required int attemptId,
     required int questionId,
     required int selectedOptionId,
   }) async {
     try {
-      final response = await http.post(
-        Uri.parse('$_baseUrl/newanswer'),
-        headers: _headers(),
-        body: jsonEncode({
+      return await _dio.post(
+        '$_baseUrl/newanswer',
+        data: {
           "attemptId": attemptId,
           "QId": questionId,
           "selectedOption": selectedOptionId,
-        }),
+        },
       );
-      return response;
+    } on DioException catch (e) {
+      if (e.response != null) {
+        return e.response!;
+      }
+      debugPrint('Answer could not be saved: $e');
+      rethrow;
     } catch (e) {
       debugPrint('Answer could not be saved: $e');
       rethrow;
@@ -99,14 +106,14 @@ class HistoryService {
     }
 
     try {
-      final response = await http.get(
-        Uri.parse('$_baseUrl/$attempt_id'),
-        headers: _headers(),
-      );
+      final response = await _dio.get('$_baseUrl/$attempt_id');
 
       if (response.statusCode == 200) {
         debugPrint('Attempt history retrieved');
-        final List<dynamic> data = jsonDecode(response.body);
+        final decoded = response.data is String
+            ? jsonDecode(response.data as String)
+            : response.data;
+        final List<dynamic> data = decoded as List<dynamic>;
         return data
             .map(
               (item) => {
@@ -119,27 +126,30 @@ class HistoryService {
               },
             )
             .toList();
-      } else {
-        throw Exception('${response.statusCode}');
       }
+      throw Exception('${response.statusCode}');
+    } on DioException catch (e) {
+      debugPrint('Could not get attempt history: $e');
+      return [];
     } catch (e) {
       debugPrint('Could not get attempt history: $e');
       return [];
     }
   }
 
-  Future<http.Response> deleteAttempt() async {
+  Future<Response> deleteAttempt() async {
     try {
       final user_id = AuthService().shareUserId();
       if (user_id == null) {
         throw Exception('User ID not available');
       }
-      final response = await http.delete(
-        Uri.parse('$_baseUrl/$user_id'),
-        headers: _headers(),
-      );
-
-      return response;
+      return await _dio.delete('$_baseUrl/$user_id');
+    } on DioException catch (e) {
+      if (e.response != null) {
+        return e.response!;
+      }
+      debugPrint('Could not delete attempt: $e');
+      rethrow;
     } catch (e) {
       debugPrint('Could not delete attempt: $e');
       rethrow;

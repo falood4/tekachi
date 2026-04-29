@@ -1,9 +1,9 @@
 import 'dart:convert';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import '../AuthService.dart';
 import '../../models/QuestionModel.dart';
 import '../ApiConfig.dart';
+import '../token_dio/DioClient.dart';
 
 class QsnService {
   static String get _baseUrl => '${ApiConfig.baseUrl}/questions';
@@ -15,34 +15,31 @@ class QsnService {
 
   QsnService._internal();
 
-  String? get _token => AuthService().shareToken();
-
-  Map<String, String> _headers() {
-    final headers = {'Content-Type': 'application/json'};
-    if (_token != null && _token!.isNotEmpty) {
-      headers['Authorization'] = 'Bearer $_token';
-    }
-    return headers;
-  }
+  final Dio _dio = DioClient().dio;
 
   Future<QuestionModel> getQuestion(int q_id) async {
     try {
-      final response = await http.get(
-        Uri.parse('$_baseUrl/$q_id'),
-        headers: _headers(),
-      );
+      final response = await _dio.get('$_baseUrl/$q_id');
 
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
+        final data = response.data is String
+            ? jsonDecode(response.data as String)
+            : response.data;
         return QuestionModel.fromJson({
           'qId': data['qId'],
           'questionText': data['qsn'],
           'options': data['options'],
           'correctOptionId': data['correctOpId'],
         });
-      } else {
-        throw Exception('Failed to load question: ${response.statusCode}');
       }
+      throw Exception('Failed to load question: ${response.statusCode}');
+    } on DioException catch (e) {
+      final status = e.response?.statusCode;
+      if (status != null) {
+        throw Exception('Failed to load question: $status');
+      }
+      debugPrint('Could not get question $e');
+      rethrow;
     } catch (e) {
       debugPrint('Could not get question $e');
       rethrow;

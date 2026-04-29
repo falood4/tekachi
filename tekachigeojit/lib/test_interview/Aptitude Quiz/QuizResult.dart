@@ -45,12 +45,14 @@ class _QuizResultState extends State<QuizResult> {
       final response = await HistoryService().saveAttempt(userId, widget.score);
       if (response.statusCode != 201) {
         debugPrint(
-          'Attempt save failed ${response.statusCode}: ${response.body}',
+          'Attempt save failed ${response.statusCode}: ${response.data}',
         );
         return;
       }
 
-      final decoded = jsonDecode(response.body) as Map<String, dynamic>;
+      final decoded = response.data is String
+          ? jsonDecode(response.data as String) as Map<String, dynamic>
+          : response.data as Map<String, dynamic>;
       final int attemptId = decoded['attempt_id'] as int;
 
       for (final answer in widget.answers) {
