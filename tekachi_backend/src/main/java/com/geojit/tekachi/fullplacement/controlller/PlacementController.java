@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.geojit.tekachi.fullplacement.dtos.PlacementAttemptDetails;
 import com.geojit.tekachi.fullplacement.entity.Placement;
 import com.geojit.tekachi.fullplacement.service.PlacementService;
-import com.geojit.tekachi.quizhistory.services.AnswerService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,11 +22,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class PlacementController {
 
     private final PlacementService placementService;
-    private final AnswerService quizAnswerService;
 
-    PlacementController(PlacementService placementService, AnswerService quizAnswerService) {
+    PlacementController(PlacementService placementService) {
         this.placementService = placementService;
-        this.quizAnswerService = quizAnswerService;
     }
 
     @PostMapping("/new")
