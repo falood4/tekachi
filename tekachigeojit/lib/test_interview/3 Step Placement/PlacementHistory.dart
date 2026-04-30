@@ -79,7 +79,7 @@ class _PlacementHistoryState extends State<PlacementHistory> {
       body: buildBody(),
       floatingActionButton: IconButton(
         icon: Icon(Icons.delete, color: Colors.red),
-        onPressed: onPressed,
+        onPressed: confirmDelete,
         style: ButtonStyle(
           padding: WidgetStateProperty.all<EdgeInsets>(
             const EdgeInsets.all(16),
@@ -173,7 +173,7 @@ class _PlacementHistoryState extends State<PlacementHistory> {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              onPressed: onPressed,
+              onPressed: () {},
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -336,7 +336,7 @@ class _PlacementHistoryState extends State<PlacementHistory> {
     );
   }
 
-  void onPressed() {
+  void confirmDelete() {
     final theme = Theme.of(context);
     final Color primary = theme.colorScheme.primary;
     final Color secondary = theme.colorScheme.secondary;

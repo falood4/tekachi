@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   db:
     image: postgres:16-alpine
@@ -28,7 +26,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
       JWT_SECRET: ${JWT_SECRET}
       JWT_EXPIRATION: ${JWT_EXPIRATION}
-      RFRSH_EXPIRATION: ${RFRSH_EXPIRATION}
+      JWT_RFRSH_EXPIRATION: ${JWT_RFRSH_EXPIRATION}
       OPENROUTER_API_KEY: ${OPENROUTER_API_KEY}
     ports:
       - "8080:8080"
