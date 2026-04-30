@@ -1,6 +1,7 @@
 package com.geojit.tekachi.quizhistory;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -102,14 +103,15 @@ public class QuizAttemptController {
 
             Attempt saved = quizAttemptService.newAttempt(attempt);
 
-            return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(Map.of(
-                            "attempt_id", saved.getAttemptId(),
-                            "user_id", saved.getUser().getId(),
-                            "attempted_on", saved.getAttemptedOn(),
-                            "correct_answers", saved.getCorrectAnswers(),
-                            "score", saved.getScore(),
-                            "message", "Attempt stored successfully"));
+            Map<String, Object> body = new HashMap<>();
+            body.put("attempt_id", saved.getAttemptId());
+            body.put("user_id", saved.getUser().getId());
+            body.put("attempted_on", saved.getAttemptedOn());
+            body.put("correct_answers", saved.getCorrectAnswers());
+            body.put("score", saved.getScore() != null ? saved.getScore() : attempt.getScore());
+            body.put("message", "Attempt stored successfully");
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(body);
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.CONFLICT)

@@ -3,11 +3,16 @@ package com.geojit.tekachi.fullplacement.controlller;
 import com.geojit.tekachi.fullplacement.dtos.PlacementAttemptDetails;
 import com.geojit.tekachi.fullplacement.entity.Placement;
 import com.geojit.tekachi.fullplacement.service.PlacementService;
+import com.geojit.tekachi.usersignin.entity.User;
+import com.geojit.tekachi.usersignin.repository.UserRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.List;
 import java.util.Map;
@@ -24,9 +29,17 @@ class PlacementControllerTest {
     @Mock
     private PlacementService placementService;
 
+    @Mock
+    private UserRepository userRepository;
+
+    @AfterEach
+    void tearDown() {
+        SecurityContextHolder.clearContext();
+    }
+
     @Test
     void saveAttemptStoresThreeStepAttempt() {
-        PlacementController controller = new PlacementController(placementService);
+        PlacementController controller = new PlacementController(placementService, userRepository);
 
         Placement saved = new Placement();
         saved.setTestId(11);
@@ -54,7 +67,8 @@ class PlacementControllerTest {
 
     @Test
     void getAttemptsReturnsReverseChronologicalOrder() {
-        PlacementController controller = new PlacementController(placementService);
+        PlacementController controller = new PlacementController(placementService, userRepository);
+        stubAuthenticatedUser(5L);
 
         PlacementAttemptDetails older = org.mockito.Mockito.mock(PlacementAttemptDetails.class);
         PlacementAttemptDetails newer = org.mockito.Mockito.mock(PlacementAttemptDetails.class);
@@ -69,11 +83,22 @@ class PlacementControllerTest {
 
     @Test
     void deleteAttemptsDelegatesToService() {
-        PlacementController controller = new PlacementController(placementService);
+        PlacementController controller = new PlacementController(placementService, userRepository);
+        stubAuthenticatedUser(7L);
 
         Map<String, String> response = controller.deleteAttempts(7);
 
         verify(placementService).deletePlacementsByUserId(7);
         assertEquals("All attempts deleted for user id: 7", response.get("message"));
+    }
+
+    private void stubAuthenticatedUser(Long userId) {
+        Authentication authentication = org.mockito.Mockito.mock(Authentication.class);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        org.mockito.Mockito.when(authentication.getName()).thenReturn("user@example.com");
+
+        User user = new User();
+        user.setId(userId);
+        org.mockito.Mockito.when(userRepository.findByEmail("user@example.com")).thenReturn(user);
     }
 }
