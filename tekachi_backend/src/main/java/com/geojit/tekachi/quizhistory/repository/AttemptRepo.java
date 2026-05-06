@@ -15,10 +15,10 @@ public interface AttemptRepo extends JpaRepository<Attempt, Long> {
 
     @Query(value = """
             SELECT
-                attempt_id AS attemptId,
-                user_id AS userId,
-                attempted_on AS attemptedOn,
-                score AS score
+                attempt_id AS "attemptId",
+                user_id AS "userId",
+                attempted_on AS "attemptedOn",
+                score AS "score"
 
                 FROM aptitude_attempts
                 WHERE user_id = :userId

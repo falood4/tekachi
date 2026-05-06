@@ -1,6 +1,5 @@
 package com.geojit.tekachi.usersignin.service;
 
-import io.jsonwebtoken.Claims;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;

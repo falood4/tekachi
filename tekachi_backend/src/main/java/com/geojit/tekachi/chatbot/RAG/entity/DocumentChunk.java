@@ -20,13 +20,13 @@ public class DocumentChunk {
     @Column(name = "chunk_index")
     private Integer chunkIndex;
 
-    @Column(columnDefinition = "NVARCHAR(MAX)", nullable = false)
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
     @Column(nullable = false)
     private String topic;
 
-    @Column(columnDefinition = "NVARCHAR(MAX)")
+    @Column(columnDefinition = "TEXT")
     private String embedding; // JSON string
 
     @Column(name = "created_at")

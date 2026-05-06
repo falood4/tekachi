@@ -22,7 +22,7 @@ public class Message {
     @Column(name = "role", nullable = false)
     private Role role;
 
-    @Column(name = "content", nullable = false, columnDefinition = "NVARCHAR(MAX)")
+    @Column(name = "content", nullable = false, columnDefinition = "TEXT")
     private String content;
 
     @Column(name = "created_at", nullable = false)

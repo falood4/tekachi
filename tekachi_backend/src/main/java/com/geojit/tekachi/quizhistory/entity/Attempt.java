@@ -35,7 +35,7 @@ public class Attempt {
     @Column(name = "correct_answers", nullable = false)
     private int correctAnswers;
 
-    @Formula("score")
+    @Column(name = "score", insertable = false, updatable = false)
     private String score;
 
     @JsonManagedReference

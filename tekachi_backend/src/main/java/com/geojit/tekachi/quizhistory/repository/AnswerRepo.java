@@ -14,16 +14,16 @@ public interface AnswerRepo extends JpaRepository<Answer, Long> {
 
     @Query(value = """
              SELECT
-                a.answer_id        AS answerId,
-                a.attempt_id       AS attemptId,
-                q.q_id             AS qId,
-                q.qsn              AS qString,
+                a.answer_id        AS "answerId",
+                a.attempt_id       AS "attemptId",
+                q.q_id             AS "qId",
+                q.qsn              AS "qString",
 
-                a.selected_op_id   AS selectedOption,
-                sel.op             AS selectedOptionText,
+                a.selected_op_id   AS "selectedOption",
+                sel.op             AS "selectedOptionText",
 
-                q.correct_op_id    AS correctOption,
-                cor.op             AS correctOptionText
+                q.correct_op_id    AS "correctOption",
+                cor.op             AS "correctOptionText"
 
             FROM aptitude_answers a
             JOIN questions q

@@ -22,7 +22,6 @@ import com.geojit.tekachi.quizhistory.repository.AttemptRepo;
 import com.geojit.tekachi.usersignin.entity.User;
 import com.geojit.tekachi.usersignin.repository.UserRepository;
 
-
 @RestController
 public class QuizAttemptController {
     private final AttemptService quizAttemptService;
@@ -74,7 +73,6 @@ public class QuizAttemptController {
         String score = String.format("%d/%d", attempt.getCorrectAnswers(), attempt.getTotalQuestions());
         return score;
     }
-    
 
     @PostMapping("/history/newattempt")
     public ResponseEntity<?> storeAttempt(@RequestBody Map<String, Integer> request) {

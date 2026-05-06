@@ -11,15 +11,15 @@ import com.geojit.tekachi.fullplacement.entity.Placement;
 
 @Repository
 public interface PlacementRepo extends JpaRepository<Placement, Integer> {
-    @Query(value = "select pt.test_id as testId, \r\n" + //
-            "       pt.user_id as userId, \r\n" + //
-            "       pt.attempted_on as attemptedOn, \r\n" + //
-            "       aa.attempt_id as attemptId, \r\n" + //
-            "       aa.score as score, \r\n" + //
-            "       c1.conversation_id as techConversationId, \r\n" + //
-            "       c1.verdict as techVerdict, \r\n" + //
-            "       c2.conversation_id as hrConversationId, \r\n" + //
-            "       c2.verdict as hrVerdict \r\n" + //
+    @Query(value = "select pt.test_id as \"testId\", \r\n" + //
+            "       pt.user_id as \"userId\", \r\n" + //
+            "       pt.attempted_on as \"attemptedOn\", \r\n" + //
+            "       aa.attempt_id as \"attemptId\", \r\n" + //
+            "       aa.score as \"score\", \r\n" + //
+            "       c1.conversation_id as \"techConversationId\", \r\n" + //
+            "       c1.verdict as \"techVerdict\", \r\n" + //
+            "       c2.conversation_id as \"hrConversationId\", \r\n" + //
+            "       c2.verdict as \"hrVerdict\" \r\n" + //
             "from placementfulltest as pt\r\n" + //
             "left join aptitude_attempts as aa on aa.attempt_id = pt.apt_attempt_id\r\n" + //
             "left join conversations as c1 on c1.conversation_id = pt.tech_interview_id\r\n" + //

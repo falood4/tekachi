@@ -3,7 +3,6 @@ package com.geojit.tekachi.fullplacement.controlller;
 import com.geojit.tekachi.fullplacement.dtos.PlacementAttemptDetails;
 import com.geojit.tekachi.fullplacement.entity.Placement;
 import com.geojit.tekachi.fullplacement.service.PlacementService;
-import com.geojit.tekachi.quizhistory.services.AnswerService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -25,12 +24,9 @@ class PlacementControllerTest {
     @Mock
     private PlacementService placementService;
 
-    @Mock
-    private AnswerService answerService;
-
     @Test
     void saveAttemptStoresThreeStepAttempt() {
-        PlacementController controller = new PlacementController(placementService, answerService);
+        PlacementController controller = new PlacementController(placementService);
 
         Placement saved = new Placement();
         saved.setTestId(11);
@@ -58,7 +54,7 @@ class PlacementControllerTest {
 
     @Test
     void getAttemptsReturnsReverseChronologicalOrder() {
-        PlacementController controller = new PlacementController(placementService, answerService);
+        PlacementController controller = new PlacementController(placementService);
 
         PlacementAttemptDetails older = org.mockito.Mockito.mock(PlacementAttemptDetails.class);
         PlacementAttemptDetails newer = org.mockito.Mockito.mock(PlacementAttemptDetails.class);
@@ -73,7 +69,7 @@ class PlacementControllerTest {
 
     @Test
     void deleteAttemptsDelegatesToService() {
-        PlacementController controller = new PlacementController(placementService, answerService);
+        PlacementController controller = new PlacementController(placementService);
 
         Map<String, String> response = controller.deleteAttempts(7);
 

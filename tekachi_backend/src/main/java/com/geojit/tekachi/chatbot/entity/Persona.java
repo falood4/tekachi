@@ -19,10 +19,10 @@ public class Persona {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @Column(name = "system_prompt", nullable = false, columnDefinition = "NVARCHAR(MAX)")
+    @Column(name = "system_prompt", nullable = false, columnDefinition = "TEXT")
     private String systemPrompt;
 
-    @Column(name = "greeting_instruction", nullable = false, columnDefinition = "NVARCHAR(MAX)")
+    @Column(name = "greeting_instruction", nullable = false, columnDefinition = "TEXT")
     private String greetingInstruction;
 
     @Column(name = "is_active", nullable = false)

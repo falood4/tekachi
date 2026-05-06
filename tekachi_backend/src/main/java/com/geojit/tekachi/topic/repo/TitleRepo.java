@@ -14,8 +14,8 @@ import com.geojit.tekachi.topic.entity.Title;
 public interface TitleRepo extends JpaRepository<Title, Long> {
     @Query(value = """
                     SELECT
-                    topic_id AS topicID,
-                    topic_title AS titleString
+                    topic_id AS "topicId",
+                    topic_title AS "titleString"
               FROM training_topics
               WHERE topic_id>= :low AND topic_id<= :high
             """, nativeQuery = true)

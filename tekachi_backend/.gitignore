@@ -57,3 +57,6 @@ logs/
 *.swp
 *.swo
 *~
+
+# Local scratch/test artifacts
+tmp/
