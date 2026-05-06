@@ -4,9 +4,14 @@ import com.geojit.tekachi.chatbot.dtos.ChatRequest;
 import com.geojit.tekachi.chatbot.dtos.OpenAiMsg;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import io.netty.resolver.DefaultAddressResolverGroup;
+import reactor.netty.http.client.HttpClient;
+
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,8 +27,16 @@ public class OpenAiService {
                         @Value("${openrouter.model:google/gemini-2.5-flash}") String model) {
 
                 this.model = model;
+
+                // Prefer the JDK/OS resolver on Windows; Netty's DNS resolver can time out even
+                // when nslookup succeeds (proxy/VPN/firewall/IPv6 edge cases).
+                HttpClient httpClient = HttpClient.create()
+                                .resolver(DefaultAddressResolverGroup.INSTANCE)
+                                .responseTimeout(Duration.ofSeconds(45));
+
                 this.webClient = WebClient.builder()
                                 .baseUrl("https://openrouter.ai/api/v1")
+                                .clientConnector(new ReactorClientHttpConnector(httpClient))
                                 .defaultHeader("Authorization", "Bearer " + apiKey)
                                 .defaultHeader("Content-Type", "application/json")
                                 .build();
@@ -43,7 +56,9 @@ public class OpenAiService {
                                                                         .map(body -> new OpenAiServiceException(
                                                                                         "OpenRouter Error: " + body,
                                                                                         null,
-                                                                                        false)))
+                                                                                        false,
+                                                                                        clientResponse.statusCode()
+                                                                                                        .value())))
                                         .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {
                                         })
                                         .block();
@@ -52,6 +67,13 @@ public class OpenAiService {
                 } catch (OpenAiServiceException e) {
                         throw e;
                 } catch (Exception e) {
+                        if (hasCause(e, io.netty.resolver.dns.DnsNameResolverTimeoutException.class)
+                                        || hasCause(e, java.net.UnknownHostException.class)) {
+                                throw new OpenAiServiceException(
+                                                "Cannot resolve openrouter.ai (DNS/network issue)",
+                                                e,
+                                                true);
+                        }
                         throw new OpenAiServiceException("Failed to fetch chat response from OpenRouter", e, true);
                 }
         }
@@ -81,7 +103,9 @@ public class OpenAiService {
                                                                         .map(body -> new OpenAiServiceException(
                                                                                         "OpenRouter Error: " + body,
                                                                                         null,
-                                                                                        false)))
+                                                                                        false,
+                                                                                        clientResponse.statusCode()
+                                                                                                        .value())))
                                         .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {
                                         })
                                         .block();
@@ -89,8 +113,26 @@ public class OpenAiService {
                         return extractContentFromResponse(response);
 
                 } catch (Exception e) {
+                        if (hasCause(e, io.netty.resolver.dns.DnsNameResolverTimeoutException.class)
+                                        || hasCause(e, java.net.UnknownHostException.class)) {
+                                throw new OpenAiServiceException(
+                                                "Cannot resolve openrouter.ai (DNS/network issue)",
+                                                e,
+                                                true);
+                        }
                         throw new OpenAiServiceException("Failed to fetch chat response from OpenRouter", e, true);
                 }
+        }
+
+        private static boolean hasCause(Throwable throwable, Class<? extends Throwable> causeClass) {
+                Throwable current = throwable;
+                while (current != null) {
+                        if (causeClass.isInstance(current)) {
+                                return true;
+                        }
+                        current = current.getCause();
+                }
+                return false;
         }
 
         private String extractContentFromResponse(Map<String, Object> response) {
