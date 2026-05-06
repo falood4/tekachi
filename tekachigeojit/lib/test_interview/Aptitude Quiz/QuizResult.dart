@@ -45,12 +45,20 @@ class _QuizResultState extends State<QuizResult> {
       final response = await HistoryService().saveAttempt(userId, widget.score);
       if (response.statusCode != 201) {
         debugPrint(
-          'Attempt save failed ${response.statusCode}: ${response.body}',
+          'Attempt save failed ${response.statusCode}: ${response.data}',
         );
         return;
       }
 
-      final decoded = jsonDecode(response.body) as Map<String, dynamic>;
+      final responseData = response.data;
+      final Map<String, dynamic> decoded;
+      if (responseData is Map<String, dynamic>) {
+        decoded = responseData;
+      } else if (responseData is String && responseData.isNotEmpty) {
+        decoded = jsonDecode(responseData) as Map<String, dynamic>;
+      } else {
+        decoded = <String, dynamic>{};
+      }
       final int attemptId = decoded['attempt_id'] as int;
 
       for (final answer in widget.answers) {
@@ -186,7 +194,7 @@ class _QuizResultState extends State<QuizResult> {
                           SnackBar(
                             backgroundColor: const Color(0xFF8DD300),
                             content: Text(
-                              'Failed to start interview: $e',
+                              'Server error. Please try later.',
                               style: theme.textTheme.bodySmall?.copyWith(
                                 color: Colors.black,
                               ),

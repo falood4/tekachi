@@ -1,8 +1,8 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:tekachigeojit/services/AuthService.dart';
 import 'package:tekachigeojit/services/ApiConfig.dart';
+import 'package:dio/dio.dart';
+import 'package:tekachigeojit/services/token_dio/DioClient.dart';
+import 'package:tekachigeojit/services/token_dio/TokenManager.dart';
 
 class HistoryService {
   static String get _baseUrl => '${ApiConfig.baseUrl}/history';
@@ -13,30 +13,29 @@ class HistoryService {
 
   HistoryService._internal();
 
-  String? get _token => AuthService().shareToken();
+  final dio = DioClient().dio;
+  final TokenManager _tokenManager = TokenManager();
 
-  Map<String, String> _headers() {
-    final headers = {'Content-Type': 'application/json'};
-    if (_token != null && _token!.isNotEmpty) {
-      headers['Authorization'] = 'Bearer $_token';
-    }
-    return headers;
+  bool get _isAuthenticated {
+    final token = _tokenManager.accessToken;
+    return token != null && token.isNotEmpty;
   }
 
   Future<List<Map<String, dynamic>>> getAttemptHistory([int? user_id]) async {
-    final uid = user_id ?? AuthService().shareUserId();
+    final uid = user_id ?? _tokenManager.userId;
     if (uid == null) {
       throw Exception('User ID not available');
     }
 
     try {
-      final response = await http.get(
-        Uri.parse('$_baseUrl/$uid/attempts'),
-        headers: _headers(),
-      );
+      if (!_isAuthenticated) {
+        throw StateError('User not authenticated');
+      }
+
+      final response = await dio.get('$_baseUrl/$uid/attempts');
 
       if (response.statusCode == 200) {
-        final List<dynamic> data = jsonDecode(response.body);
+        final List<dynamic> data = response.data as List<dynamic>;
         return data
             .map(
               (item) => {
@@ -50,43 +49,64 @@ class HistoryService {
       } else {
         throw Exception('${response.statusCode}');
       }
+    } on StateError {
+      rethrow;
+    } on DioException catch (e) {
+      debugPrint('Could not get attempt history: ${e.message}');
+      rethrow;
     } catch (e) {
       debugPrint('Could not get attempt history: $e');
       rethrow;
     }
   }
 
-  Future<http.Response> saveAttempt(int user_id, int score) async {
+  Future<Response> saveAttempt(int user_id, int score) async {
     try {
-      final response = await http.post(
-        Uri.parse('$_baseUrl/newattempt'),
-        headers: _headers(),
-        body: jsonEncode({"user": user_id, "correctAnswers": score}),
+      if (!_isAuthenticated) {
+        throw StateError('User not authenticated');
+      }
+
+      final response = await dio.post(
+        '$_baseUrl/newattempt',
+        data: {"user": user_id, "correctAnswers": score},
       );
 
       return response;
+    } on StateError {
+      rethrow;
+    } on DioException catch (e) {
+      debugPrintStack(label: 'Attempt could not be saved: ${e.message}');
+      rethrow;
     } catch (e) {
       debugPrintStack(label: 'Attempt could not be saved: $e');
       rethrow;
     }
   }
 
-  Future<http.Response> saveAnswer({
+  Future<Response> saveAnswer({
     required int attemptId,
     required int questionId,
     required int selectedOptionId,
   }) async {
     try {
-      final response = await http.post(
-        Uri.parse('$_baseUrl/newanswer'),
-        headers: _headers(),
-        body: jsonEncode({
+      if (!_isAuthenticated) {
+        throw StateError('User not authenticated');
+      }
+
+      final response = await dio.post(
+        '$_baseUrl/newanswer',
+        data: {
           "attemptId": attemptId,
           "QId": questionId,
           "selectedOption": selectedOptionId,
-        }),
+        },
       );
       return response;
+    } on StateError {
+      rethrow;
+    } on DioException catch (e) {
+      debugPrint('Answer could not be saved: ${e.message}');
+      rethrow;
     } catch (e) {
       debugPrint('Answer could not be saved: $e');
       rethrow;
@@ -99,14 +119,15 @@ class HistoryService {
     }
 
     try {
-      final response = await http.get(
-        Uri.parse('$_baseUrl/$attempt_id'),
-        headers: _headers(),
-      );
+      if (!_isAuthenticated) {
+        throw StateError('User not authenticated');
+      }
+
+      final response = await dio.get('$_baseUrl/$attempt_id');
 
       if (response.statusCode == 200) {
         debugPrint('Attempt history retrieved');
-        final List<dynamic> data = jsonDecode(response.body);
+        final List<dynamic> data = response.data as List<dynamic>;
         return data
             .map(
               (item) => {
@@ -122,24 +143,36 @@ class HistoryService {
       } else {
         throw Exception('${response.statusCode}');
       }
+    } on StateError {
+      rethrow;
+    } on DioException catch (e) {
+      debugPrint('Could not get attempt history: ${e.message}');
+      return [];
     } catch (e) {
       debugPrint('Could not get attempt history: $e');
       return [];
     }
   }
 
-  Future<http.Response> deleteAttempt() async {
+  Future<Response> deleteAttempt() async {
     try {
-      final user_id = AuthService().shareUserId();
+      final user_id = _tokenManager.userId;
       if (user_id == null) {
         throw Exception('User ID not available');
       }
-      final response = await http.delete(
-        Uri.parse('$_baseUrl/$user_id'),
-        headers: _headers(),
-      );
+
+      if (!_isAuthenticated) {
+        throw StateError('User not authenticated');
+      }
+
+      final response = await dio.delete('$_baseUrl/$user_id');
 
       return response;
+    } on StateError {
+      rethrow;
+    } on DioException catch (e) {
+      debugPrint('Could not delete attempt: ${e.message}');
+      rethrow;
     } catch (e) {
       debugPrint('Could not delete attempt: $e');
       rethrow;

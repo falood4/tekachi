@@ -96,7 +96,7 @@ class Techinterviewintro extends StatelessWidget {
                             SnackBar(
                               backgroundColor: const Color(0xFF8DD300),
                               content: Text(
-                                'Failed to start interview: $e',
+                                'Server error. Please try later.',
                                 style: theme.textTheme.bodySmall?.copyWith(
                                   color: Colors.black,
                                 ),

@@ -5,6 +5,7 @@ import 'package:tekachigeojit/models/QuestionModel.dart';
 import 'package:tekachigeojit/models/AnswerSelection.dart';
 import 'package:tekachigeojit/test_interview/Aptitude%20Quiz/QuizResult.dart';
 import 'package:tekachigeojit/services/quiz/QsnService.dart';
+import 'package:tekachigeojit/test_interview/testHome.dart';
 
 class QuizPage extends StatefulWidget {
   const QuizPage({super.key, required this.is3step});
@@ -301,13 +302,7 @@ class _QuizPageState extends State<QuizPage> {
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (context) => QuizResult(
-                      score: 0,
-                      answers: [],
-                      is3step: widget.is3step,
-                    ),
-                  ),
+                  MaterialPageRoute(builder: (context) => TestHome()),
                 );
               },
               style: ElevatedButton.styleFrom(backgroundColor: red),

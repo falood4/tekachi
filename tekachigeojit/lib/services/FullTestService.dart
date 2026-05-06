@@ -1,9 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:tekachigeojit/services/AuthService.dart';
 import 'package:tekachigeojit/services/ApiConfig.dart';
+import 'package:dio/dio.dart';
+import 'package:tekachigeojit/services/token_dio/DioClient.dart';
+import 'package:tekachigeojit/services/token_dio/TokenManager.dart';
 
 class FullTestService {
   static final FullTestService _instance = FullTestService._internal();
@@ -78,34 +77,35 @@ class FullTestService {
 
   late final String _baseUrl = '${ApiConfig.baseUrl}/placement';
 
-  String? get _token => AuthService().shareToken();
-  int? user_id = AuthService().shareUserId();
+  final dio = DioClient().dio;
+  final TokenManager _tokenManager = TokenManager();
 
-  Map<String, String> _headers() {
-    final headers = {'Content-Type': 'application/json'};
-    if (_token != null && _token!.isNotEmpty) {
-      headers['Authorization'] = 'Bearer $_token';
-    }
-    return headers;
+  bool get _isAuthenticated {
+    final token = _tokenManager.accessToken;
+    return token != null && token.isNotEmpty;
   }
 
   Future<dynamic> saveAttempt() async {
     try {
-      final response = await http.post(
-        Uri.parse('$_baseUrl/new'),
-        headers: _headers(),
-        body: jsonEncode({
-          "userId": user_id,
+      if (!_isAuthenticated) {
+        return Future.error('User not authenticated');
+      }
+
+      final response = await dio.post(
+        '$_baseUrl/new',
+        data: {
+          "userId": _tokenManager.userId,
           "aptAttemptId": getAptitudeid(),
           "techInterviewId": getTechChatId(),
           "hrInterviewId": getHrChatId(),
-        }),
+        },
       );
 
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        debugPrint(data['message']);
-
+        final data = response.data;
+        if (data is Map && data['message'] != null) {
+          debugPrint(data['message'].toString());
+        }
         return data;
       } else if (response.statusCode == 500) {
         return "Server error. Please try again";
@@ -118,13 +118,14 @@ class FullTestService {
 
   Future<List<Map<String, dynamic>>> fetchHistory(int user_id) async {
     try {
-      final response = await http.get(
-        Uri.parse('$_baseUrl/attempts/$user_id'),
-        headers: _headers(),
-      );
+      if (!_isAuthenticated) {
+        throw StateError('User not authenticated');
+      }
+
+      final response = await dio.get('$_baseUrl/attempts/$user_id');
 
       if (response.statusCode == 200) {
-        final decoded = jsonDecode(response.body);
+        final decoded = response.data;
         if (decoded is List) {
           return decoded.cast<Map<String, dynamic>>();
         }
@@ -133,6 +134,11 @@ class FullTestService {
       } else if (response.statusCode == 500) {
         return <Map<String, dynamic>>[];
       }
+    } on StateError {
+      rethrow;
+    } on DioException catch (e) {
+      debugPrint('Failed to fetch history: ${e.message}');
+      rethrow;
     } catch (e) {
       debugPrint('Failed to fetch history: $e');
       rethrow;
