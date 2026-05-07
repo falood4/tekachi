@@ -1,52 +1,37 @@
 {"properties": [
   {
-    "name": "spring.h2.console.enabled",
-    "type": "java.lang.String",
-    "description": "A description for 'spring.h2.console.enabled'"
-  },
-  {
-    "name": "spring.h2.console.path",
-    "type": "java.lang.String",
-    "description": "A description for 'spring.h2.console.path'"
-  },
-  {
     "name": "jwt.secret",
     "type": "java.lang.String",
-    "description": "A description for 'jwt.secret'"
+    "description": "Secret used to sign JWT access and refresh tokens."
   },
   {
     "name": "jwt.expiration",
     "type": "java.lang.String",
-    "description": "A description for 'jwt.expiration'"
-  },
-  {
-    "name": "openai.api.key",
-    "type": "java.lang.String",
-    "description": "A description for 'openai.api.key'"
-  },
-  {
-    "name": "openrouter.api.key",
-    "type": "java.lang.String",
-    "description": "A description for 'openrouter.api.key'"
-  },
-  {
-    "name": "rfrsh.expiration",
-    "type": "java.lang.String",
-    "description": "A description for 'rfrsh.expiration'"
-  },
-  {
-    "name": "rfrsh.secret",
-    "type": "java.lang.String",
-    "description": "A description for 'rfrsh.secret'"
+    "description": "JWT access token lifetime in milliseconds."
   },
   {
     "name": "jwt.rfrsh.expiration",
     "type": "java.lang.String",
-    "description": "A description for 'jwt.rfrsh.expiration'"
+    "description": "JWT refresh token lifetime in milliseconds."
+  },
+  {
+    "name": "openrouter.api.key",
+    "type": "java.lang.String",
+    "description": "API key used for OpenRouter requests."
+  },
+  {
+    "name": "openrouter.model",
+    "type": "java.lang.String",
+    "description": "OpenRouter model identifier used for chat completions."
   },
   {
     "name": "app.cors.allowed-origins",
     "type": "java.lang.String",
-    "description": "A description for 'app.cors.allowed-origins'"
+    "description": "Comma-separated list of allowed CORS origins."
+  },
+  {
+    "name": "rag.ingest.base-dir",
+    "type": "java.lang.String",
+    "description": "Base directory scanned by the RAG ingestion service."
   }
 ]}

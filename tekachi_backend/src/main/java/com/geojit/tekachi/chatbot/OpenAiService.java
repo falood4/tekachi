@@ -27,9 +27,7 @@ public class OpenAiService {
                         @Value("${openrouter.model:google/gemini-2.5-flash}") String model) {
 
                 this.model = model;
-
-                // Prefer the JDK/OS resolver on Windows; Netty's DNS resolver can time out even
-                // when nslookup succeeds (proxy/VPN/firewall/IPv6 edge cases).
+                
                 HttpClient httpClient = HttpClient.create()
                                 .resolver(DefaultAddressResolverGroup.INSTANCE)
                                 .responseTimeout(Duration.ofSeconds(45));

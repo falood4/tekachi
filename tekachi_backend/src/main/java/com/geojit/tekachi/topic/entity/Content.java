@@ -14,6 +14,6 @@ public class Content {
     @OneToOne
     private Title title;
 
-    @Column(name = "content_text")
+    @Column(name = "content_text", columnDefinition = "TEXT")
     private String content;
 }

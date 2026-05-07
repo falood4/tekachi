@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: tekachi
+    runtime: docker
+    region: oregon
+    plan: free
+    healthCheckPath: /actuator/health
+    envVars:
+      - key: JAVA_OPTS
+        value: -Xmx512m -Xms256m
+      - key: TEKACHI_DB_URL
+        sync: false
+      - key: TEKACHI_DB_USERNAME
+        sync: false
+      - key: TEKACHI_DB_PASSWORD
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: OPENROUTER_API_KEY
+        sync: false
+      - key: APP_CORS_ALLOWED_ORIGINS
+        sync: false
