@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tekachigeojit/services/quiz/QuizHistoryService.dart';
 import 'package:intl/intl.dart';
+import 'package:tekachigeojit/components/ChatPages/AptitudeAttempt.dart';
 
 class AptitudeTestHistory extends StatefulWidget {
   const AptitudeTestHistory({super.key});
@@ -54,28 +55,27 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
     return Scaffold(
       backgroundColor: bg,
       appBar: AppBar(
+        iconTheme: IconThemeData(color: secondary),
         backgroundColor: bg,
         title: Text(
           'Aptitude Test History',
           style: theme.textTheme.titleLarge?.copyWith(color: secondary),
         ),
-        iconTheme: IconThemeData(color: secondary),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.delete, color: red),
-            onPressed: _confirmClearConvoHistory,
-            style: ButtonStyle(
-              backgroundColor: WidgetStateProperty.all<Color>(
-                theme.colorScheme.primary,
-              ),
-              shape: WidgetStateProperty.all<CircleBorder>(
-                const CircleBorder(),
-              ),
-            ),
-          ),
-        ],
       ),
       body: buildBody(),
+      floatingActionButton: IconButton(
+        icon: Icon(Icons.delete, color: red),
+        onPressed: _confirmClearConvoHistory,
+        style: ButtonStyle(
+          padding: WidgetStateProperty.all<EdgeInsets>(
+            const EdgeInsets.all(16),
+          ),
+          backgroundColor: WidgetStateProperty.all<Color>(
+            theme.colorScheme.primary,
+          ),
+          shape: WidgetStateProperty.all<CircleBorder>(const CircleBorder()),
+        ),
+      ),
     );
   }
 
@@ -98,8 +98,6 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
       );
     }
 
-    final screenHeight = MediaQuery.of(context).size.height;
-
     return ListView.builder(
       padding: const EdgeInsets.all(16),
       itemCount: _attempts.length,
@@ -109,7 +107,13 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
           padding: const EdgeInsets.only(bottom: 12),
           child: ElevatedButton(
             onPressed: () {
-              showAnswers(attempt['attemptId'], screenHeight);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      Aptitudehistory3step(attemptId: attempt['attemptId']),
+                ),
+              );
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: bg,
@@ -169,112 +173,6 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
     );
   }
 
-  Future<void> showAnswers(int attemptId, double screenheight) async {
-    final List<Map<String, dynamic>> reviewAnswers = await HistoryService()
-        .getAttemptAnswers(attemptId);
-    final bg = Theme.of(context).colorScheme.background;
-    final secondary = Theme.of(context).colorScheme.secondary;
-
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: bg,
-      isScrollControlled: true,
-      builder: (context) {
-        return Container(
-          decoration: BoxDecoration(
-            border: Border.all(color: secondary),
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(25),
-              topRight: Radius.circular(25),
-            ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: SizedBox(
-              height: screenheight * 0.75,
-              child: ListView.builder(
-                itemCount: reviewAnswers.length,
-                itemBuilder: (context, index) {
-                  final entry = reviewAnswers[index];
-                  return _answerReviewCard(index, entry['qsn'] as String, (
-                    entry['userChoice'] as String,
-                    entry['correctAnswer'] as String,
-                  ));
-                },
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _answerReviewCard(
-    int index,
-    String questionText,
-    (String, String) answers,
-  ) {
-    index++;
-    dynamic primary = Theme.of(context).colorScheme.primary;
-    dynamic secondary = Theme.of(context).colorScheme.secondary;
-    dynamic error = Theme.of(context).colorScheme.error;
-
-    if (answers.$1 == answers.$2) {
-      return Container(
-        margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 15),
-            Text(
-              "$index. $questionText",
-              style: Theme.of(
-                context,
-              ).textTheme.bodyMedium?.copyWith(color: primary),
-            ),
-            const SizedBox(height: 5),
-            Text(
-              'Your Answer: ${answers.$2} ✅',
-              style: Theme.of(
-                context,
-              ).textTheme.bodySmall?.copyWith(color: secondary),
-            ),
-          ],
-        ),
-      );
-    } else {
-      return Container(
-        margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 15),
-            Text(
-              "$index. $questionText",
-              style: Theme.of(
-                context,
-              ).textTheme.bodyMedium?.copyWith(color: primary),
-            ),
-            const SizedBox(height: 5),
-            Text(
-              'Your Wrong Answer: ${answers.$1} ❌',
-              style: Theme.of(
-                context,
-              ).textTheme.bodySmall?.copyWith(color: error),
-            ),
-            const SizedBox(height: 5),
-            Text(
-              'Correct Answer: ${answers.$2}',
-              style: Theme.of(
-                context,
-              ).textTheme.bodySmall?.copyWith(color: primary),
-            ),
-          ],
-        ),
-      );
-    }
-  }
-
   void _confirmClearConvoHistory() async {
     showDialog(
       context: context,
@@ -297,6 +195,7 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
             'Are you sure you want to clear test history?',
             style: TextStyle(color: primary, fontFamily: "Trebuchet"),
           ),
+          actionsAlignment: MainAxisAlignment.spaceEvenly,
           actions: [
             ElevatedButton(
               onPressed: () {
@@ -304,11 +203,10 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
               },
               style: ElevatedButton.styleFrom(backgroundColor: secondary),
               child: Text(
-                'CANCEL',
+                'NO',
                 style: TextStyle(color: black, fontFamily: "DelaGothicOne"),
               ),
             ),
-            SizedBox.fromSize(size: const Size.fromHeight(10)),
             ElevatedButton(
               onPressed: () async {
                 try {
@@ -362,7 +260,7 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
               },
               style: ElevatedButton.styleFrom(backgroundColor: red),
               child: Text(
-                'CLEAR',
+                'YES',
                 style: TextStyle(color: primary, fontFamily: "DelaGothicOne"),
               ),
             ),

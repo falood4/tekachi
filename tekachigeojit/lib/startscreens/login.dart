@@ -66,7 +66,17 @@ class _LoginState extends State<Login> {
     try {
       final response = await AuthService()
           .loginUser(email: _emailCtrl.text, password: _passwordCtrl.text)
-          .timeout(const Duration(seconds: 10));
+          .timeout(const Duration(seconds: 3));
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: const Color(0xFF8DD300),
+          content: Text(
+            'Logging in...',
+            style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
+          ),
+        ),
+      );
 
       if (!mounted) return;
 
@@ -76,15 +86,6 @@ class _LoginState extends State<Login> {
           _passwordCtrl.text.trim(),
         );
         debugPrint('Login successful');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: const Color(0xFF8DD300),
-            content: Text(
-              'Logging in...',
-              style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
-            ),
-          ),
-        );
 
         Navigator.pushAndRemoveUntil(
           context,
@@ -141,11 +142,6 @@ class _LoginState extends State<Login> {
     final screenHeight = MediaQuery.of(context).size.height;
     final theme = Theme.of(context);
 
-    final Color secondary = theme.colorScheme.secondary;
-    final Color onPrimary = theme.colorScheme.onPrimary;
-    final Color tertiary = theme.colorScheme.tertiary;
-    final Color surface = theme.colorScheme.surface;
-
     return Scaffold(
       backgroundColor: theme.colorScheme.background,
       resizeToAvoidBottomInset: true,
@@ -171,10 +167,9 @@ class _LoginState extends State<Login> {
                     keyboardType: TextInputType.emailAddress,
                     textInputAction: TextInputAction.next,
                     controller: _emailCtrl,
-                    style: Theme.of(context).textTheme.bodyMedium,
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: surface,
+                      fillColor: theme.colorScheme.surfaceDim,
                       contentPadding: const EdgeInsets.symmetric(
                         horizontal: 20,
                         vertical: 14,
@@ -184,13 +179,15 @@ class _LoginState extends State<Login> {
                         fontSize: screenWidth * 0.04,
                         fontFamily: "Trebuchet",
                         letterSpacing: 0.1,
-                        color: tertiary,
+                        color: theme.colorScheme.primary.withOpacity(0.6),
                       ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(50),
                         borderSide: BorderSide.none,
                       ),
                     ),
+
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ),
 
@@ -201,7 +198,7 @@ class _LoginState extends State<Login> {
                     height: screenHeight * 0.06,
                     child: Container(
                       decoration: BoxDecoration(
-                        color: surface,
+                        color: theme.colorScheme.surfaceDim,
                         borderRadius: BorderRadius.circular(50),
                       ),
                       padding: const EdgeInsets.symmetric(
@@ -218,7 +215,7 @@ class _LoginState extends State<Login> {
                             fontSize: screenWidth * 0.04,
                             fontFamily: "Trebuchet",
                             letterSpacing: 0.1,
-                            color: tertiary,
+                            color: theme.colorScheme.primary.withOpacity(0.6),
                           ),
                           border: InputBorder.none,
                         ),
@@ -236,12 +233,12 @@ class _LoginState extends State<Login> {
                       style: ElevatedButton.styleFrom(
                         textStyle: theme.textTheme.headlineLarge,
                         padding: const EdgeInsets.all(16),
-                        backgroundColor: secondary,
+                        backgroundColor: theme.colorScheme.secondary,
                       ),
                       child: Text(
                         "Login",
                         style: TextStyle(
-                          color: onPrimary,
+                          color: theme.colorScheme.onSurface,
                           fontSize: 0.05 * screenWidth,
                         ),
                       ),
@@ -257,7 +254,7 @@ class _LoginState extends State<Login> {
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.all(0),
-                        backgroundColor: surface,
+                        backgroundColor: theme.colorScheme.tertiary,
                       ),
                       onPressed: () {
                         Navigator.pop(context);

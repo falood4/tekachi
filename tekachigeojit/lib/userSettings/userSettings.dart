@@ -23,12 +23,12 @@ class _UserSettingsState extends State<UserSettings> {
     final double profileHeight = screenHeight * 0.09;
     final double baseFontSize = screenWidth * 0.05;
 
-    final Color primary = Theme.of(context).colorScheme.secondary;
-    final Color black = Theme.of(context).colorScheme.onPrimary;
-    final Color lightGrey = Theme.of(context).colorScheme.surface;
+    final Color accent = Theme.of(context).colorScheme.secondary;
+    final Color textPrimary = Theme.of(context).colorScheme.primary;
+    final Color cardBackground = Theme.of(context).colorScheme.surfaceDim;
 
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       bottomNavigationBar: NavBar(selectedPage: 3),
       body: SafeArea(
         child: ConstrainedBox(
@@ -59,25 +59,28 @@ class _UserSettingsState extends State<UserSettings> {
                       horizontal: screenWidth * 0.04,
                     ),
                     decoration: BoxDecoration(
-                      color: lightGrey,
+                      color: cardBackground,
                       borderRadius: BorderRadius.circular(cardRadius),
                     ),
                     child: Row(
                       children: [
                         CircleAvatar(
                           radius: profileHeight * 0.32,
-                          backgroundColor: black,
+                          backgroundColor: textPrimary,
                           child: Icon(
                             Icons.person,
                             size: profileHeight * 0.35,
-                            color: primary,
+                            color: accent,
                           ),
                         ),
                         SizedBox(width: screenWidth * 0.04),
                         Text(
                           AuthService().shareEmail() ?? '',
                           style: Theme.of(context).textTheme.bodyMedium
-                              ?.copyWith(fontSize: baseFontSize),
+                              ?.copyWith(
+                                fontSize: baseFontSize,
+                                color: textPrimary,
+                              ),
                         ),
                       ],
                     ),
@@ -87,7 +90,7 @@ class _UserSettingsState extends State<UserSettings> {
                   Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      color: lightGrey,
+                      color: cardBackground,
                       borderRadius: BorderRadius.circular(cardRadius),
                     ),
                     child: Column(
@@ -111,15 +114,16 @@ class _UserSettingsState extends State<UserSettings> {
                                   children: [
                                     Icon(
                                       Icons.brightness_medium_rounded,
-                                      color: Colors.black,
+                                      color: Color(0xFF8DD300),
                                       size: 22,
                                     ),
                                     const SizedBox(width: 12),
                                     Text(
                                       "Change theme",
-                                      style: Theme.of(
-                                        context,
-                                      ).textTheme.bodyLarge,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge
+                                          ?.copyWith(color: Color(0xFF8DD300)),
                                     ),
                                   ],
                                 ),
@@ -141,13 +145,13 @@ class _UserSettingsState extends State<UserSettings> {
                                   ).colorScheme.secondary,
                                   activeTrackColor: Theme.of(
                                     context,
-                                  ).colorScheme.background,
+                                  ).colorScheme.tertiary,
                                   inactiveThumbColor: Theme.of(
                                     context,
                                   ).colorScheme.secondary,
                                   inactiveTrackColor: Theme.of(
                                     context,
-                                  ).colorScheme.onPrimary,
+                                  ).colorScheme.primary,
                                 );
                               },
                             ),
@@ -184,9 +188,9 @@ class _UserSettingsState extends State<UserSettings> {
     bool isDestructive = false,
     required VoidCallback onPressed,
   }) {
-    dynamic black = Theme.of(context).colorScheme.onPrimary;
+    dynamic textColor = Theme.of(context).colorScheme.primary;
     dynamic red = Theme.of(context).colorScheme.error;
-    final color = isDestructive ? red : black;
+    final color = isDestructive ? red : textColor;
 
     return ElevatedButton(
       onPressed: onPressed,
@@ -224,8 +228,8 @@ class _UserSettingsState extends State<UserSettings> {
         final Color primary = Theme.of(context).colorScheme.primary;
         final Color secondary = Theme.of(context).colorScheme.secondary;
         final Color tertiary = Theme.of(context).colorScheme.tertiary;
-        final Color blackbg = Theme.of(context).colorScheme.background;
-        final Color black = Theme.of(context).colorScheme.onPrimary;
+        final Color dialogBg = Theme.of(context).colorScheme.surface;
+        final Color dialogText = Theme.of(context).colorScheme.onSurface;
 
         return AlertDialog(
           title: Text(
@@ -234,7 +238,7 @@ class _UserSettingsState extends State<UserSettings> {
               context,
             ).textTheme.bodyLarge?.copyWith(color: primary),
           ),
-          backgroundColor: blackbg,
+          backgroundColor: dialogBg,
           content: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisSize: MainAxisSize.min,
@@ -294,7 +298,10 @@ class _UserSettingsState extends State<UserSettings> {
                 style: ElevatedButton.styleFrom(backgroundColor: secondary),
                 child: Text(
                   'CANCEL',
-                  style: TextStyle(color: black, fontFamily: "DelaGothicOne"),
+                  style: TextStyle(
+                    color: dialogText,
+                    fontFamily: "DelaGothicOne",
+                  ),
                 ),
               ),
 
@@ -341,7 +348,7 @@ class _UserSettingsState extends State<UserSettings> {
                       newController.text,
                     );
                   },
-                  style: ElevatedButton.styleFrom(backgroundColor: black),
+                  style: ElevatedButton.styleFrom(backgroundColor: dialogText),
                   child: Text(
                     'OK',
                     textAlign: TextAlign.center,
@@ -408,8 +415,8 @@ class _UserSettingsState extends State<UserSettings> {
       builder: (BuildContext context) {
         final Color primary = Theme.of(context).colorScheme.primary;
         final Color secondary = Theme.of(context).colorScheme.secondary;
-        final Color blackbg = Theme.of(context).colorScheme.background;
-        final Color black = Theme.of(context).colorScheme.onPrimary;
+        final Color dialogBg = Theme.of(context).colorScheme.surface;
+        final Color dialogText = Theme.of(context).colorScheme.onSurface;
         final Color red = Theme.of(context).colorScheme.error;
 
         return AlertDialog(
@@ -419,13 +426,14 @@ class _UserSettingsState extends State<UserSettings> {
               context,
             ).textTheme.bodyLarge?.copyWith(color: primary),
           ),
-          backgroundColor: blackbg,
+          backgroundColor: dialogBg,
           content: Text(
             'Are you sure you want to delete your account?',
             style: Theme.of(
               context,
             ).textTheme.bodyLarge?.copyWith(color: primary),
           ),
+          actionsAlignment: MainAxisAlignment.spaceEvenly,
           actions: [
             ElevatedButton(
               onPressed: () {
@@ -433,12 +441,13 @@ class _UserSettingsState extends State<UserSettings> {
               },
               style: ElevatedButton.styleFrom(backgroundColor: secondary),
               child: Text(
-                'CANCEL',
-                style: TextStyle(color: black, fontFamily: "DelaGothicOne"),
+                'NO',
+                style: TextStyle(
+                  color: dialogText,
+                  fontFamily: "DelaGothicOne",
+                ),
               ),
             ),
-
-            SizedBox.fromSize(size: const Size.fromHeight(10)),
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pop();
@@ -446,7 +455,7 @@ class _UserSettingsState extends State<UserSettings> {
               },
               style: ElevatedButton.styleFrom(backgroundColor: red),
               child: Text(
-                'DELETE',
+                'YES',
                 style: TextStyle(color: primary, fontFamily: "DelaGothicOne"),
               ),
             ),
@@ -483,8 +492,8 @@ class _UserSettingsState extends State<UserSettings> {
       builder: (BuildContext context) {
         final Color primary = Theme.of(context).colorScheme.primary;
         final Color secondary = Theme.of(context).colorScheme.secondary;
-        final Color black = Theme.of(context).colorScheme.onPrimary;
-        final Color blackbg = Theme.of(context).colorScheme.background;
+        final Color dialogText = Theme.of(context).colorScheme.onSurface;
+        final Color dialogBg = Theme.of(context).colorScheme.surface;
         final Color red = Theme.of(context).colorScheme.error;
 
         return AlertDialog(
@@ -494,11 +503,12 @@ class _UserSettingsState extends State<UserSettings> {
               context,
             ).textTheme.bodyLarge?.copyWith(color: primary),
           ),
-          backgroundColor: blackbg,
+          backgroundColor: dialogBg,
           content: Text(
             'Are you sure you want to log out?',
             style: TextStyle(color: primary, fontFamily: "Trebuchet"),
           ),
+          actionsAlignment: MainAxisAlignment.spaceEvenly,
           actions: [
             ElevatedButton(
               onPressed: () {
@@ -506,11 +516,13 @@ class _UserSettingsState extends State<UserSettings> {
               },
               style: ElevatedButton.styleFrom(backgroundColor: secondary),
               child: Text(
-                'CANCEL',
-                style: TextStyle(color: black, fontFamily: "DelaGothicOne"),
+                'NO',
+                style: TextStyle(
+                  color: dialogText,
+                  fontFamily: "DelaGothicOne",
+                ),
               ),
             ),
-            SizedBox.fromSize(size: const Size.fromHeight(10)),
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pop();
@@ -518,7 +530,7 @@ class _UserSettingsState extends State<UserSettings> {
               },
               style: ElevatedButton.styleFrom(backgroundColor: red),
               child: Text(
-                'ACCEPT',
+                'YES',
                 style: TextStyle(color: primary, fontFamily: "DelaGothicOne"),
               ),
             ),

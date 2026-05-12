@@ -14,18 +14,18 @@ class TechnicalHome extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
 
     final theme = Theme.of(context);
-    final blackbg = theme.colorScheme.background;
-    final lime = theme.colorScheme.secondary;
+    final surface = theme.colorScheme.surface;
+    final secondary = theme.colorScheme.secondary;
 
     return Scaffold(
-      backgroundColor: blackbg,
+      backgroundColor: surface,
       bottomNavigationBar: NavBar(),
       appBar: AppBar(
-        backgroundColor: blackbg,
-        iconTheme: IconThemeData(color: lime),
+        backgroundColor: surface,
+        iconTheme: IconThemeData(color: secondary),
         title: Text(
           'Technical Training',
-          style: theme.textTheme.titleLarge?.copyWith(color: lime),
+          style: theme.textTheme.titleLarge?.copyWith(color: secondary),
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_rounded),
@@ -86,7 +86,8 @@ class TechnicalHome extends StatelessWidget {
   ) {
     final screenWidth = MediaQuery.of(context).size.width;
     final theme = Theme.of(context);
-    final surface = theme.colorScheme.surface;
+    final surfaceDim = theme.colorScheme.surfaceDim;
+    final primary = theme.colorScheme.primary;
 
     return Container(
       height: screenWidth * 0.25,
@@ -94,7 +95,7 @@ class TechnicalHome extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: surface,
+          backgroundColor: surfaceDim,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(25),
           ),
@@ -103,7 +104,10 @@ class TechnicalHome extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: screenWidth * 0.05),
           child: Align(
             alignment: Alignment.centerLeft,
-            child: Text(title, style: theme.textTheme.titleMedium),
+            child: Text(
+              title,
+              style: theme.textTheme.titleMedium?.copyWith(color: primary),
+            ),
           ),
         ),
       ),

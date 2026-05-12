@@ -10,7 +10,8 @@ class DataInterpretation extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final theme = Theme.of(context);
     dynamic white = theme.colorScheme.primary;
-    dynamic lime = theme.colorScheme.secondary;
+    final secondary = theme.colorScheme.secondary;
+    dynamic lime = secondary;
     dynamic blackbg = theme.colorScheme.background;
 
     final DataTopics = [
@@ -24,7 +25,7 @@ class DataInterpretation extends StatelessWidget {
       backgroundColor: blackbg,
       appBar: AppBar(
         backgroundColor: blackbg,
-        iconTheme: IconThemeData(color: white),
+        iconTheme: IconThemeData(color: secondary),
         title: Text(
           'Aptitude Training',
           style: theme.textTheme.titleLarge?.copyWith(color: lime),
@@ -71,7 +72,6 @@ class DataInterpretation extends StatelessWidget {
 
   Widget _topicButton(BuildContext context, String title) {
     final theme = Theme.of(context);
-    dynamic lightGrey = theme.colorScheme.surface;
     dynamic black = theme.colorScheme.onPrimary;
 
     return ElevatedButton(
@@ -102,7 +102,7 @@ class DataInterpretation extends StatelessWidget {
         );
       },
       style: ElevatedButton.styleFrom(
-        backgroundColor: lightGrey,
+        backgroundColor: theme.colorScheme.surfaceDim,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       ),
       child: Text(title, style: theme.textTheme.bodyMedium),
@@ -120,7 +120,6 @@ class TopicPopup extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     final theme = Theme.of(context);
-    dynamic surface = theme.colorScheme.surface;
     dynamic black = theme.colorScheme.onPrimary;
     dynamic lime = theme.colorScheme.secondary;
 
@@ -311,16 +310,13 @@ Average annual exports of Company Z during the given period
           height: screenHeight * 0.6,
           padding: EdgeInsets.all(screenWidth * 0.05),
           decoration: BoxDecoration(
-            color: surface,
+            color: theme.colorScheme.surfaceDim,
             borderRadius: BorderRadius.circular(20),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                topicTitle,
-                style: theme.textTheme.titleMedium?.copyWith(color: black),
-              ),
+              Text(topicTitle, style: theme.textTheme.titleMedium),
               Expanded(
                 child: Container(
                   margin: EdgeInsets.symmetric(vertical: screenHeight * 0.01),
@@ -339,9 +335,7 @@ Average annual exports of Company Z during the given period
                                     ?.toString() ??
                                 'Content not available',
                             textAlign: TextAlign.left,
-                            style: theme.textTheme.bodyMedium?.copyWith(
-                              color: black,
-                            ),
+                            style: theme.textTheme.bodyMedium,
                           ),
                         ],
                       ),

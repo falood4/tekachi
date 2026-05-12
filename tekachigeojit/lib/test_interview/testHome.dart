@@ -19,11 +19,10 @@ class TestHome extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
     final theme = Theme.of(context);
 
-    dynamic lime = theme.colorScheme.secondary;
-    dynamic black = theme.colorScheme.onPrimary;
+    final accent = theme.colorScheme.secondary;
 
     return Scaffold(
-      backgroundColor: theme.colorScheme.background,
+      backgroundColor: theme.colorScheme.surface,
       bottomNavigationBar: const NavBar(selectedPage: 2),
       body: SafeArea(
         child: Padding(
@@ -97,7 +96,7 @@ class TestHome extends StatelessWidget {
                 height: screenHeight * 0.24,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(18),
-                  color: lime,
+                  color: accent,
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -105,15 +104,15 @@ class TestHome extends StatelessWidget {
                     Text(
                       '3 Step Interview',
                       style: TextStyle(
-                        color: black,
                         fontFamily: 'Rostex',
                         fontSize: screenWidth * 0.06,
+                        color: Colors.black87,
                       ),
                     ),
                     const SizedBox(height: 6),
                     Text(
                       'Comprehensive Mock Interview',
-                      style: TextStyle(color: black),
+                      style: TextStyle(color: Colors.black87),
                     ),
                     const SizedBox(height: 12),
                     ElevatedButton(
@@ -131,7 +130,7 @@ class TestHome extends StatelessWidget {
                       ),
                     ),
 
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
 
                     ElevatedButton(
                       onPressed: () async {
@@ -147,13 +146,14 @@ class TestHome extends StatelessWidget {
                           ),
                         ),
                         backgroundColor: WidgetStateProperty.all<Color>(
-                          theme.colorScheme.surface,
+                          Color(0xFFEAEAEA),
                         ),
                       ),
                       child: Text(
                         'Archive',
                         style: theme.textTheme.titleMedium?.copyWith(
                           fontSize: 16,
+                          color: Colors.black87,
                         ),
                       ),
                     ),
@@ -186,15 +186,15 @@ class TestCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final theme = Theme.of(context);
-    dynamic black = theme.colorScheme.onPrimary;
-    dynamic lightGrey = theme.colorScheme.surface;
+    final accent = theme.colorScheme.secondary;
+    final cardColor = theme.colorScheme.surfaceDim;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: Material(
         elevation: 4,
         borderRadius: BorderRadius.circular(16),
-        color: lightGrey,
+        color: cardColor,
         child: InkWell(
           borderRadius: BorderRadius.circular(16),
           onTap: onTap,
@@ -203,17 +203,24 @@ class TestCard extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Row(
               children: [
-                Icon(icon, size: 36, color: black),
+                Icon(icon, size: 36, color: accent),
                 const SizedBox(width: 16),
-                Expanded(child: Text(title, style: theme.textTheme.titleLarge)),
+                Expanded(
+                  child: Text(
+                    title,
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      color: theme.colorScheme.primary,
+                    ),
+                  ),
+                ),
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 8),
                   child: IconButton(
                     onPressed: onPressed,
-                    icon: Icon(Icons.history, color: black),
+                    icon: Icon(Icons.history, color: accent),
                   ),
                 ),
-                Icon(Icons.arrow_forward_ios_rounded, color: black),
+                Icon(Icons.arrow_forward_ios_rounded, color: accent),
               ],
             ),
           ),

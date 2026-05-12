@@ -121,7 +121,7 @@ class _QuizPageState extends State<QuizPage> {
                   children: [
                     Text(
                       currentQuestion!.questionText,
-                      style: theme.textTheme.bodyMedium,
+                      style: theme.textTheme.bodyMedium?.copyWith(color: black),
                     ),
                     const SizedBox(height: 16),
 
@@ -149,7 +149,9 @@ class _QuizPageState extends State<QuizPage> {
                               },
                               title: Text(
                                 option.text,
-                                style: theme.textTheme.bodyMedium,
+                                style: theme.textTheme.bodyMedium?.copyWith(
+                                  color: black,
+                                ),
                               ),
                               activeColor: secondary,
                               fillColor: WidgetStateProperty.resolveWith((
@@ -274,18 +276,21 @@ class _QuizPageState extends State<QuizPage> {
 
         return AlertDialog(
           title: Text(
-            'Quit Quiz?',
+            widget.is3step ? 'Start Interview?' : 'Quit Quiz?',
             style: Theme.of(
               context,
             ).textTheme.bodyLarge?.copyWith(color: primary),
           ),
           backgroundColor: blackbg,
           content: Text(
-            'Are you sure you want to quit your quiz?',
+            widget.is3step
+                ? 'Are you sure you want to skip quiz and start tech interview?'
+                : 'Are you sure you want to quit your quiz?',
             style: Theme.of(
               context,
             ).textTheme.bodyLarge?.copyWith(color: primary),
           ),
+          actionsAlignment: MainAxisAlignment.spaceEvenly,
           actions: [
             ElevatedButton(
               onPressed: () {
@@ -293,12 +298,10 @@ class _QuizPageState extends State<QuizPage> {
               },
               style: ElevatedButton.styleFrom(backgroundColor: secondary),
               child: Text(
-                'CANCEL',
+                'NO',
                 style: TextStyle(color: black, fontFamily: "DelaGothicOne"),
               ),
             ),
-
-            SizedBox.fromSize(size: const Size.fromHeight(10)),
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pushReplacement(

@@ -25,13 +25,14 @@ class _LogicalReasoningState extends State<LogicalReasoning> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     dynamic white = theme.colorScheme.primary;
-    dynamic lime = theme.colorScheme.secondary;
+    final secondary = theme.colorScheme.secondary;
+    dynamic lime = secondary;
     dynamic blackbg = theme.colorScheme.background;
     return Scaffold(
       backgroundColor: blackbg,
       appBar: AppBar(
         backgroundColor: blackbg,
-        iconTheme: IconThemeData(color: white),
+        iconTheme: IconThemeData(color: secondary),
         title: Text(
           'Aptitude Training',
           style: theme.textTheme.titleLarge?.copyWith(color: lime),
@@ -92,15 +93,22 @@ class _LogicalReasoningState extends State<LogicalReasoning> {
 
 Widget _topicButton(BuildContext context, String title, int topicId) {
   final theme = Theme.of(context);
-  final surface = theme.colorScheme.surface;
-  return ElevatedButton(
-    onPressed: () {
-      showTopicPopupDialog(context, topicTitle: title, topicId: topicId);
-    },
-    style: ElevatedButton.styleFrom(
-      backgroundColor: surface,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+  dynamic grid_bg = theme.colorScheme.surfaceDim;
+  return Container(
+    child: ElevatedButton(
+      onPressed: () {
+        showTopicPopupDialog(context, topicTitle: title, topicId: topicId);
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: grid_bg,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      ),
+      child: Text(
+        title,
+        style: theme.textTheme.bodyMedium?.copyWith(
+          color: theme.colorScheme.primary,
+        ),
+      ),
     ),
-    child: Text(title, style: theme.textTheme.bodyMedium),
   );
 }

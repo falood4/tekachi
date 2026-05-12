@@ -25,7 +25,8 @@ class _OOPtopicsState extends State<OOPtopics> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     dynamic white = theme.colorScheme.primary;
-    dynamic lime = theme.colorScheme.secondary;
+    final secondary = theme.colorScheme.secondary;
+    dynamic lime = secondary;
     dynamic blackbg = theme.colorScheme.background;
 
     return Scaffold(
@@ -33,7 +34,7 @@ class _OOPtopicsState extends State<OOPtopics> {
       bottomNavigationBar: NavBar(),
       appBar: AppBar(
         backgroundColor: blackbg,
-        iconTheme: const IconThemeData(color: Color(0xFF8DD300)),
+        iconTheme: IconThemeData(color: secondary),
         title: Text(
           'Technical Training',
           style: theme.textTheme.titleLarge?.copyWith(color: lime),
@@ -93,23 +94,21 @@ class _OOPtopicsState extends State<OOPtopics> {
 }
 
 Widget _topicButton(BuildContext context, String title, int topicId) {
-  final screenWidth = MediaQuery.of(context).size.width;
+  final theme = Theme.of(context);
+  final gridBg = theme.colorScheme.surfaceDim;
 
   return ElevatedButton(
     onPressed: () {
       showTopicPopupDialog(context, topicTitle: title, topicId: topicId);
     },
     style: ElevatedButton.styleFrom(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: gridBg,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
     ),
     child: Text(
       title,
-      style: TextStyle(
-        color: Theme.of(context).colorScheme.onPrimary,
-        fontSize: screenWidth * 0.04,
-        fontFamily: "Trebuchet",
-        fontWeight: FontWeight.bold,
+      style: theme.textTheme.bodyMedium?.copyWith(
+        color: theme.colorScheme.primary,
       ),
     ),
   );

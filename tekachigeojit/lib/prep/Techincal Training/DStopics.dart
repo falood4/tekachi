@@ -95,15 +95,21 @@ class _DStopicsState extends State<DStopics> {
 
 Widget _topicButton(BuildContext context, String title, int topicId) {
   final theme = Theme.of(context);
+  final gridBg = theme.colorScheme.surfaceDim;
 
   return ElevatedButton(
     onPressed: () {
       showTopicPopupDialog(context, topicTitle: title, topicId: topicId);
     },
     style: ElevatedButton.styleFrom(
-      backgroundColor: const Color(0xFFD9D9D9),
+      backgroundColor: gridBg,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
     ),
-    child: Text(title, style: theme.textTheme.bodyMedium),
+    child: Text(
+      title,
+      style: theme.textTheme.bodyMedium?.copyWith(
+        color: theme.colorScheme.primary,
+      ),
+    ),
   );
 }

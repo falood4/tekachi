@@ -201,12 +201,12 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
     final theme = Theme.of(context);
 
     final Color secondary = theme.colorScheme.secondary;
-    final Color onPrimary = theme.colorScheme.onPrimary;
+    final Color onSurface = theme.colorScheme.onSurface;
     final Color tertiary = theme.colorScheme.tertiary;
-    final Color surface = theme.colorScheme.surface;
+    final Color surfaceDim = theme.colorScheme.surfaceDim;
 
     return Scaffold(
-      backgroundColor: theme.colorScheme.background,
+      backgroundColor: theme.colorScheme.surface,
       resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: SingleChildScrollView(
@@ -233,7 +233,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                       controller: _emailCtrl,
                       decoration: InputDecoration(
                         filled: true,
-                        fillColor: surface,
+                        fillColor: surfaceDim,
                         contentPadding: const EdgeInsets.symmetric(
                           horizontal: 20,
                           vertical: 14,
@@ -243,7 +243,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                           fontSize: screenWidth * 0.04,
                           fontFamily: "Trebuchet",
                           letterSpacing: 0.1,
-                          color: tertiary,
+                          color: theme.colorScheme.primary.withOpacity(0.6),
                         ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50),
@@ -265,7 +265,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                           vertical: 15,
                         ),
                         decoration: BoxDecoration(
-                          color: surface,
+                          color: surfaceDim,
                           borderRadius: BorderRadius.circular(50),
                         ),
                         child: TextField(
@@ -277,7 +277,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                               fontSize: screenWidth * 0.04,
                               fontFamily: "Trebuchet",
                               letterSpacing: 0.1,
-                              color: tertiary,
+                              color: theme.colorScheme.primary.withOpacity(0.6),
                             ),
                             border: InputBorder.none,
                           ),
@@ -301,7 +301,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                         child: Text(
                           "Sign Up",
                           style: TextStyle(
-                            color: onPrimary,
+                            color: onSurface,
                             fontSize: screenWidth * 0.05,
                           ),
                         ),
@@ -317,7 +317,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.all(0),
-                          backgroundColor: surface,
+                          backgroundColor: tertiary,
                         ),
                         onPressed: () {
                           Navigator.pop(context);
@@ -325,7 +325,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                         child: Text(
                           "Back",
                           style: TextStyle(
-                            color: Colors.black,
+                            color: onSurface,
                             fontFamily: "DelaGothicOne",
                             fontSize: screenWidth * 0.035,
                           ),
@@ -354,7 +354,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                                 child: Icon(
                                   Icons.check,
                                   size: 72,
-                                  color: onPrimary,
+                                  color: theme.colorScheme.onPrimary,
                                 ),
                               ),
                             ),

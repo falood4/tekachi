@@ -90,6 +90,7 @@ class _InterviewHistoryState extends State<InterviewHistory> {
     return Scaffold(
       backgroundColor: bg,
       appBar: AppBar(
+        iconTheme: IconThemeData(color: secondary),
         backgroundColor: bg,
         title: Text(
           fetchtitle(),
@@ -97,6 +98,7 @@ class _InterviewHistoryState extends State<InterviewHistory> {
         ),
       ),
       body: buildBody(),
+
       floatingActionButton: IconButton(
         icon: Icon(Icons.delete, color: red),
         onPressed: _confirmClearConvoHistory,
@@ -237,6 +239,7 @@ class _InterviewHistoryState extends State<InterviewHistory> {
             'Are you sure you want to clear interview history?',
             style: TextStyle(color: primary, fontFamily: "Trebuchet"),
           ),
+          actionsAlignment: MainAxisAlignment.spaceEvenly,
           actions: [
             ElevatedButton(
               onPressed: () {
@@ -244,11 +247,10 @@ class _InterviewHistoryState extends State<InterviewHistory> {
               },
               style: ElevatedButton.styleFrom(backgroundColor: secondary),
               child: Text(
-                'CANCEL',
+                'NO',
                 style: TextStyle(color: black, fontFamily: "DelaGothicOne"),
               ),
             ),
-            SizedBox.fromSize(size: const Size.fromHeight(10)),
             ElevatedButton(
               onPressed: () async {
                 Navigator.of(context).pop();
@@ -257,7 +259,7 @@ class _InterviewHistoryState extends State<InterviewHistory> {
               },
               style: ElevatedButton.styleFrom(backgroundColor: red),
               child: Text(
-                'CLEAR',
+                'YES',
                 style: TextStyle(color: primary, fontFamily: "DelaGothicOne"),
               ),
             ),

@@ -12,7 +12,7 @@ class PlacementResult extends StatelessWidget {
     final double screenHeight = MediaQuery.of(context).size.height;
     final theme = Theme.of(context);
 
-    final Color background = theme.colorScheme.background;
+    final Color surface = theme.colorScheme.surface;
     final Color secondary = theme.colorScheme.secondary;
     final Color primary = theme.colorScheme.primary;
 
@@ -25,7 +25,7 @@ class PlacementResult extends StatelessWidget {
 
     return Scaffold(
       bottomNavigationBar: const NavBar(selectedPage: 0),
-      backgroundColor: background,
+      backgroundColor: surface,
       body: SafeArea(
         child: Container(
           margin: EdgeInsets.all(screenWidth * 0.08),
@@ -91,7 +91,7 @@ class PlacementResult extends StatelessWidget {
                       '$aptitudeScore/15',
                       aptitudeScore >= 8 ? Color(0xFF8DD300) : Colors.red,
                       screenWidth,
-                      primary,
+                      Colors.black87,
                     ),
                     // Technical Interview
                     _buildScoreRow(
@@ -102,7 +102,7 @@ class PlacementResult extends StatelessWidget {
                           ? Color(0xFF8DD300)
                           : Colors.red,
                       screenWidth,
-                      primary,
+                      Colors.black87,
                     ),
                     // HR Interview
                     _buildScoreRow(
@@ -111,7 +111,7 @@ class PlacementResult extends StatelessWidget {
                       hrVerdict,
                       hrVerdict == 'HIRED' ? Color(0xFF8DD300) : Colors.red,
                       screenWidth,
-                      primary,
+                      Colors.black87,
                     ),
                   ],
                 ),

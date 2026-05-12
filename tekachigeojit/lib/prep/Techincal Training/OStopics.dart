@@ -25,7 +25,8 @@ class _OStopicsState extends State<OStopics> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     dynamic white = theme.colorScheme.primary;
-    dynamic lime = theme.colorScheme.secondary;
+    final secondary = theme.colorScheme.secondary;
+    dynamic lime = secondary;
     dynamic blackbg = theme.colorScheme.background;
 
     return Scaffold(
@@ -33,7 +34,7 @@ class _OStopicsState extends State<OStopics> {
       bottomNavigationBar: NavBar(),
       appBar: AppBar(
         backgroundColor: blackbg,
-        iconTheme: IconThemeData(color: lime),
+        iconTheme: IconThemeData(color: secondary),
         title: Text(
           'Technical Training',
           style: theme.textTheme.titleLarge?.copyWith(color: lime),
@@ -92,23 +93,21 @@ class _OStopicsState extends State<OStopics> {
 }
 
 Widget _topicButton(BuildContext context, String title, int topicId) {
-  final screenWidth = MediaQuery.of(context).size.width;
+  final theme = Theme.of(context);
+  final gridBg = theme.colorScheme.surfaceDim;
 
   return ElevatedButton(
     onPressed: () {
       showTopicPopupDialog(context, topicTitle: title, topicId: topicId);
     },
     style: ElevatedButton.styleFrom(
-      backgroundColor: Color(0xFFD9D9D9),
+      backgroundColor: gridBg,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
     ),
     child: Text(
       title,
-      style: TextStyle(
-        color: Colors.black,
-        fontSize: screenWidth * 0.04,
-        fontFamily: "Trebuchet",
-        fontWeight: FontWeight.bold,
+      style: theme.textTheme.bodyMedium?.copyWith(
+        color: theme.colorScheme.primary,
       ),
     ),
   );

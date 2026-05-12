@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:tekachigeojit/components/ChatPages/ChatHistory.dart';
 import 'package:tekachigeojit/services/AuthService.dart';
 import 'package:tekachigeojit/services/FullTestService.dart';
-import 'package:tekachigeojit/test_interview/3%20Step%20Placement/AptitudeHistory3Step.dart';
+import 'package:tekachigeojit/components/ChatPages/AptitudeAttempt.dart';
 
 class PlacementHistory extends StatefulWidget {
   const PlacementHistory({super.key});
@@ -58,12 +58,13 @@ class _PlacementHistoryState extends State<PlacementHistory> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final Color bg = theme.colorScheme.background;
-    final Color lime = theme.colorScheme.secondary;
+    final Color secondary = theme.colorScheme.secondary;
+    final Color lime = secondary;
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: bg,
-        iconTheme: IconThemeData(color: lime),
+        iconTheme: IconThemeData(color: secondary),
         title: Text(
           '3 Step Test History',
           style: theme.textTheme.titleLarge?.copyWith(color: lime),
@@ -79,7 +80,7 @@ class _PlacementHistoryState extends State<PlacementHistory> {
       body: buildBody(),
       floatingActionButton: IconButton(
         icon: Icon(Icons.delete, color: Colors.red),
-        onPressed: onPressed,
+        onPressed: confirmDelete,
         style: ButtonStyle(
           padding: WidgetStateProperty.all<EdgeInsets>(
             const EdgeInsets.all(16),
@@ -173,7 +174,7 @@ class _PlacementHistoryState extends State<PlacementHistory> {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              onPressed: onPressed,
+              onPressed: () {},
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -196,7 +197,7 @@ class _PlacementHistoryState extends State<PlacementHistory> {
                             );
                           },
                     child: Text(
-                      attemptId == null ? "FAILED" : (score ?? "INCOMPLETE"),
+                      attemptId == null ? "FAILED" : (score ?? "N/A"),
                       style: theme.textTheme.titleLarge?.copyWith(color: lime),
                     ),
                   ),
@@ -333,5 +334,53 @@ class _PlacementHistoryState extends State<PlacementHistory> {
     );
   }
 
-  void onPressed() {}
+  void confirmDelete() {
+    dynamic primary = Theme.of(context).colorScheme.primary;
+    dynamic secondary = Theme.of(context).colorScheme.secondary;
+    dynamic blackbg = Theme.of(context).colorScheme.background;
+    dynamic black = Theme.of(context).colorScheme.onPrimary;
+    dynamic red = Theme.of(context).colorScheme.error;
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: blackbg,
+        title: Text(
+          'Confirm Deletion',
+          style: Theme.of(
+            context,
+          ).textTheme.bodyLarge?.copyWith(color: primary),
+        ),
+        content: Text(
+          'Are you sure you want to delete attempts?',
+          style: TextStyle(color: primary, fontFamily: "Trebuchet"),
+        ),
+        actionsAlignment: MainAxisAlignment.spaceEvenly,
+        actions: [
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(backgroundColor: secondary),
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              'NO',
+              style: TextStyle(color: black, fontFamily: "DelaGothicOne"),
+            ),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(backgroundColor: red),
+            onPressed: () async {
+              fullTestService.deleteHistory(user_id!);
+              await _fetchAttemptHistory();
+            },
+            child: Text(
+              'YES',
+              style: TextStyle(
+                color: Colors.white,
+                fontFamily: "DelaGothicOne",
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }

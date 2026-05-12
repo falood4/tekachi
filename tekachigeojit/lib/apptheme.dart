@@ -51,10 +51,10 @@ class AppTheme {
 
   static const Color _background = Color(0xFF141414);
   static const Color _accent = Color(0xFF8DD300);
-  static const Color _cardLight = Color(0xFFD9D9D9);
+  static const Color _cardLight = Color(0xFFEAEAEA);
   static const Color _white = Colors.white;
   static const Color _black = Colors.black;
-  static const Color _tertiary = Color.fromARGB(255, 132, 132, 132);
+  static const Color _grey = Color(0xFF27282A);
 
   static ThemeData darkTheme = ThemeData(
     useMaterial3: true,
@@ -65,11 +65,11 @@ class AppTheme {
     colorScheme: const ColorScheme.dark(
       primary: _white,
       secondary: _accent,
-      tertiary: _tertiary,
-      background: _background,
-      surface: _cardLight,
+      tertiary: _cardLight,
+      surface: _background,
       error: Color(0xFFE53935),
-      onPrimary: _black,
+      onSurface: _black,
+      surfaceDim: _grey,
     ),
 
     textTheme: const TextTheme(
@@ -82,23 +82,23 @@ class AppTheme {
         fontFamily: 'RussoOne',
         fontSize: 28,
         fontWeight: FontWeight.w500,
-        color: _black,
+        color: _white,
       ),
       titleMedium: TextStyle(
         fontFamily: 'RussoOne',
         fontSize: 24,
         fontWeight: FontWeight.w300,
-        color: _black,
+        color: _white,
       ),
       bodyLarge: TextStyle(
         fontSize: 22,
         fontFamily: "Trebuchet",
-        color: Colors.black87,
+        color: _white,
       ),
       bodyMedium: TextStyle(
         fontSize: 20,
         fontFamily: "Trebuchet",
-        color: Colors.black87,
+        color: _white,
       ),
       bodySmall: TextStyle(
         fontSize: 16,
@@ -137,11 +137,11 @@ class AppTheme {
     colorScheme: const ColorScheme.light(
       primary: _black,
       secondary: _accent,
-      tertiary: _tertiary,
-      background: _white,
-      surface: _cardLight,
+      tertiary: _cardLight,
+      surface: _white,
       error: Color(0xFFE53935),
-      onPrimary: _black,
+      onSurface: _grey,
+      surfaceDim: Color.fromARGB(255, 221, 221, 221),
     ),
 
     textTheme: const TextTheme(

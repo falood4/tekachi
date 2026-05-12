@@ -89,12 +89,11 @@ class _QuizResultState extends State<QuizResult> {
     final theme = Theme.of(context);
     final primary = theme.colorScheme.primary;
     final secondary = theme.colorScheme.secondary;
-    final background = theme.colorScheme.background;
     final surface = theme.colorScheme.surface;
 
     return Scaffold(
       bottomNavigationBar: const NavBar(selectedPage: 0),
-      backgroundColor: background,
+      backgroundColor: surface,
       body: SafeArea(
         child: Container(
           margin: EdgeInsets.all(screenWidth * 0.1),
@@ -138,7 +137,7 @@ class _QuizResultState extends State<QuizResult> {
                   child: Text(
                     'Review Answers',
                     style: theme.textTheme.headlineLarge?.copyWith(
-                      color: theme.colorScheme.onPrimary,
+                      color: Colors.black87,
                       fontSize: screenWidth * 0.06,
                     ),
                   ),
@@ -149,7 +148,6 @@ class _QuizResultState extends State<QuizResult> {
                     child: Text(
                       'Saving result...',
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        color: primary,
                         fontStyle: FontStyle.italic,
                       ),
                     ),
@@ -208,7 +206,7 @@ class _QuizResultState extends State<QuizResult> {
                         vertical: 10,
                         horizontal: 15,
                       ),
-                      backgroundColor: surface,
+                      backgroundColor: theme.colorScheme.surfaceDim,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50),
                       ),
@@ -216,7 +214,7 @@ class _QuizResultState extends State<QuizResult> {
                     child: Text(
                       'Tech Interview',
                       style: theme.textTheme.headlineLarge?.copyWith(
-                        color: theme.colorScheme.onPrimary,
+                        color: theme.colorScheme.primary,
                         fontSize: screenWidth * 0.06,
                       ),
                     ),
@@ -243,7 +241,7 @@ class _QuizResultState extends State<QuizResult> {
                         vertical: 10,
                         horizontal: 15,
                       ),
-                      backgroundColor: surface,
+                      backgroundColor: theme.colorScheme.surfaceDim,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50),
                       ),
@@ -251,7 +249,7 @@ class _QuizResultState extends State<QuizResult> {
                     child: Text(
                       'Return to Tests',
                       style: theme.textTheme.headlineLarge?.copyWith(
-                        color: theme.colorScheme.onPrimary,
+                        color: theme.colorScheme.primary,
                         fontSize: screenWidth * 0.04,
                       ),
                     ),
@@ -318,7 +316,7 @@ class _QuizResultState extends State<QuizResult> {
 
     showModalBottomSheet(
       context: context,
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       isScrollControlled: true,
       builder: (context) {
         return Container(

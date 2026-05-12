@@ -14,17 +14,17 @@ class AptitudeHome extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final theme = Theme.of(context);
 
-    final lime = theme.colorScheme.secondary;
-    final blackbg = theme.colorScheme.background;
     return Scaffold(
-      backgroundColor: blackbg,
+      backgroundColor: theme.colorScheme.surface,
       bottomNavigationBar: NavBar(),
       appBar: AppBar(
-        backgroundColor: blackbg,
-        iconTheme: const IconThemeData(color: Color(0xFF8DD300)),
+        backgroundColor: theme.colorScheme.surface,
+        iconTheme: IconThemeData(color: theme.colorScheme.secondary),
         title: Text(
           'Aptitude Training',
-          style: theme.textTheme.titleLarge?.copyWith(color: lime),
+          style: theme.textTheme.titleLarge?.copyWith(
+            color: theme.colorScheme.secondary,
+          ),
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_rounded),
@@ -92,8 +92,7 @@ class AptitudeHome extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: theme.colorScheme.surface,
-          foregroundColor: theme.colorScheme.onSurface,
+          backgroundColor: theme.colorScheme.surfaceDim,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(25),
           ),
@@ -102,7 +101,12 @@ class AptitudeHome extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: screenWidth * 0.05),
           child: Align(
             alignment: Alignment.centerLeft,
-            child: Text(title, style: theme.textTheme.titleMedium),
+            child: Text(
+              title,
+              style: theme.textTheme.titleMedium?.copyWith(
+                color: theme.colorScheme.primary,
+              ),
+            ),
           ),
         ),
       ),

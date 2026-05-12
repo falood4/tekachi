@@ -10,10 +10,6 @@ class HomeScreen extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
     final theme = Theme.of(context);
 
-    final Color secondary = theme.colorScheme.secondary;
-    final Color black = theme.colorScheme.onPrimary;
-    final Color lightGrey = theme.colorScheme.surface;
-
     return Scaffold(
       backgroundColor: theme.colorScheme.background,
       body: SafeArea(
@@ -44,12 +40,12 @@ class HomeScreen extends StatelessWidget {
                         fontSize: 0.065 * screenWidth,
                       ),
                       padding: const EdgeInsets.all(16),
-                      backgroundColor: secondary,
+                      backgroundColor: theme.colorScheme.secondary,
                     ),
                     child: Text(
                       "Log In",
                       style: theme.textTheme.headlineLarge?.copyWith(
-                        color: black,
+                        color: Colors.black,
                       ),
                     ),
                   ),
@@ -70,7 +66,7 @@ class HomeScreen extends StatelessWidget {
                         fontSize: 0.065 * screenWidth,
                       ),
                       padding: const EdgeInsets.all(16),
-                      backgroundColor: lightGrey,
+                      backgroundColor: theme.colorScheme.tertiary,
                     ),
                     child: Text(
                       "Sign Up",

@@ -12,14 +12,15 @@ class AptitudeTest extends StatelessWidget {
     final theme = Theme.of(context);
 
     final Color bg = theme.colorScheme.background;
-    final Color lime = theme.colorScheme.secondary;
+    final Color secondary = theme.colorScheme.secondary;
+    final Color lime = secondary;
 
     return Scaffold(
       bottomNavigationBar: const NavBar(selectedPage: 0),
       backgroundColor: bg,
       appBar: AppBar(
         backgroundColor: bg,
-        iconTheme: IconThemeData(color: lime),
+        iconTheme: IconThemeData(color: secondary),
         title: Text(
           'Aptitude Test',
           style: theme.textTheme.titleLarge?.copyWith(color: lime),

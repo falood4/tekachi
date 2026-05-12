@@ -145,4 +145,28 @@ class FullTestService {
     }
     return <Map<String, dynamic>>[];
   }
+
+  void deleteHistory(int user_id) async {
+    try {
+      if (!_isAuthenticated) {
+        throw StateError('User not authenticated');
+      }
+
+      final response = await dio.delete('$_baseUrl/attempts/$user_id');
+
+      if (response.statusCode == 200) {
+        debugPrint('History deleted successfully');
+      } else if (response.statusCode == 500) {
+        debugPrint('History not deleted. Server error 500');
+      }
+    } on StateError {
+      rethrow;
+    } on DioException catch (e) {
+      debugPrint('Failed to fetch history: ${e.message}');
+      rethrow;
+    } catch (e) {
+      debugPrint('Failed to fetch history: $e');
+      rethrow;
+    }
+  }
 }

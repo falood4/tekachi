@@ -38,11 +38,12 @@ class _Aptitudehistory3stepState extends State<Aptitudehistory3step> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final Color bg = theme.colorScheme.background;
-    final Color lime = theme.colorScheme.secondary;
+    final Color secondary = theme.colorScheme.secondary;
+    final Color lime = secondary;
 
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: lime),
+        iconTheme: IconThemeData(color: secondary),
         backgroundColor: bg,
         title: Text(
           'Aptitude Answers',
@@ -83,18 +84,28 @@ class _Aptitudehistory3stepState extends State<Aptitudehistory3step> {
                         ),
                       ),
                       const SizedBox(height: 8),
-                      Text(
-                        'Correct: ${answer['correctAnswer'] ?? ''}',
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: Colors.green,
+
+                      if (answer['correctAnswer'] == answer['userChoice'])
+                        Text(
+                          'Answer: ${answer['correctAnswer'] ?? ''}',
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: Colors.green,
+                          ),
+                        )
+                      else ...[
+                        Text(
+                          'Answer: ${answer['correctAnswer'] ?? ''}',
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: Colors.green,
+                          ),
                         ),
-                      ),
-                      Text(
-                        'Your answer: ${answer['userChoice'] ?? ''}',
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: Colors.red,
+                        Text(
+                          'Your answer: ${answer['userChoice'] ?? ''}',
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: Colors.red,
+                          ),
                         ),
-                      ),
+                      ],
                     ],
                   ),
                 );

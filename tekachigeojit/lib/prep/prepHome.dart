@@ -16,10 +16,8 @@ class PrepHome extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
     final theme = Theme.of(context);
 
-    dynamic black = theme.colorScheme.onPrimary;
-
     return Scaffold(
-      backgroundColor: theme.colorScheme.background,
+      backgroundColor: theme.colorScheme.surface,
       bottomNavigationBar: const NavBar(selectedPage: 1),
       body: SafeArea(
         child: Padding(
@@ -76,15 +74,15 @@ class PrepHome extends StatelessWidget {
                     Text(
                       'AI Mentor',
                       style: TextStyle(
-                        color: black,
                         fontFamily: 'Rostex',
                         fontSize: screenWidth * 0.09,
+                        color: Colors.black,
                       ),
                     ),
                     const SizedBox(height: 6),
                     Text(
                       'Personalized interview practice',
-                      style: TextStyle(color: black),
+                      style: TextStyle(color: Colors.black),
                     ),
 
                     const SizedBox(height: 12),
@@ -160,13 +158,14 @@ class PrepHome extends StatelessWidget {
                           ),
                         ),
                         backgroundColor: WidgetStateProperty.all<Color>(
-                          theme.colorScheme.surface,
+                          Color(0xFFEAEAEA),
                         ),
                       ),
                       child: Text(
                         'Archive',
                         style: theme.textTheme.titleMedium?.copyWith(
                           fontSize: 16,
+                          color: Colors.black87,
                         ),
                       ),
                     ),
@@ -202,7 +201,7 @@ class TrainingCard extends StatelessWidget {
       child: Material(
         elevation: 4,
         borderRadius: BorderRadius.circular(16),
-        color: Theme.of(context).colorScheme.surface,
+        color: Theme.of(context).colorScheme.surfaceDim,
         child: InkWell(
           borderRadius: BorderRadius.circular(16),
           onTap: onTap,
@@ -214,7 +213,7 @@ class TrainingCard extends StatelessWidget {
                 Icon(
                   icon,
                   size: 36,
-                  color: Theme.of(context).colorScheme.onPrimary,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
                 const SizedBox(width: 16),
                 Expanded(
@@ -225,7 +224,7 @@ class TrainingCard extends StatelessWidget {
                 ),
                 Icon(
                   Icons.arrow_forward_ios_rounded,
-                  color: Theme.of(context).colorScheme.onPrimary,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
               ],
             ),
