@@ -79,7 +79,7 @@ class AppTheme {
         color: _accent,
       ),
       titleLarge: TextStyle(
-        fontFamily: 'RussoOne',
+        fontFamily: 'Trebuchet',
         fontSize: 28,
         fontWeight: FontWeight.w500,
         color: _white,
@@ -152,14 +152,14 @@ class AppTheme {
       ),
       titleLarge: TextStyle(
         fontFamily: 'RussoOne',
-        fontSize: 28,
+        fontSize: 26,
         fontWeight: FontWeight.w500,
         color: _black,
       ),
       titleMedium: TextStyle(
         fontFamily: 'RussoOne',
         fontSize: 24,
-        fontWeight: FontWeight.w300,
+        fontWeight: FontWeight.w100,
         color: _black,
       ),
       bodyLarge: TextStyle(

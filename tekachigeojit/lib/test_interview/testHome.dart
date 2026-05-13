@@ -32,12 +32,14 @@ class TestHome extends StatelessWidget {
             children: [
               Text(
                 'Test',
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                  fontSize: screenWidth * 0.15,
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontSize: screenWidth * 0.125,
+                  fontFamily: 'RussoOne',
+                  fontWeight: FontWeight.w100,
+                  color: theme.colorScheme.secondary,
                 ),
               ),
-              const SizedBox(height: 10),
 
               TestCard(
                 title: 'Aptitude Test',
@@ -208,8 +210,8 @@ class TestCard extends StatelessWidget {
                 Expanded(
                   child: Text(
                     title,
-                    style: theme.textTheme.titleLarge?.copyWith(
-                      color: theme.colorScheme.primary,
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontFamily: 'Trebuchet',
                     ),
                   ),
                 ),

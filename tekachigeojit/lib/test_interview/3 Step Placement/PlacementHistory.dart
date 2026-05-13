@@ -153,7 +153,12 @@ class _PlacementHistoryState extends State<PlacementHistory> {
           ),
 
           if (hrVerdict == 'HIRED' && techVerdict == 'HIRED')
-            Text("HIRED", style: theme.textTheme.titleSmall)
+            Text(
+              "HIRED",
+              style: theme.textTheme.titleSmall?.copyWith(
+                color: theme.colorScheme.primary,
+              ),
+            )
           else
             Text(
               "NOT HIRED",
@@ -180,7 +185,10 @@ class _PlacementHistoryState extends State<PlacementHistory> {
                 children: [
                   Text(
                     "Aptitude\nTest",
-                    style: theme.textTheme.bodyMedium,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      fontFamily: 'RussoOne',
+                      color: Colors.black87,
+                    ),
                     textAlign: TextAlign.center,
                   ),
 
@@ -233,7 +241,13 @@ class _PlacementHistoryState extends State<PlacementHistory> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("Technical", style: theme.textTheme.bodyMedium),
+                      Text(
+                        "Technical",
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          fontFamily: 'RussoOne',
+                          color: Colors.black87,
+                        ),
+                      ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: bg,
@@ -293,7 +307,13 @@ class _PlacementHistoryState extends State<PlacementHistory> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("HR Interview", style: theme.textTheme.bodyMedium),
+                      Text(
+                        "HR Interview",
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: Colors.black87,
+                          fontFamily: 'RussoOne',
+                        ),
+                      ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: bg,

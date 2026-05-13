@@ -20,6 +20,8 @@ class _QuizPageState extends State<QuizPage> {
   int? _selectedOptionId;
   int totalScore = 0;
   int totalQsns = 0;
+  int q_index = 1;
+
   List<int> indices = List.generate(40, (index) => index + 1);
   final List<AnswerSelection> _answers = <AnswerSelection>[];
 
@@ -30,6 +32,7 @@ class _QuizPageState extends State<QuizPage> {
   void initState() {
     super.initState();
     _loadRandomQuestion();
+    q_index++;
   }
 
   void _loadRandomQuestion() async {
@@ -120,8 +123,10 @@ class _QuizPageState extends State<QuizPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      currentQuestion!.questionText,
-                      style: theme.textTheme.bodyMedium?.copyWith(color: black),
+                      '${q_index}. ${currentQuestion!.questionText}',
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: Colors.black87,
+                      ),
                     ),
                     const SizedBox(height: 16),
 
@@ -150,7 +155,7 @@ class _QuizPageState extends State<QuizPage> {
                               title: Text(
                                 option.text,
                                 style: theme.textTheme.bodyMedium?.copyWith(
-                                  color: black,
+                                  color: Colors.black87,
                                 ),
                               ),
                               activeColor: secondary,
@@ -160,7 +165,7 @@ class _QuizPageState extends State<QuizPage> {
                                 if (states.contains(WidgetState.selected)) {
                                   return secondary;
                                 }
-                                return black;
+                                return Colors.black87;
                               }),
                               controlAffinity: ListTileControlAffinity.leading,
                             ),

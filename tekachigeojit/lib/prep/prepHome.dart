@@ -27,12 +27,14 @@ class PrepHome extends StatelessWidget {
             children: [
               Text(
                 'Prepare',
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                  fontSize: screenWidth * 0.15,
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontSize: screenWidth * 0.125,
+                  fontFamily: 'RussoOne',
+                  fontWeight: FontWeight.w100,
+                  color: theme.colorScheme.secondary,
                 ),
               ),
-              const SizedBox(height: 20),
 
               TrainingCard(
                 title: 'Aptitude Training',
@@ -74,18 +76,17 @@ class PrepHome extends StatelessWidget {
                     Text(
                       'AI Mentor',
                       style: TextStyle(
-                        fontFamily: 'Rostex',
-                        fontSize: screenWidth * 0.09,
+                        fontFamily: 'RussoOne',
+                        fontSize: screenWidth * 0.12,
                         color: Colors.black,
                       ),
                     ),
-                    const SizedBox(height: 6),
                     Text(
                       'Personalized interview practice',
                       style: TextStyle(color: Colors.black),
                     ),
 
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 8),
                     ElevatedButton(
                       onPressed: () async {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -219,7 +220,9 @@ class TrainingCard extends StatelessWidget {
                 Expanded(
                   child: Text(
                     title,
-                    style: Theme.of(context).textTheme.titleLarge,
+                    style: Theme.of(
+                      context,
+                    ).textTheme.titleMedium?.copyWith(fontFamily: 'Trebuchet'),
                   ),
                 ),
                 Icon(
