@@ -2,16 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:tekachigeojit/components/Widgets/NavBar.dart';
 import 'package:tekachigeojit/test_interview/3%20Step%20Placement/PlacementHistory.dart';
 import 'package:tekachigeojit/test_interview/Aptitude%20Quiz/AptitudeTest.dart';
-import 'package:tekachigeojit/test_interview/Aptitude%20Quiz/AptitudeTestHistory.dart';
 import 'package:tekachigeojit/test_interview/HrInterviewIntro.dart';
-import 'package:tekachigeojit/components/ChatPages/InterviewHistory.dart';
 import 'package:tekachigeojit/test_interview/3%20Step%20Placement/PlacementFull.dart';
 import 'package:tekachigeojit/test_interview/TechInterviewIntro.dart';
 
 class TestHome extends StatelessWidget {
   const TestHome({super.key});
-
-  void onPressed() {}
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +15,7 @@ class TestHome extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
     final theme = Theme.of(context);
 
+    final primary = Colors.white;
     final accent = theme.colorScheme.secondary;
 
     return Scaffold(
@@ -35,86 +32,85 @@ class TestHome extends StatelessWidget {
                 textAlign: TextAlign.left,
                 style: TextStyle(
                   fontSize: screenWidth * 0.125,
-                  fontFamily: 'RussoOne',
+                  fontFamily: 'ElmsSansBold',
                   fontWeight: FontWeight.w100,
-                  color: theme.colorScheme.secondary,
+                  color: accent,
                 ),
-              ),
-
-              TestCard(
-                title: 'Aptitude Test',
-                icon: Icons.calculate_rounded,
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => AptitudeTestHistory()),
-                  );
-                },
-                onTap: () {
-                  Navigator.of(
-                    context,
-                  ).push(MaterialPageRoute(builder: (_) => AptitudeTest()));
-                },
-              ),
-
-              TestCard(
-                title: 'Tech Interview',
-                icon: Icons.code_rounded,
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) =>
-                          InterviewHistory(personaId: 2, title: "Tech"),
-                    ),
-                  );
-                },
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => Techinterviewintro()),
-                  );
-                },
-              ),
-
-              TestCard(
-                title: 'HR Interview',
-                icon: Icons.groups_rounded,
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) =>
-                          InterviewHistory(personaId: 3, title: "HR"),
-                    ),
-                  );
-                },
-                onTap: () {
-                  Navigator.of(
-                    context,
-                  ).push(MaterialPageRoute(builder: (_) => HRinterviewIntro()));
-                },
               ),
 
               const SizedBox(height: 20),
 
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TestCard(
+                    title: 'Aptitude\nTest',
+                    icon: Icons.calculate_rounded,
+                    onTap: () {
+                      Navigator.of(
+                        context,
+                      ).push(MaterialPageRoute(builder: (_) => AptitudeTest()));
+                    },
+                  ),
+                  TestCard(
+                    title: 'Tech Interview',
+                    icon: Icons.code_rounded,
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (_) => Techinterviewintro()),
+                      );
+                    },
+                  ),
+                ],
+              ),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TestCard(
+                    title: 'HR\nInterview',
+                    icon: Icons.groups_rounded,
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (_) => HRinterviewIntro()),
+                      );
+                    },
+                  ),
+
+                  TestCard(
+                    title: '3 Step Archive',
+                    icon: Icons.archive_rounded,
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (_) => PlacementHistory()),
+                      );
+                    },
+                  ),
+                ],
+              ),
+
               Container(
-                height: screenHeight * 0.24,
+                height: screenHeight * 0.25,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(18),
-                  color: accent,
+                  border: Border.all(color: Color(0xFF0047AB), width: 5.0),
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '3 Step Interview',
+                      'Mock Placement',
                       style: TextStyle(
-                        fontFamily: 'Rostex',
-                        fontSize: screenWidth * 0.06,
-                        color: Colors.black87,
+                        fontFamily: 'DelaGothicOne',
+                        fontSize: 32,
+                        color: accent,
                       ),
                     ),
                     const SizedBox(height: 6),
                     Text(
-                      'Comprehensive Mock Interview',
-                      style: TextStyle(color: Colors.black87),
+                      'Comprehensive Mock Placement Process',
+                      style: theme.textTheme.bodySmall,
                     ),
                     const SizedBox(height: 12),
                     ElevatedButton(
@@ -123,39 +119,17 @@ class TestHome extends StatelessWidget {
                           MaterialPageRoute(builder: (_) => PlacementFull()),
                         );
                       },
-                      style: theme.elevatedButtonTheme.style,
+                      style: theme.elevatedButtonTheme.style?.copyWith(
+                        backgroundColor: WidgetStatePropertyAll(
+                          Color(0xFF0047AB),
+                        ),
+                      ),
                       child: Text(
                         'Start',
-                        style: theme.textTheme.headlineLarge?.copyWith(
+                        style: TextStyle(
                           fontSize: 22,
-                        ),
-                      ),
-                    ),
-
-                    const SizedBox(height: 5),
-
-                    ElevatedButton(
-                      onPressed: () async {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => PlacementHistory()),
-                        );
-                      },
-                      style: theme.elevatedButtonTheme.style?.copyWith(
-                        padding: WidgetStateProperty.all<EdgeInsets>(
-                          const EdgeInsets.symmetric(
-                            horizontal: 24,
-                            vertical: 12,
-                          ),
-                        ),
-                        backgroundColor: WidgetStateProperty.all<Color>(
-                          Color(0xFFEAEAEA),
-                        ),
-                      ),
-                      child: Text(
-                        'Archive',
-                        style: theme.textTheme.titleMedium?.copyWith(
-                          fontSize: 16,
-                          color: Colors.black87,
+                          fontFamily: 'DelaGothicOne',
+                          color: Colors.white,
                         ),
                       ),
                     ),
@@ -174,14 +148,12 @@ class TestCard extends StatelessWidget {
   final String title;
   final IconData icon;
   final VoidCallback onTap;
-  final VoidCallback onPressed;
 
   const TestCard({
     super.key,
     required this.title,
     required this.icon,
     required this.onTap,
-    required this.onPressed,
   });
 
   @override
@@ -189,9 +161,12 @@ class TestCard extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final theme = Theme.of(context);
     final accent = theme.colorScheme.secondary;
-    final cardColor = theme.colorScheme.surfaceDim;
+    final cardColor = theme.colorScheme.tertiary;
 
-    return Padding(
+    return Container(
+      height: screenWidth * 0.4,
+      width: screenWidth * 0.4,
+      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: Material(
         elevation: 4,
@@ -203,26 +178,15 @@ class TestCard extends StatelessWidget {
           child: Container(
             height: screenWidth * 0.25,
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Row(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(icon, size: 36, color: accent),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Text(
-                    title,
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontFamily: 'Trebuchet',
-                    ),
-                  ),
+                Icon(icon, size: 56, color: accent),
+                Text(
+                  title,
+                  style: TextStyle(fontSize: 18, fontFamily: 'ElmsSansBold'),
+                  textAlign: TextAlign.center,
                 ),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 8),
-                  child: IconButton(
-                    onPressed: onPressed,
-                    icon: Icon(Icons.history, color: accent),
-                  ),
-                ),
-                Icon(Icons.arrow_forward_ios_rounded, color: accent),
               ],
             ),
           ),

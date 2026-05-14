@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tekachigeojit/components/Widgets/NavBar.dart';
+import 'package:tekachigeojit/test_interview/Aptitude%20Quiz/AptitudeTestHistory.dart';
 import 'package:tekachigeojit/test_interview/Aptitude%20Quiz/QuizPage.dart';
 
 class AptitudeTest extends StatelessWidget {
@@ -13,7 +14,6 @@ class AptitudeTest extends StatelessWidget {
 
     final Color bg = theme.colorScheme.background;
     final Color secondary = theme.colorScheme.secondary;
-    final Color lime = secondary;
 
     return Scaffold(
       bottomNavigationBar: const NavBar(selectedPage: 0),
@@ -23,7 +23,7 @@ class AptitudeTest extends StatelessWidget {
         iconTheme: IconThemeData(color: secondary),
         title: Text(
           'Aptitude Test',
-          style: theme.textTheme.titleLarge?.copyWith(color: lime),
+          style: theme.textTheme.titleLarge?.copyWith(color: secondary),
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_rounded),
@@ -34,10 +34,7 @@ class AptitudeTest extends StatelessWidget {
       ),
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: screenWidth * 0.06,
-            vertical: screenHeight * 0.02,
-          ),
+          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.06),
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -58,28 +55,44 @@ class AptitudeTest extends StatelessWidget {
                   ).image,
                 ),
 
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: Container(
-                    margin: EdgeInsets.symmetric(vertical: 20),
-                    width: screenWidth * 0.45,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (_) => QuizPage(is3step: false),
-                          ),
-                        );
-                      },
-                      style: theme.elevatedButtonTheme.style?.copyWith(
-                        backgroundColor: WidgetStatePropertyAll(lime),
+                SizedBox(height: screenHeight * 0.03),
+
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (_) => QuizPage(is3step: false),
                       ),
-                      child: Text(
-                        "Start",
-                        style: theme.textTheme.headlineLarge?.copyWith(
-                          color: Colors.black,
-                        ),
-                      ),
+                    );
+                  },
+                  style: theme.elevatedButtonTheme.style?.copyWith(
+                    backgroundColor: WidgetStatePropertyAll(secondary),
+                  ),
+                  child: Text(
+                    "Start",
+                    style: theme.textTheme.headlineLarge?.copyWith(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: screenHeight * 0.01),
+
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => AptitudeTestHistory()),
+                    );
+                  },
+                  style: theme.elevatedButtonTheme.style?.copyWith(
+                    backgroundColor: WidgetStatePropertyAll(
+                      theme.colorScheme.surfaceDim,
+                    ),
+                  ),
+                  child: Text(
+                    "Archive",
+                    style: theme.textTheme.bodyLarge?.copyWith(
+                      color: secondary,
                     ),
                   ),
                 ),

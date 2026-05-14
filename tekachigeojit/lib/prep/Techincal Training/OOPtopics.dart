@@ -95,20 +95,26 @@ class _OOPtopicsState extends State<OOPtopics> {
 
 Widget _topicButton(BuildContext context, String title, int topicId) {
   final theme = Theme.of(context);
-  final gridBg = theme.colorScheme.surfaceDim;
+  final gridBg = theme.colorScheme.surface;
 
-  return ElevatedButton(
-    onPressed: () {
-      showTopicPopupDialog(context, topicTitle: title, topicId: topicId);
-    },
-    style: ElevatedButton.styleFrom(
-      backgroundColor: gridBg,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+  return Container(
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(20),
+      border: Border.all(color: Color(0xFF0047AB), width: 2.0),
     ),
-    child: Text(
-      title,
-      style: theme.textTheme.bodyMedium?.copyWith(
-        color: theme.colorScheme.primary,
+    child: ElevatedButton(
+      onPressed: () {
+        showTopicPopupDialog(context, topicTitle: title, topicId: topicId);
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: gridBg,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      ),
+      child: Text(
+        title,
+        style: theme.textTheme.bodyMedium?.copyWith(
+          color: theme.colorScheme.primary,
+        ),
       ),
     ),
   );

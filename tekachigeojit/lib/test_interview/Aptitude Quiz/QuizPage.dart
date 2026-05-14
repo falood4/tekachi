@@ -32,7 +32,6 @@ class _QuizPageState extends State<QuizPage> {
   void initState() {
     super.initState();
     _loadRandomQuestion();
-    q_index++;
   }
 
   void _loadRandomQuestion() async {
@@ -56,10 +55,12 @@ class _QuizPageState extends State<QuizPage> {
         final theme = Theme.of(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            backgroundColor: const Color(0xFF8DD300),
+            backgroundColor: const Color(0xFFEAEAEA),
             content: Text(
               'Error loading question: $e',
-              style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: Color(0xFF0047AB),
+              ),
             ),
           ),
         );
@@ -101,7 +102,7 @@ class _QuizPageState extends State<QuizPage> {
               ),
 
               child: Text(
-                widget.is3step ? 'Continue' : 'Quit',
+                widget.is3step ? 'Skip' : 'Quit',
                 style: theme.textTheme.bodyMedium?.copyWith(color: secondary),
               ),
             ),
@@ -182,12 +183,23 @@ class _QuizPageState extends State<QuizPage> {
                         onPressed: _selectedOptionId != null
                             ? () => _handleNext(currentQuestion!)
                             : null,
-                        style: theme.elevatedButtonTheme.style,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: _selectedOptionId != null
+                              ? theme.colorScheme.secondary
+                              : theme.colorScheme.surfaceVariant,
+                          foregroundColor: _selectedOptionId != null
+                              ? theme.colorScheme.onSecondary
+                              : theme.colorScheme.secondary,
+                        ),
                         child: Text(
                           'Next',
-                          style: theme.textTheme.titleLarge?.copyWith(
-                            color: secondary,
-                          ),
+                          style: _selectedOptionId != null
+                              ? theme.textTheme.titleLarge?.copyWith(
+                                  color: Colors.white,
+                                )
+                              : theme.textTheme.titleLarge?.copyWith(
+                                  color: secondary.withOpacity(0.5),
+                                ),
                         ),
                       ),
                     ),
@@ -215,6 +227,8 @@ class _QuizPageState extends State<QuizPage> {
       totalScore++;
     }
     totalQsns++;
+
+    q_index++;
 
     _answers.add(
       AnswerSelection(
@@ -257,15 +271,64 @@ class _QuizPageState extends State<QuizPage> {
   }
 
   void _skipToResults() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => QuizResult(
-          score: totalScore,
-          answers: _answers,
-          is3step: widget.is3step,
-        ),
-      ),
+    showDialog(
+      context: context,
+      builder: (BuildContextcontext) {
+        final theme = Theme.of(context);
+        final Color primary = theme.colorScheme.primary;
+        final Color secondary = theme.colorScheme.secondary;
+        final Color surface = theme.colorScheme.surface;
+        final Color black = theme.colorScheme.onPrimary;
+        final Color red = theme.colorScheme.error;
+
+        return AlertDialog(
+          title: Text(
+            'Skip Quiz?',
+            style: Theme.of(
+              context,
+            ).textTheme.bodyLarge?.copyWith(color: primary),
+          ),
+          backgroundColor: surface,
+          content: Text(
+            'Are you sure you want to skip quiz and proceed to interview?',
+            style: Theme.of(
+              context,
+            ).textTheme.bodyLarge?.copyWith(color: primary),
+          ),
+          actionsAlignment: MainAxisAlignment.spaceEvenly,
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              style: ElevatedButton.styleFrom(backgroundColor: secondary),
+              child: Text(
+                'NO',
+                style: TextStyle(color: black, fontFamily: "DelaGothicOne"),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => QuizResult(
+                      score: totalScore,
+                      answers: _answers,
+                      is3step: widget.is3step,
+                    ),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(backgroundColor: red),
+              child: Text(
+                'YES',
+                style: TextStyle(color: primary, fontFamily: "DelaGothicOne"),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -275,22 +338,20 @@ class _QuizPageState extends State<QuizPage> {
       builder: (BuildContext context) {
         final Color primary = Theme.of(context).colorScheme.primary;
         final Color secondary = Theme.of(context).colorScheme.secondary;
-        final Color blackbg = Theme.of(context).colorScheme.background;
+        final Color surface = Theme.of(context).colorScheme.background;
         final Color black = Theme.of(context).colorScheme.onPrimary;
         final Color red = Theme.of(context).colorScheme.error;
 
         return AlertDialog(
           title: Text(
-            widget.is3step ? 'Start Interview?' : 'Quit Quiz?',
+            'Quit Quiz?',
             style: Theme.of(
               context,
             ).textTheme.bodyLarge?.copyWith(color: primary),
           ),
-          backgroundColor: blackbg,
+          backgroundColor: surface,
           content: Text(
-            widget.is3step
-                ? 'Are you sure you want to skip quiz and start tech interview?'
-                : 'Are you sure you want to quit your quiz?',
+            'Are you sure you want to quit your quiz?',
             style: Theme.of(
               context,
             ).textTheme.bodyLarge?.copyWith(color: primary),

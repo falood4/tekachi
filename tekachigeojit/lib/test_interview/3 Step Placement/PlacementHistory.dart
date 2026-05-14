@@ -59,7 +59,6 @@ class _PlacementHistoryState extends State<PlacementHistory> {
     final theme = Theme.of(context);
     final Color bg = theme.colorScheme.background;
     final Color secondary = theme.colorScheme.secondary;
-    final Color lime = secondary;
 
     return Scaffold(
       appBar: AppBar(
@@ -67,7 +66,7 @@ class _PlacementHistoryState extends State<PlacementHistory> {
         iconTheme: IconThemeData(color: secondary),
         title: Text(
           '3 Step Test History',
-          style: theme.textTheme.titleLarge?.copyWith(color: lime),
+          style: theme.textTheme.titleLarge?.copyWith(color: secondary),
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_rounded),
@@ -133,7 +132,7 @@ class _PlacementHistoryState extends State<PlacementHistory> {
   ) {
     final theme = Theme.of(context);
     final Color bg = theme.colorScheme.background;
-    final Color lime = theme.colorScheme.secondary;
+    final Color secondary = theme.colorScheme.secondary;
 
     return Container(
       height: 320,
@@ -141,7 +140,7 @@ class _PlacementHistoryState extends State<PlacementHistory> {
       padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: bg,
-        border: Border.all(color: lime, width: 2),
+        border: Border.all(color: secondary, width: 2),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -149,7 +148,7 @@ class _PlacementHistoryState extends State<PlacementHistory> {
         children: [
           Text(
             _formatDate(attemptedOn),
-            style: theme.textTheme.titleMedium?.copyWith(color: lime),
+            style: theme.textTheme.titleMedium?.copyWith(color: secondary),
           ),
 
           if (hrVerdict == 'HIRED' && techVerdict == 'HIRED')
@@ -169,12 +168,12 @@ class _PlacementHistoryState extends State<PlacementHistory> {
             margin: EdgeInsets.only(top: 20, bottom: 5),
             width: double.infinity,
             decoration: BoxDecoration(
-              border: Border.all(color: lime, width: 1.5),
+              border: Border.all(color: secondary, width: 1.5),
               borderRadius: BorderRadius.circular(10),
             ),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: lime,
+                backgroundColor: secondary,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -186,13 +185,14 @@ class _PlacementHistoryState extends State<PlacementHistory> {
                   Text(
                     "Aptitude\nTest",
                     style: theme.textTheme.bodyMedium?.copyWith(
-                      fontFamily: 'RussoOne',
-                      color: Colors.black87,
+                      fontFamily: 'ElmsSansBold',
+                      color: theme.colorScheme.tertiary,
                     ),
                     textAlign: TextAlign.center,
                   ),
 
                   ElevatedButton(
+                    style: ElevatedButton.styleFrom(backgroundColor: bg),
                     onPressed: attemptId == null
                         ? null
                         : () {
@@ -206,7 +206,9 @@ class _PlacementHistoryState extends State<PlacementHistory> {
                           },
                     child: Text(
                       attemptId == null ? "FAILED" : (score ?? "N/A"),
-                      style: theme.textTheme.titleLarge?.copyWith(color: lime),
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        color: secondary,
+                      ),
                     ),
                   ),
                 ],
@@ -222,7 +224,7 @@ class _PlacementHistoryState extends State<PlacementHistory> {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    backgroundColor: lime,
+                    backgroundColor: secondary,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -243,10 +245,15 @@ class _PlacementHistoryState extends State<PlacementHistory> {
                     children: [
                       Text(
                         "Technical",
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          fontFamily: 'RussoOne',
-                          color: Colors.black87,
-                        ),
+                        style: tech_id == null
+                            ? theme.textTheme.bodyMedium?.copyWith(
+                                fontFamily: 'ElmsSansBold',
+                                color: theme.colorScheme.secondary,
+                              )
+                            : theme.textTheme.bodyMedium?.copyWith(
+                                fontFamily: 'ElmsSansBold',
+                                color: theme.colorScheme.tertiary,
+                              ),
                       ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
@@ -273,7 +280,7 @@ class _PlacementHistoryState extends State<PlacementHistory> {
                         child: Text(
                           techVerdict ?? "FAILED",
                           style: theme.textTheme.titleLarge?.copyWith(
-                            color: lime,
+                            color: secondary,
                             fontSize: 16,
                           ),
                         ),
@@ -288,7 +295,7 @@ class _PlacementHistoryState extends State<PlacementHistory> {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    backgroundColor: lime,
+                    backgroundColor: secondary,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -309,10 +316,15 @@ class _PlacementHistoryState extends State<PlacementHistory> {
                     children: [
                       Text(
                         "HR Interview",
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: Colors.black87,
-                          fontFamily: 'RussoOne',
-                        ),
+                        style: hr_id == null
+                            ? theme.textTheme.bodyMedium?.copyWith(
+                                fontFamily: 'ElmsSansBold',
+                                color: theme.colorScheme.secondary,
+                              )
+                            : theme.textTheme.bodyMedium?.copyWith(
+                                fontFamily: 'ElmsSansBold',
+                                color: theme.colorScheme.tertiary,
+                              ),
                       ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
@@ -338,7 +350,7 @@ class _PlacementHistoryState extends State<PlacementHistory> {
                         child: Text(
                           hrVerdict ?? "FAILED",
                           style: theme.textTheme.titleLarge?.copyWith(
-                            color: lime,
+                            color: secondary,
                             fontSize: 16,
                           ),
                         ),

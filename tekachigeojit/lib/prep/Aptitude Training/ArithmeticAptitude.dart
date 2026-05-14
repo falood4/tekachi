@@ -24,20 +24,18 @@ class _ArithmeticAptitudeState extends State<ArithmeticAptitude> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    dynamic white = theme.colorScheme.primary;
+    dynamic black = theme.colorScheme.primary;
     final secondary = theme.colorScheme.secondary;
-    dynamic lime = secondary;
-    dynamic blackbg = theme.colorScheme.background;
 
     return Scaffold(
-      backgroundColor: blackbg,
+      backgroundColor: theme.colorScheme.surface,
       bottomNavigationBar: NavBar(),
       appBar: AppBar(
-        backgroundColor: blackbg,
+        backgroundColor: theme.colorScheme.surface,
         iconTheme: IconThemeData(color: secondary),
         title: Text(
           'Aptitude Training',
-          style: theme.textTheme.titleLarge?.copyWith(color: lime),
+          style: theme.textTheme.titleLarge?.copyWith(color: secondary),
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_rounded),
@@ -67,7 +65,7 @@ class _ArithmeticAptitudeState extends State<ArithmeticAptitude> {
                 children: [
                   Text(
                     'Arithmetic Aptitude',
-                    style: theme.textTheme.titleMedium?.copyWith(color: white),
+                    style: theme.textTheme.titleMedium,
                   ),
                   SizedBox(height: screenWidth * 0.05),
 
@@ -94,14 +92,17 @@ class _ArithmeticAptitudeState extends State<ArithmeticAptitude> {
 
 Widget _topicButton(BuildContext context, String title, int topicId) {
   final theme = Theme.of(context);
-  dynamic grid_bg = theme.colorScheme.surfaceDim;
   return Container(
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(20),
+      border: Border.all(color: Color(0xFF0047AB), width: 2.0),
+    ),
     child: ElevatedButton(
       onPressed: () {
         showTopicPopupDialog(context, topicTitle: title, topicId: topicId);
       },
       style: ElevatedButton.styleFrom(
-        backgroundColor: grid_bg,
+        backgroundColor: theme.colorScheme.surface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       ),
       child: Text(

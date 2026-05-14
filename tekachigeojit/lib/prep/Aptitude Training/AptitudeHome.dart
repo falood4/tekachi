@@ -53,21 +53,25 @@ class AptitudeHome extends StatelessWidget {
                 _trainingMenuItem(
                   context,
                   "Arithmetic Aptitude",
+                  Icons.calculate_rounded,
                   () => _loadArithmetic(context),
                 ),
                 _trainingMenuItem(
                   context,
                   "Data Interpretation",
+                  Icons.bar_chart_rounded,
                   () => _loadDataInterpretation(context),
                 ),
                 _trainingMenuItem(
                   context,
                   "Verbal Reasoning",
+                  Icons.chat_bubble_outline_rounded,
                   () => _loadVerbalReasoning(context),
                 ),
                 _trainingMenuItem(
                   context,
                   "Logical Reasoning",
+                  Icons.psychology_alt_rounded,
                   () => _loadLogicalReasoning(context),
                 ),
               ],
@@ -81,6 +85,7 @@ class AptitudeHome extends StatelessWidget {
   Widget _trainingMenuItem(
     BuildContext context,
     String title,
+    IconData icon,
     Function()? onPressed,
   ) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -99,14 +104,20 @@ class AptitudeHome extends StatelessWidget {
         ),
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: screenWidth * 0.05),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              title,
-              style: theme.textTheme.titleMedium?.copyWith(
-                color: theme.colorScheme.primary,
+          child: Row(
+            children: [
+              Icon(icon, color: theme.colorScheme.primary, size: 28),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  title,
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    color: theme.colorScheme.primary,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
-            ),
+            ],
           ),
         ),
       ),

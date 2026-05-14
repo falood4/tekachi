@@ -45,7 +45,7 @@ class HomeScreen extends StatelessWidget {
                     child: Text(
                       "Log In",
                       style: theme.textTheme.headlineLarge?.copyWith(
-                        color: Colors.black,
+                        color: Colors.white,
                       ),
                     ),
                   ),
@@ -99,7 +99,7 @@ class AppTitle extends StatelessWidget {
       style: Theme.of(context).textTheme.headlineLarge?.copyWith(
         fontSize: 0.2 * screenWidth,
         color: secondary,
-        fontFamily: "RussoOne",
+        fontFamily: "ElmsSansBold",
       ),
     );
   }

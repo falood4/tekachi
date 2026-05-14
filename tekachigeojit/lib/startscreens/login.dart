@@ -27,10 +27,12 @@ class _LoginState extends State<Login> {
     if (_emailCtrl.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          backgroundColor: const Color(0xFF8DD300),
+          backgroundColor: const Color(0xFFEAEAEA),
           content: Text(
             'Please enter an email',
-            style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: Color(0xFF0047AB),
+            ),
           ),
         ),
       );
@@ -40,10 +42,12 @@ class _LoginState extends State<Login> {
     if (!_isValidEmail(_emailCtrl.text)) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          backgroundColor: const Color(0xFF8DD300),
+          backgroundColor: const Color(0xFFEAEAEA),
           content: Text(
             'Please enter a valid email address',
-            style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: Color(0xFF0047AB),
+            ),
           ),
         ),
       );
@@ -53,10 +57,12 @@ class _LoginState extends State<Login> {
     if (_passwordCtrl.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          backgroundColor: const Color(0xFF8DD300),
+          backgroundColor: const Color(0xFFEAEAEA),
           content: Text(
             'Please enter a password',
-            style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: Color(0xFF0047AB),
+            ),
           ),
         ),
       );
@@ -70,10 +76,12 @@ class _LoginState extends State<Login> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          backgroundColor: const Color(0xFF8DD300),
+          backgroundColor: const Color(0xFFEAEAEA),
           content: Text(
             'Logging in...',
-            style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: Color(0xFF0047AB),
+            ),
           ),
         ),
       );
@@ -95,20 +103,24 @@ class _LoginState extends State<Login> {
       } else if (response.statusCode == 401) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            backgroundColor: const Color(0xFF8DD300),
+            backgroundColor: const Color(0xFFEAEAEA),
             content: Text(
               'Wrong email or password',
-              style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: Color(0xFF0047AB),
+              ),
             ),
           ),
         );
       } else if (response.statusCode == 400) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            backgroundColor: const Color(0xFF8DD300),
+            backgroundColor: const Color(0xFFEAEAEA),
             content: Text(
               'Cannot connect to server. Please try again later.',
-              style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: Color(0xFF0047AB),
+              ),
             ),
           ),
         );
@@ -117,10 +129,12 @@ class _LoginState extends State<Login> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          backgroundColor: const Color(0xFF8DD300),
+          backgroundColor: const Color(0xFFEAEAEA),
           content: Text(
             "An error occurred. $e",
-            style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: Color(0xFF0047AB),
+            ),
           ),
         ),
       );
@@ -238,7 +252,7 @@ class _LoginState extends State<Login> {
                       child: Text(
                         "Login",
                         style: TextStyle(
-                          color: theme.colorScheme.onSurface,
+                          color: theme.colorScheme.tertiary,
                           fontSize: 0.05 * screenWidth,
                         ),
                       ),
@@ -254,7 +268,7 @@ class _LoginState extends State<Login> {
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.all(0),
-                        backgroundColor: theme.colorScheme.tertiary,
+                        backgroundColor: theme.colorScheme.surfaceDim,
                       ),
                       onPressed: () {
                         Navigator.pop(context);
@@ -262,9 +276,9 @@ class _LoginState extends State<Login> {
                       child: Text(
                         "Back",
                         style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: "DelaGothicOne",
+                          fontFamily: 'Trebuchet',
                           fontSize: screenWidth * 0.035,
+                          color: theme.colorScheme.primary,
                         ),
                       ),
                     ),

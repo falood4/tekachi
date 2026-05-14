@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tekachigeojit/apptheme.dart';
 import 'package:tekachigeojit/components/Widgets/NavBar.dart';
 import 'package:tekachigeojit/startscreens/home.dart';
 import 'package:tekachigeojit/services/AuthService.dart';
@@ -70,7 +69,7 @@ class _UserSettingsState extends State<UserSettings> {
                           child: Icon(
                             Icons.person,
                             size: profileHeight * 0.35,
-                            color: accent,
+                            color: Colors.white,
                           ),
                         ),
                         SizedBox(width: screenWidth * 0.04),
@@ -101,63 +100,6 @@ class _UserSettingsState extends State<UserSettings> {
                           icon: Icons.lock_outline,
                           onPressed: _setChangePassword,
                         ),
-                        Row(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 35,
-                                vertical: 16,
-                              ),
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.brightness_medium_rounded,
-                                      color: Color(0xFF8DD300),
-                                      size: 22,
-                                    ),
-                                    const SizedBox(width: 12),
-                                    Text(
-                                      "Change theme",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyLarge
-                                          ?.copyWith(color: Color(0xFF8DD300)),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-
-                            SizedBox(width: screenWidth * 0.05),
-
-                            ValueListenableBuilder<ThemeMode>(
-                              valueListenable: themeNotifier,
-                              builder: (context, themeMode, child) {
-                                return Switch(
-                                  value: themeMode == ThemeMode.light,
-                                  onChanged: (val) {
-                                    _changeTheme();
-                                  },
-                                  activeThumbColor: Theme.of(
-                                    context,
-                                  ).colorScheme.secondary,
-                                  activeTrackColor: Theme.of(
-                                    context,
-                                  ).colorScheme.tertiary,
-                                  inactiveThumbColor: Theme.of(
-                                    context,
-                                  ).colorScheme.secondary,
-                                  inactiveTrackColor: Theme.of(
-                                    context,
-                                  ).colorScheme.primary,
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-
                         _settingsItem(
                           "Log Out",
                           icon: Icons.logout,
@@ -227,9 +169,9 @@ class _UserSettingsState extends State<UserSettings> {
       builder: (BuildContext context) {
         final Color primary = Theme.of(context).colorScheme.primary;
         final Color secondary = Theme.of(context).colorScheme.secondary;
-        final Color tertiary = Theme.of(context).colorScheme.tertiary;
+        final Color surfaceDim = Theme.of(context).colorScheme.surfaceDim;
         final Color dialogBg = Theme.of(context).colorScheme.surface;
-        final Color dialogText = Theme.of(context).colorScheme.onSurface;
+        final Color dialogText = Theme.of(context).colorScheme.tertiary;
 
         return AlertDialog(
           title: Text(
@@ -252,7 +194,7 @@ class _UserSettingsState extends State<UserSettings> {
                 decoration: InputDecoration(
                   hintText: 'Current Password',
                   hintStyle: TextStyle(
-                    color: tertiary,
+                    color: surfaceDim,
                     fontFamily: "Trebuchet",
                   ),
                 ),
@@ -268,7 +210,7 @@ class _UserSettingsState extends State<UserSettings> {
                 decoration: InputDecoration(
                   hintText: 'New Password',
                   hintStyle: TextStyle(
-                    color: tertiary,
+                    color: surfaceDim,
                     fontFamily: "Trebuchet",
                   ),
                 ),
@@ -284,7 +226,7 @@ class _UserSettingsState extends State<UserSettings> {
                 decoration: InputDecoration(
                   hintText: 'Confirm New Password',
                   hintStyle: TextStyle(
-                    color: tertiary,
+                    color: surfaceDim,
                     fontFamily: "Trebuchet",
                   ),
                 ),
@@ -295,67 +237,58 @@ class _UserSettingsState extends State<UserSettings> {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                style: ElevatedButton.styleFrom(backgroundColor: secondary),
+                style: ElevatedButton.styleFrom(backgroundColor: dialogText),
                 child: Text(
                   'CANCEL',
-                  style: TextStyle(
-                    color: dialogText,
-                    fontFamily: "DelaGothicOne",
-                  ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodySmall?.copyWith(fontFamily: "DelaGothicOne"),
                 ),
               ),
 
               SizedBox.fromSize(size: const Size.fromHeight(10)),
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: secondary),
-                  borderRadius: BorderRadius.circular(25),
-                ),
-                width: 120,
-                height: 55,
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (newController.text.isEmpty ||
-                        confirmController.text.isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          backgroundColor: const Color(0xFF8DD300),
-                          content: Text(
-                            'Please fill in all password fields.',
-                            style: Theme.of(context).textTheme.bodySmall
-                                ?.copyWith(color: Colors.black),
-                          ),
+              ElevatedButton(
+                onPressed: () {
+                  if (newController.text.isEmpty ||
+                      confirmController.text.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: const Color(0xFFEAEAEA),
+                        content: Text(
+                          'Please fill in all password fields.',
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(color: Color(0xFF0047AB)),
                         ),
-                      );
-                      return;
-                    }
-                    if (newController.text != confirmController.text) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          backgroundColor: const Color(0xFF8DD300),
-                          content: Text(
-                            'New passwords do not match.',
-                            style: Theme.of(context).textTheme.bodySmall
-                                ?.copyWith(color: Colors.black),
-                          ),
-                        ),
-                      );
-                      return;
-                    }
-                    Navigator.of(context).pop();
-                    _handleChangePassword(
-                      currentController.text,
-                      newController.text,
+                      ),
                     );
-                  },
-                  style: ElevatedButton.styleFrom(backgroundColor: dialogText),
-                  child: Text(
-                    'OK',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: "DelaGothicOne",
-                    ),
+                    return;
+                  }
+                  if (newController.text != confirmController.text) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: const Color(0xFFEAEAEA),
+                        content: Text(
+                          'New passwords do not match.',
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(color: Color(0xFF0047AB)),
+                        ),
+                      ),
+                    );
+                    return;
+                  }
+                  Navigator.of(context).pop();
+                  _handleChangePassword(
+                    currentController.text,
+                    newController.text,
+                  );
+                },
+                style: Theme.of(context).elevatedButtonTheme.style,
+                child: Text(
+                  'OK',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    fontFamily: "DelaGothicOne",
+                    color: Colors.white,
                   ),
                 ),
               ),
@@ -380,12 +313,12 @@ class _UserSettingsState extends State<UserSettings> {
       debugPrint('Password changed successfully');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          backgroundColor: const Color(0xFF8DD300),
+          backgroundColor: const Color(0xFFEAEAEA),
           content: Text(
             'Password changed successfully.',
             style: Theme.of(
               context,
-            ).textTheme.bodySmall?.copyWith(color: Colors.black),
+            ).textTheme.bodySmall?.copyWith(color: Color(0xFF0047AB)),
           ),
         ),
       );
@@ -393,20 +326,16 @@ class _UserSettingsState extends State<UserSettings> {
       debugPrint('Failed to change password');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          backgroundColor: const Color(0xFF8DD300),
+          backgroundColor: const Color(0xFFEAEAEA),
           content: Text(
             'Failed to change password. Please try again.',
             style: Theme.of(
               context,
-            ).textTheme.bodySmall?.copyWith(color: Colors.black),
+            ).textTheme.bodySmall?.copyWith(color: Color(0xFF0047AB)),
           ),
         ),
       );
     }
-  }
-
-  void _changeTheme() {
-    themeNotifier.toggleTheme();
   }
 
   void _confirmDeleteAccount() {
@@ -416,7 +345,7 @@ class _UserSettingsState extends State<UserSettings> {
         final Color primary = Theme.of(context).colorScheme.primary;
         final Color secondary = Theme.of(context).colorScheme.secondary;
         final Color dialogBg = Theme.of(context).colorScheme.surface;
-        final Color dialogText = Theme.of(context).colorScheme.onSurface;
+        final Color dialogText = Theme.of(context).colorScheme.tertiary;
         final Color red = Theme.of(context).colorScheme.error;
 
         return AlertDialog(
@@ -492,7 +421,7 @@ class _UserSettingsState extends State<UserSettings> {
       builder: (BuildContext context) {
         final Color primary = Theme.of(context).colorScheme.primary;
         final Color secondary = Theme.of(context).colorScheme.secondary;
-        final Color dialogText = Theme.of(context).colorScheme.onSurface;
+        final Color dialogText = Theme.of(context).colorScheme.tertiary;
         final Color dialogBg = Theme.of(context).colorScheme.surface;
         final Color red = Theme.of(context).colorScheme.error;
 

@@ -51,28 +51,20 @@ class PlacementFull extends StatelessWidget {
                     fontSize: 0.05 * screenWidth,
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: Container(
-                    margin: EdgeInsets.symmetric(vertical: 20),
-                    width: screenWidth * 0.45,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (_) => QuizPage(is3step: true),
-                          ),
-                        );
-                      },
-                      style: theme.elevatedButtonTheme.style?.copyWith(
-                        backgroundColor: WidgetStatePropertyAll(lime),
+                SizedBox(height: screenHeight * 0.04),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (_) => QuizPage(is3step: true),
                       ),
-                      child: Text(
-                        "Start",
-                        style: theme.textTheme.headlineLarge?.copyWith(
-                          color: Colors.black,
-                        ),
-                      ),
+                    );
+                  },
+                  style: theme.elevatedButtonTheme.style,
+                  child: Text(
+                    "Start",
+                    style: theme.textTheme.headlineLarge?.copyWith(
+                      color: Colors.white,
                     ),
                   ),
                 ),

@@ -14,7 +14,6 @@ class PlacementResult extends StatelessWidget {
 
     final Color surface = theme.colorScheme.surface;
     final Color secondary = theme.colorScheme.secondary;
-    final Color primary = theme.colorScheme.primary;
 
     final service = FullTestService();
     final int aptitudeScore = service.getAptitudeScore();
@@ -67,7 +66,7 @@ class PlacementResult extends StatelessWidget {
                   color: isPassed ? Color(0xFF8DD300) : Colors.red,
                   fontSize: screenWidth * 0.07,
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'RussoOne',
+                  fontFamily: 'ElmsSansBold',
                 ),
               ),
 
@@ -190,7 +189,7 @@ class PlacementResult extends StatelessWidget {
               color: valueColor,
               fontSize: screenWidth * 0.045,
               fontWeight: FontWeight.bold,
-              fontFamily: 'RussoOne',
+              fontFamily: 'ElmsSansBold',
             ),
           ),
         ),

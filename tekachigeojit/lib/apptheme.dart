@@ -49,84 +49,11 @@ class AppCustomColors extends ThemeExtension<AppCustomColors> {
 class AppTheme {
   AppTheme._();
 
-  static const Color _background = Color(0xFF141414);
-  static const Color _accent = Color(0xFF8DD300);
+  static const Color _accent = Color(0xFF0047AB);
   static const Color _cardLight = Color(0xFFEAEAEA);
   static const Color _white = Colors.white;
   static const Color _black = Colors.black;
   static const Color _grey = Color(0xFF27282A);
-
-  static ThemeData darkTheme = ThemeData(
-    useMaterial3: true,
-    brightness: Brightness.dark,
-
-    scaffoldBackgroundColor: _background,
-
-    colorScheme: const ColorScheme.dark(
-      primary: _white,
-      secondary: _accent,
-      tertiary: _cardLight,
-      surface: _background,
-      error: Color(0xFFE53935),
-      onSurface: _black,
-      surfaceDim: _grey,
-    ),
-
-    textTheme: const TextTheme(
-      headlineLarge: TextStyle(
-        fontFamily: 'DelaGothicOne',
-        fontSize: 32,
-        color: _accent,
-      ),
-      titleLarge: TextStyle(
-        fontFamily: 'Trebuchet',
-        fontSize: 28,
-        fontWeight: FontWeight.w500,
-        color: _white,
-      ),
-      titleMedium: TextStyle(
-        fontFamily: 'RussoOne',
-        fontSize: 24,
-        fontWeight: FontWeight.w300,
-        color: _white,
-      ),
-      bodyLarge: TextStyle(
-        fontSize: 22,
-        fontFamily: "Trebuchet",
-        color: _white,
-      ),
-      bodyMedium: TextStyle(
-        fontSize: 20,
-        fontFamily: "Trebuchet",
-        color: _white,
-      ),
-      bodySmall: TextStyle(
-        fontSize: 16,
-        fontFamily: "Trebuchet",
-        color: _white,
-      ),
-    ),
-
-    elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: const Color.fromRGBO(0, 0, 0, 1),
-        disabledBackgroundColor: _cardLight,
-        foregroundColor: _accent,
-        padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 14),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-      ),
-    ),
-
-    extensions: const [
-      AppCustomColors(
-        cardLight: _cardLight,
-        popupSurface: Color(0xFF1F1F1F),
-        quizOption: Color(0xFFEFEFEF),
-        success: Color(0xFF4CAF50),
-        danger: Color(0xFFE53935),
-      ),
-    ],
-  );
 
   static ThemeData lightTheme = ThemeData(
     useMaterial3: true,
@@ -146,18 +73,18 @@ class AppTheme {
 
     textTheme: const TextTheme(
       headlineLarge: TextStyle(
-        fontFamily: 'DelaGothicOne',
+        fontFamily: 'ElmsSansBold',
         fontSize: 32,
         color: _accent,
       ),
       titleLarge: TextStyle(
-        fontFamily: 'RussoOne',
+        fontFamily: 'ElmsSansBold',
         fontSize: 26,
         fontWeight: FontWeight.w500,
         color: _black,
       ),
       titleMedium: TextStyle(
-        fontFamily: 'RussoOne',
+        fontFamily: 'ElmsSansItalic',
         fontSize: 24,
         fontWeight: FontWeight.w100,
         color: _black,
@@ -181,11 +108,20 @@ class AppTheme {
 
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: const Color.fromRGBO(0, 0, 0, 1),
+        backgroundColor: _accent,
         disabledBackgroundColor: _cardLight,
-        foregroundColor: _accent,
+        foregroundColor: _white,
         padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 14),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+      ),
+    ),
+
+    snackBarTheme: const SnackBarThemeData(
+      backgroundColor: _cardLight,
+      contentTextStyle: TextStyle(
+        color: _accent,
+        fontFamily: 'Trebuchet',
+        fontSize: 16,
       ),
     ),
 

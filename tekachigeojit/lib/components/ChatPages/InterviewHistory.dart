@@ -173,10 +173,10 @@ class _InterviewHistoryState extends State<InterviewHistory> {
                       ),
                       child: Text(
                         '#${index + 1}',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: 'DelaGothicOne',
-                          color: Color.fromRGBO(20, 20, 20, 1.0),
-                          fontSize: 16,
+                          color: theme.colorScheme.tertiary,
+                          fontSize: 20,
                         ),
                       ),
                     ),

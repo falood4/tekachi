@@ -36,9 +36,13 @@ flutter:
 
  
   fonts:
-    - family: RussoOne
+    - family: ElmsSansBold
       fonts:
-        - asset: assets/RussoOne-Regular.ttf
+        - asset: assets/ElmsSans-SemiBold.ttf
+
+    - family: ElmsSansItalic
+      fonts:
+        - asset: assets/ElmsSans-Italic.ttf
 
     - family: DelaGothicOne
       fonts:
@@ -47,7 +51,3 @@ flutter:
     - family: Trebuchet
       fonts:
       - asset: assets/TREBUCBD.TTF 
-
-    - family: Rostex
-      fonts:
-        - asset: assets/Rostex-Regular.ttf

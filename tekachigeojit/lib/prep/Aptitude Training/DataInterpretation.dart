@@ -74,38 +74,51 @@ class DataInterpretation extends StatelessWidget {
     final theme = Theme.of(context);
     dynamic black = theme.colorScheme.onPrimary;
 
-    return ElevatedButton(
-      onPressed: () {
-        showGeneralDialog(
-          context: context,
-          barrierDismissible: true,
-          barrierLabel: 'Close',
-          barrierColor: black.withOpacity(0.25),
-          transitionDuration: const Duration(milliseconds: 180),
-          pageBuilder: (context, animation, secondaryAnimation) {
-            return Center(child: TopicPopup(topicTitle: title));
-          },
-          transitionBuilder: (context, animation, secondaryAnimation, child) {
-            final curved = CurvedAnimation(
-              parent: animation,
-              curve: Curves.easeOutCubic,
-              reverseCurve: Curves.easeInCubic,
-            );
-            return FadeTransition(
-              opacity: curved,
-              child: ScaleTransition(
-                scale: Tween<double>(begin: 0.9, end: 1.0).animate(curved),
-                child: child,
-              ),
-            );
-          },
-        );
-      },
-      style: ElevatedButton.styleFrom(
-        backgroundColor: theme.colorScheme.surfaceDim,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Color(0xFF0047AB), width: 2.0),
       ),
-      child: Text(title, style: theme.textTheme.bodyMedium),
+      child: ElevatedButton(
+        onPressed: () {
+          showGeneralDialog(
+            context: context,
+            barrierDismissible: true,
+            barrierLabel: 'Close',
+            barrierColor: black.withOpacity(0.25),
+            transitionDuration: const Duration(milliseconds: 180),
+            pageBuilder: (context, animation, secondaryAnimation) {
+              return Center(child: TopicPopup(topicTitle: title));
+            },
+            transitionBuilder: (context, animation, secondaryAnimation, child) {
+              final curved = CurvedAnimation(
+                parent: animation,
+                curve: Curves.easeOutCubic,
+                reverseCurve: Curves.easeInCubic,
+              );
+              return FadeTransition(
+                opacity: curved,
+                child: ScaleTransition(
+                  scale: Tween<double>(begin: 0.9, end: 1.0).animate(curved),
+                  child: child,
+                ),
+              );
+            },
+          );
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: theme.colorScheme.surface,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+        ),
+        child: Text(
+          title,
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: theme.colorScheme.primary,
+          ),
+        ),
+      ),
     );
   }
 }
@@ -307,10 +320,10 @@ Average annual exports of Company Z during the given period
         backgroundColor: black,
         child: Container(
           width: screenWidth * 0.8,
-          height: screenHeight * 0.6,
+          height: screenHeight * 0.8,
           padding: EdgeInsets.all(screenWidth * 0.05),
           decoration: BoxDecoration(
-            color: theme.colorScheme.surfaceDim,
+            color: theme.colorScheme.surface,
             borderRadius: BorderRadius.circular(20),
           ),
           child: Column(

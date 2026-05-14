@@ -67,10 +67,12 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
     if (_emailCtrl.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          backgroundColor: const Color(0xFF8DD300),
+          backgroundColor: const Color(0xFFEAEAEA),
           content: Text(
             'Please enter an email',
-            style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: Color(0xFF0047AB),
+            ),
           ),
         ),
       );
@@ -80,10 +82,12 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
     if (!_isValidEmail(_emailCtrl.text)) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          backgroundColor: const Color(0xFF8DD300),
+          backgroundColor: const Color(0xFFEAEAEA),
           content: Text(
             'Please enter a valid email address',
-            style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: Color(0xFF0047AB),
+            ),
           ),
         ),
       );
@@ -93,10 +97,12 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
     if (_passwordCtrl.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          backgroundColor: const Color(0xFF8DD300),
+          backgroundColor: const Color(0xFFEAEAEA),
           content: Text(
             'Please enter a password',
-            style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: Color(0xFF0047AB),
+            ),
           ),
         ),
       );
@@ -106,10 +112,12 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
     if (_passwordCtrl.text.length < 6) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          backgroundColor: const Color(0xFF8DD300),
+          backgroundColor: const Color(0xFFEAEAEA),
           content: Text(
             'Password must be at least 6 characters',
-            style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: Color(0xFF0047AB),
+            ),
           ),
         ),
       );
@@ -150,10 +158,12 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
       } else if (response.statusCode == 409) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            backgroundColor: const Color(0xFF8DD300),
+            backgroundColor: const Color(0xFFEAEAEA),
             content: Text(
               'Email already exists',
-              style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: Color(0xFF0047AB),
+              ),
             ),
           ),
         );
@@ -161,10 +171,12 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            backgroundColor: const Color(0xFF8DD300),
+            backgroundColor: const Color(0xFFEAEAEA),
             content: Text(
               'Sign up failed. Please try again.',
-              style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: Color(0xFF0047AB),
+              ),
             ),
           ),
         );
@@ -173,10 +185,12 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          backgroundColor: const Color(0xFF8DD300),
+          backgroundColor: const Color(0xFFEAEAEA),
           content: Text(
             'Network error. Please check your connection and try again.',
-            style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: Color(0xFF0047AB),
+            ),
           ),
         ),
       );
@@ -184,10 +198,12 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          backgroundColor: const Color(0xFF8DD300),
+          backgroundColor: const Color(0xFFEAEAEA),
           content: Text(
             'An unexpected error occurred: $e',
-            style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: Color(0xFF0047AB),
+            ),
           ),
         ),
       );
@@ -201,7 +217,6 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
     final theme = Theme.of(context);
 
     final Color secondary = theme.colorScheme.secondary;
-    final Color onSurface = theme.colorScheme.onSurface;
     final Color tertiary = theme.colorScheme.tertiary;
     final Color surfaceDim = theme.colorScheme.surfaceDim;
 
@@ -301,7 +316,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                         child: Text(
                           "Sign Up",
                           style: TextStyle(
-                            color: onSurface,
+                            color: tertiary,
                             fontSize: screenWidth * 0.05,
                           ),
                         ),
@@ -317,7 +332,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.all(0),
-                          backgroundColor: tertiary,
+                          backgroundColor: theme.colorScheme.surfaceDim,
                         ),
                         onPressed: () {
                           Navigator.pop(context);
@@ -325,9 +340,9 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                         child: Text(
                           "Back",
                           style: TextStyle(
-                            color: onSurface,
-                            fontFamily: "DelaGothicOne",
+                            fontFamily: 'Trebuchet',
                             fontSize: screenWidth * 0.035,
+                            color: theme.colorScheme.primary,
                           ),
                         ),
                       ),

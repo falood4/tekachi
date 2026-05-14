@@ -93,14 +93,17 @@ class _LogicalReasoningState extends State<LogicalReasoning> {
 
 Widget _topicButton(BuildContext context, String title, int topicId) {
   final theme = Theme.of(context);
-  dynamic grid_bg = theme.colorScheme.surfaceDim;
   return Container(
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(20),
+      border: Border.all(color: Color(0xFF0047AB), width: 2.0),
+    ),
     child: ElevatedButton(
       onPressed: () {
         showTopicPopupDialog(context, topicTitle: title, topicId: topicId);
       },
       style: ElevatedButton.styleFrom(
-        backgroundColor: grid_bg,
+        backgroundColor: theme.colorScheme.surface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       ),
       child: Text(

@@ -54,21 +54,25 @@ class TechnicalHome extends StatelessWidget {
                 _trainingMenuItem(
                   context,
                   "Object Oriented Programming",
+                  Icons.layers_rounded,
                   () => _loadOOP(context),
                 ),
                 _trainingMenuItem(
                   context,
                   "Data Structures",
+                  Icons.account_tree_rounded,
                   () => _loadDS(context),
                 ),
                 _trainingMenuItem(
                   context,
                   "Database Management",
+                  Icons.storage_rounded,
                   () => _loadDBMS(context),
                 ),
                 _trainingMenuItem(
                   context,
                   "Operating Systems",
+                  Icons.computer_rounded,
                   () => _loadOS(context),
                 ),
               ],
@@ -82,6 +86,7 @@ class TechnicalHome extends StatelessWidget {
   Widget _trainingMenuItem(
     BuildContext context,
     String title,
+    IconData icon,
     Function()? onPressed,
   ) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -102,12 +107,18 @@ class TechnicalHome extends StatelessWidget {
         ),
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: screenWidth * 0.05),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              title,
-              style: theme.textTheme.titleMedium?.copyWith(color: primary),
-            ),
+          child: Row(
+            children: [
+              Icon(icon, color: primary, size: 28),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  title,
+                  style: theme.textTheme.titleLarge?.copyWith(color: primary),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
           ),
         ),
       ),

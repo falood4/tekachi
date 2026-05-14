@@ -30,6 +30,8 @@ class _TopicPopupState extends State<TopicPopup> {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
+    final theme = Theme.of(context);
+
     return Dialog(
       backgroundColor: Colors.transparent,
       child: ConstrainedBox(
@@ -38,7 +40,7 @@ class _TopicPopupState extends State<TopicPopup> {
           width: screenWidth * 0.8,
           padding: EdgeInsets.all(screenWidth * 0.05),
           decoration: BoxDecoration(
-            color: const Color(0xFFD9D9D9),
+            color: theme.colorScheme.surface,
             borderRadius: BorderRadius.circular(20),
           ),
           child: Column(
@@ -63,7 +65,7 @@ class _TopicPopupState extends State<TopicPopup> {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(
                           child: CircularProgressIndicator(
-                            color: Color(0xFF8DD300),
+                            color: Color(0xFF0047AB),
                           ),
                         );
                       }
@@ -93,7 +95,7 @@ class _TopicPopupState extends State<TopicPopup> {
                   Navigator.of(context).pop();
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF8DD300),
+                  backgroundColor: const Color(0xFF0047AB),
                   padding: EdgeInsets.symmetric(
                     horizontal: screenWidth * 0.1,
                     vertical: screenHeight * 0.02,
@@ -102,7 +104,7 @@ class _TopicPopupState extends State<TopicPopup> {
                 child: Text(
                   'Close',
                   style: TextStyle(
-                    color: Colors.black,
+                    color: Colors.white,
                     fontSize: screenWidth * 0.04,
                     fontFamily: "DelaGothicOne",
                   ),

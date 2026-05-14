@@ -15,7 +15,7 @@ class NavBar extends StatelessWidget {
     return Container(
       height: screenHeight * 0.085,
       alignment: Alignment.bottomCenter,
-      color: const Color(0xFF8DD300),
+      color: const Color(0xFFBFD1E5),
 
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8),
@@ -30,13 +30,13 @@ class NavBar extends StatelessWidget {
                   constraints: BoxConstraints.tight(const Size(75, 75)),
                   icon: ImageIcon(
                     const AssetImage('assets/nav_icons/prepNav.png'),
-                    color: const Color(0xFF8DD300),
+                    color: const Color(0xFFBFD1E5),
                     size: screenHeight * 0.07,
                   ),
                   onPressed: () {},
                   style: ButtonStyle(
                     backgroundColor: WidgetStateProperty.all<Color>(
-                      Colors.black,
+                      Color(0xFF0047AB),
                     ),
                     shape: WidgetStateProperty.all<CircleBorder>(
                       const CircleBorder(),
@@ -73,13 +73,13 @@ class NavBar extends StatelessWidget {
                   constraints: BoxConstraints.tight(const Size(75, 75)),
                   icon: ImageIcon(
                     const AssetImage('assets/nav_icons/testNav.png'),
-                    color: const Color(0xFF8DD300),
+                    color: const Color(0xFFBFD1E5),
                     size: screenHeight * 0.07,
                   ),
                   onPressed: () {},
                   style: ButtonStyle(
                     backgroundColor: WidgetStateProperty.all<Color>(
-                      Colors.black,
+                      Color(0xFF0047AB),
                     ),
                     shape: WidgetStateProperty.all<CircleBorder>(
                       const CircleBorder(),
@@ -116,13 +116,13 @@ class NavBar extends StatelessWidget {
                   constraints: BoxConstraints.tight(const Size(75, 75)),
                   icon: ImageIcon(
                     const AssetImage('assets/nav_icons/profile.png'),
-                    color: const Color(0xFF8DD300),
+                    color: const Color(0xFFBFD1E5),
                     size: screenHeight * 0.07,
                   ),
                   onPressed: () {},
                   style: ButtonStyle(
                     backgroundColor: WidgetStateProperty.all<Color>(
-                      Colors.black,
+                      Color(0xFF0047AB),
                     ),
                     shape: WidgetStateProperty.all<CircleBorder>(
                       const CircleBorder(),

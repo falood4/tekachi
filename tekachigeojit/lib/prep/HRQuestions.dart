@@ -172,7 +172,7 @@ class HrTrainingScreen extends StatelessWidget {
           "HR Training",
           style: TextStyle(
             color: theme.colorScheme.secondary,
-            fontFamily: "RussoOne",
+            fontFamily: "ElmsSansBold",
             fontSize: 0.075 * screenWidth,
           ),
         ),
@@ -193,7 +193,7 @@ class HrTrainingScreen extends StatelessWidget {
                   "Basic Introduction",
                   style: TextStyle(
                     color: theme.colorScheme.secondary,
-                    fontFamily: "RussoOne",
+                    fontFamily: "ElmsSansBold",
                     fontSize: baseFontSize * 1.4,
                   ),
                 ),
@@ -204,7 +204,7 @@ class HrTrainingScreen extends StatelessWidget {
                   "Strengths & Weaknesses",
                   style: TextStyle(
                     color: theme.colorScheme.secondary,
-                    fontFamily: "RussoOne",
+                    fontFamily: "ElmsSansBold",
                     fontSize: baseFontSize * 1.4,
                   ),
                 ),
@@ -215,7 +215,7 @@ class HrTrainingScreen extends StatelessWidget {
                   "Work Style & Attitude",
                   style: TextStyle(
                     color: theme.colorScheme.secondary,
-                    fontFamily: "RussoOne",
+                    fontFamily: "ElmsSansBold",
                     fontSize: baseFontSize * 1.4,
                   ),
                 ),
@@ -226,7 +226,7 @@ class HrTrainingScreen extends StatelessWidget {
                   "Pressure & Challenges",
                   style: TextStyle(
                     color: theme.colorScheme.secondary,
-                    fontFamily: "RussoOne",
+                    fontFamily: "ElmsSansBold",
                     fontSize: baseFontSize * 1.4,
                   ),
                 ),
@@ -237,7 +237,7 @@ class HrTrainingScreen extends StatelessWidget {
                   "Motivation & Goals",
                   style: TextStyle(
                     color: theme.colorScheme.secondary,
-                    fontFamily: "RussoOne",
+                    fontFamily: "ElmsSansBold",
                     fontSize: baseFontSize * 1.4,
                   ),
                 ),
@@ -248,7 +248,7 @@ class HrTrainingScreen extends StatelessWidget {
                   "Company & Role Fit",
                   style: TextStyle(
                     color: theme.colorScheme.secondary,
-                    fontFamily: "RussoOne",
+                    fontFamily: "ElmsSansBold",
                     fontSize: baseFontSize * 1.4,
                   ),
                 ),
@@ -259,7 +259,7 @@ class HrTrainingScreen extends StatelessWidget {
                   "Behavioural Questions",
                   style: TextStyle(
                     color: theme.colorScheme.secondary,
-                    fontFamily: "RussoOne",
+                    fontFamily: "ElmsSansBold",
                     fontSize: baseFontSize * 1.4,
                   ),
                 ),
@@ -270,7 +270,7 @@ class HrTrainingScreen extends StatelessWidget {
                   "Ethics & Professionalism",
                   style: TextStyle(
                     color: theme.colorScheme.secondary,
-                    fontFamily: "RussoOne",
+                    fontFamily: "ElmsSansBold",
                     fontSize: baseFontSize * 1.4,
                   ),
                 ),
@@ -281,7 +281,7 @@ class HrTrainingScreen extends StatelessWidget {
                   "Flexibility & Availability",
                   style: TextStyle(
                     color: theme.colorScheme.secondary,
-                    fontFamily: "RussoOne",
+                    fontFamily: "ElmsSansBold",
                     fontSize: baseFontSize * 1.4,
                   ),
                 ),
@@ -292,7 +292,7 @@ class HrTrainingScreen extends StatelessWidget {
                   "Compensation & Closure",
                   style: TextStyle(
                     color: theme.colorScheme.secondary,
-                    fontFamily: "RussoOne",
+                    fontFamily: "ElmsSansBold",
                     fontSize: baseFontSize * 1.4,
                   ),
                 ),

@@ -107,7 +107,9 @@ class _QuizResultState extends State<QuizResult> {
                   child: CircularProgressIndicator(
                     value: widget.score / 15,
                     strokeWidth: screenWidth * 0.1,
-                    backgroundColor: const Color.fromARGB(255, 51, 51, 51),
+                    backgroundColor: theme.colorScheme.secondary.withOpacity(
+                      0.2,
+                    ),
                     valueColor: AlwaysStoppedAnimation<Color>(secondary),
                     strokeCap: StrokeCap.round,
                   ),
@@ -137,7 +139,7 @@ class _QuizResultState extends State<QuizResult> {
                   child: Text(
                     'Review Answers',
                     style: theme.textTheme.headlineLarge?.copyWith(
-                      color: Colors.black87,
+                      color: Colors.white,
                       fontSize: screenWidth * 0.06,
                     ),
                   ),
@@ -162,11 +164,11 @@ class _QuizResultState extends State<QuizResult> {
                         FullTestService().setAptitudeScore(widget.score);
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            backgroundColor: const Color(0xFF8DD300),
+                            backgroundColor: const Color(0xFFEAEAEA),
                             content: Text(
                               'Loading interview...',
                               style: theme.textTheme.bodySmall?.copyWith(
-                                color: Colors.black,
+                                color: Color(0xFF0047AB),
                               ),
                             ),
                             duration: const Duration(seconds: 4),
@@ -190,11 +192,11 @@ class _QuizResultState extends State<QuizResult> {
                         if (!context.mounted) return;
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            backgroundColor: const Color(0xFF8DD300),
+                            backgroundColor: const Color(0xFFEAEAEA),
                             content: Text(
                               'Server error. Please try later.',
                               style: theme.textTheme.bodySmall?.copyWith(
-                                color: Colors.black,
+                                color: Color(0xFF0047AB),
                               ),
                             ),
                           ),
@@ -220,12 +222,46 @@ class _QuizResultState extends State<QuizResult> {
                     ),
                   )
                 else if (widget.is3step && widget.score < 7)
-                  Text(
-                    'You did not meet the required score to proceed to the interviews.',
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      fontStyle: FontStyle.italic,
-                    ),
-                    textAlign: TextAlign.center,
+                  Column(
+                    children: [
+                      Text(
+                        'You did not meet the required score to proceed to the interviews.',
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          fontStyle: FontStyle.italic,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+
+                      SizedBox(height: 10),
+
+                      ElevatedButton(
+                        onPressed: () {
+                          FullTestService().saveAttempt();
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => const TestHome(),
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 10,
+                            horizontal: 15,
+                          ),
+                          backgroundColor: theme.colorScheme.surfaceDim,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                        ),
+                        child: Text(
+                          'Return to Tests',
+                          style: theme.textTheme.headlineLarge?.copyWith(
+                            color: theme.colorScheme.primary,
+                            fontSize: screenWidth * 0.04,
+                          ),
+                        ),
+                      ),
+                    ],
                   )
                 else if (!widget.is3step)
                   ElevatedButton(
@@ -265,7 +301,6 @@ class _QuizResultState extends State<QuizResult> {
   Widget _answerReviewCard(AnswerSelection answer, int index) {
     final theme = Theme.of(context);
     dynamic primary = theme.colorScheme.primary;
-    dynamic secondary = theme.colorScheme.secondary;
     dynamic red = theme.colorScheme.error;
 
     return Container(
@@ -285,7 +320,9 @@ class _QuizResultState extends State<QuizResult> {
           const SizedBox(height: 5),
           Text(
             'Correct Answer: ${answer.correctOptionText}',
-            style: theme.textTheme.bodySmall?.copyWith(color: secondary),
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: const Color.fromARGB(255, 19, 98, 21),
+            ),
           ),
         ],
       ),
@@ -304,10 +341,12 @@ class _QuizResultState extends State<QuizResult> {
     if (wrongAnswers.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          backgroundColor: const Color(0xFF8DD300),
+          backgroundColor: const Color(0xFFEAEAEA),
           content: Text(
             'No answers to review.',
-            style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: Color(0xFF0047AB),
+            ),
           ),
         ),
       );

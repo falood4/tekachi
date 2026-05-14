@@ -75,10 +75,12 @@ class _ChatInterviewState extends State<ChatInterview> {
     if (messageText.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          backgroundColor: const Color(0xFF8DD300),
+          backgroundColor: const Color(0xFFEAEAEA),
           content: Text(
             'Your reply is empty',
-            style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: Color(0xFF0047AB),
+            ),
           ),
         ),
       );
@@ -104,10 +106,12 @@ class _ChatInterviewState extends State<ChatInterview> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          backgroundColor: const Color(0xFF8DD300),
+          backgroundColor: const Color(0xFFEAEAEA),
           content: Text(
             'An error occurred while sending the message. Please try again.',
-            style: theme.textTheme.bodySmall?.copyWith(color: Colors.black),
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: Color(0xFF0047AB),
+            ),
           ),
         ),
       );
@@ -154,12 +158,12 @@ class _ChatInterviewState extends State<ChatInterview> {
         if (!mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              backgroundColor: const Color(0xFF8DD300),
+              backgroundColor: const Color(0xFFEAEAEA),
               content: Text(
                 'Loading interview...',
                 style: Theme.of(
                   context,
-                ).textTheme.bodySmall?.copyWith(color: Colors.black),
+                ).textTheme.bodySmall?.copyWith(color: Color(0xFF0047AB)),
               ),
               duration: const Duration(seconds: 4),
             ),
@@ -194,9 +198,9 @@ class _ChatInterviewState extends State<ChatInterview> {
             'Failed to proceed. Please try again.',
             style: Theme.of(
               context,
-            ).textTheme.bodySmall?.copyWith(color: Colors.black),
+            ).textTheme.bodySmall?.copyWith(color: Color(0xFF0047AB)),
           ),
-          backgroundColor: const Color(0xFF8DD300),
+          backgroundColor: const Color(0xFFEAEAEA),
         ),
       );
     }
@@ -250,11 +254,11 @@ class _ChatInterviewState extends State<ChatInterview> {
                   _handleContinue(context);
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      backgroundColor: const Color(0xFF8DD300),
+                      backgroundColor: const Color(0xFFEAEAEA),
                       content: Text(
                         'Loading interview...',
                         style: theme.textTheme.bodySmall?.copyWith(
-                          color: Colors.black,
+                          color: Color(0xFF0047AB),
                         ),
                       ),
                       duration: const Duration(seconds: 4),
@@ -345,7 +349,11 @@ class _ChatInterviewState extends State<ChatInterview> {
                   height: 50,
                   child: IconButton(
                     onPressed: () => sendMessage(),
-                    icon: Icon(Icons.send_rounded, size: 30, color: primary),
+                    icon: Icon(
+                      Icons.send_rounded,
+                      size: 24,
+                      color: theme.colorScheme.tertiary,
+                    ),
                     style: ButtonStyle(
                       backgroundColor: WidgetStateProperty.all<Color>(
                         secondary,

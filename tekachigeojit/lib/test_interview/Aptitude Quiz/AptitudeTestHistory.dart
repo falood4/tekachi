@@ -137,9 +137,9 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
                       ),
                       child: Text(
                         '#${index + 1}',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: 'DelaGothicOne',
-                          color: Color.fromRGBO(20, 20, 20, 1.0),
+                          color: theme.colorScheme.tertiary,
                           fontSize: 16,
                         ),
                       ),
@@ -221,24 +221,22 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
                     });
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        backgroundColor: const Color(0xFF8DD300),
+                        backgroundColor: const Color(0xFFEAEAEA),
                         content: Text(
                           'Test history cleared.',
-                          style: Theme.of(
-                            context,
-                          ).textTheme.bodySmall?.copyWith(color: Colors.black),
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(color: Color(0xFF0047AB)),
                         ),
                       ),
                     );
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        backgroundColor: const Color(0xFF8DD300),
+                        backgroundColor: const Color(0xFFEAEAEA),
                         content: Text(
                           'Failed to clear history: HTTP ${response.statusCode}',
-                          style: Theme.of(
-                            context,
-                          ).textTheme.bodySmall?.copyWith(color: Colors.black),
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(color: Color(0xFF0047AB)),
                         ),
                       ),
                     );
@@ -247,12 +245,12 @@ class _AptitudeTestHistoryState extends State<AptitudeTestHistory> {
                   if (!mounted) return;
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      backgroundColor: const Color(0xFF8DD300),
+                      backgroundColor: const Color(0xFFEAEAEA),
                       content: Text(
                         'Failed to clear history: $e',
-                        style: Theme.of(
-                          context,
-                        ).textTheme.bodySmall?.copyWith(color: Colors.black),
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Color(0xFF0047AB),
+                        ),
                       ),
                     ),
                   );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tekachigeojit/components/Widgets/NavBar.dart';
 import 'package:tekachigeojit/services/ChatService.dart';
 import 'package:tekachigeojit/components/ChatPages/ChatInterview.dart';
+import 'package:tekachigeojit/components/ChatPages/InterviewHistory.dart';
 
 class Techinterviewintro extends StatelessWidget {
   const Techinterviewintro({super.key});
@@ -44,7 +45,7 @@ class Techinterviewintro extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Hello. I’m a Tech Lead, and I’ll be conducting your technical interview today. \n\n My goal is to explore your technical foundation and see how you approach complex problems. We’ll dive into some core computer science concepts—specifically DSA, DBMS, and Operating Systems—and then move into a live coding exercise to see your logic in action.',
+                  'A technical interview aims to explore your foundation in computer science concepts—specifically DSA, DBMS, and Operating Systems— and see how you approach complex problems in a live coding exercise to see your logic in action.',
                   textAlign: TextAlign.center,
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: primary,
@@ -56,64 +57,81 @@ class Techinterviewintro extends StatelessWidget {
                   image: Image.asset('assets/interview_avatar/tech.png').image,
                 ),
 
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 3),
-                  child: Container(
-                    margin: EdgeInsets.symmetric(vertical: 18),
-                    width: screenWidth * 0.45,
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        try {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              backgroundColor: const Color(0xFF8DD300),
-                              content: Text(
-                                'Loading interview...',
-                                style: theme.textTheme.bodySmall?.copyWith(
-                                  color: Colors.black,
-                                ),
-                              ),
-                              duration: const Duration(seconds: 4),
+                SizedBox(height: screenHeight * 0.02),
+
+                ElevatedButton(
+                  onPressed: () async {
+                    try {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          backgroundColor: const Color(0xFFEAEAEA),
+                          content: Text(
+                            'Loading interview...',
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: Color(0xFF0047AB),
                             ),
-                          );
-                          final String reply = await Chatservice()
-                              .startConversation(2);
-                          if (!context.mounted) {
-                            return;
-                          }
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (_) => ChatInterview(
-                                initialMessage: reply,
-                                personaId: 2,
-                                is3step: false,
-                              ),
-                            ),
-                          );
-                        } catch (e) {
-                          if (!context.mounted) return;
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              backgroundColor: const Color(0xFF8DD300),
-                              content: Text(
-                                'Server error. Please try later.',
-                                style: theme.textTheme.bodySmall?.copyWith(
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
-                          );
-                        }
-                      },
-                      style: theme.elevatedButtonTheme.style?.copyWith(
-                        backgroundColor: WidgetStatePropertyAll(secondary),
-                      ),
-                      child: Text(
-                        "Start",
-                        style: theme.textTheme.headlineLarge?.copyWith(
-                          color: Colors.black,
+                          ),
+                          duration: const Duration(seconds: 4),
                         ),
+                      );
+                      final String reply = await Chatservice()
+                          .startConversation(2);
+                      if (!context.mounted) {
+                        return;
+                      }
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (_) => ChatInterview(
+                            initialMessage: reply,
+                            personaId: 2,
+                            is3step: false,
+                          ),
+                        ),
+                      );
+                    } catch (e) {
+                      if (!context.mounted) return;
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          backgroundColor: const Color(0xFFEAEAEA),
+                          content: Text(
+                            'Server error. Please try later.',
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: Color(0xFF0047AB),
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                  style: theme.elevatedButtonTheme.style,
+                  child: Text(
+                    "Start",
+                    style: theme.textTheme.headlineLarge?.copyWith(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: 8),
+
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) =>
+                            InterviewHistory(personaId: 2, title: "Tech"),
                       ),
+                    );
+                  },
+                  style: theme.elevatedButtonTheme.style?.copyWith(
+                    backgroundColor: WidgetStatePropertyAll(
+                      theme.colorScheme.surfaceDim,
+                    ),
+                  ),
+                  child: Text(
+                    "Archive",
+                    style: theme.textTheme.bodyLarge?.copyWith(
+                      color: secondary,
                     ),
                   ),
                 ),

@@ -30,63 +30,96 @@ class PrepHome extends StatelessWidget {
                 textAlign: TextAlign.left,
                 style: TextStyle(
                   fontSize: screenWidth * 0.125,
-                  fontFamily: 'RussoOne',
+                  fontFamily: 'ElmsSansBold',
                   fontWeight: FontWeight.w100,
                   color: theme.colorScheme.secondary,
                 ),
               ),
 
-              TrainingCard(
-                title: 'Aptitude Training',
-                icon: Icons.calculate_rounded,
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => AptitudeHome()),
-                ),
-              ),
-              TrainingCard(
-                title: 'Technical Training',
-                icon: Icons.code_rounded,
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => TechnicalHome()),
-                ),
-              ),
-              TrainingCard(
-                title: 'HR Training',
-                icon: Icons.groups_rounded,
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => HrTrainingScreen()),
-                ),
-              ),
-
               const SizedBox(height: 20),
 
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TrainingCard(
+                    title: 'Aptitude Training',
+                    icon: Icons.calculate_rounded,
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => AptitudeHome()),
+                    ),
+                  ),
+                  TrainingCard(
+                    title: 'Technical Training',
+                    icon: Icons.code_rounded,
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => TechnicalHome()),
+                    ),
+                  ),
+                ],
+              ),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TrainingCard(
+                    title: 'HR Training',
+                    icon: Icons.groups_rounded,
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => HrTrainingScreen()),
+                    ),
+                  ),
+                  TrainingCard(
+                    title: 'Mentor Archive',
+                    icon: Icons.history_rounded,
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) =>
+                            InterviewHistory(personaId: 1, title: "Mentor"),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
               Container(
-                height: screenHeight * 0.26,
-                padding: const EdgeInsets.all(10),
+                height: screenHeight * 0.25,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(18),
-                  color: theme.colorScheme.secondary,
+                  border: Border.all(color: Color(0xFF0047AB), width: 5.0),
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      'AI Mentor',
-                      style: TextStyle(
-                        fontFamily: 'RussoOne',
-                        fontSize: screenWidth * 0.12,
-                        color: Colors.black,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.auto_awesome,
+                          color: theme.colorScheme.secondary,
+                          size: 24,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          'AI Mentor',
+                          style: TextStyle(
+                            fontFamily: 'DelaGothicOne',
+                            fontSize: 32,
+                            color: theme.colorScheme.secondary,
+                          ),
+                        ),
+                      ],
                     ),
+                    const SizedBox(height: 6),
                     Text(
-                      'Personalized interview practice',
-                      style: TextStyle(color: Colors.black),
+                      'Try out AI powered mentor\nto resolve any doubts',
+                      textAlign: TextAlign.center,
+                      style: theme.textTheme.bodySmall,
                     ),
-
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 12),
                     ElevatedButton(
                       onPressed: () async {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -94,10 +127,10 @@ class PrepHome extends StatelessWidget {
                             content: Text(
                               'Loading chat...',
                               style: theme.textTheme.bodySmall?.copyWith(
-                                color: Colors.black,
+                                color: Color(0xFF0047AB),
                               ),
                             ),
-                            backgroundColor: const Color(0xFF8DD300),
+                            backgroundColor: const Color(0xFFEAEAEA),
                             duration: Duration(seconds: 10),
                           ),
                         );
@@ -120,53 +153,28 @@ class PrepHome extends StatelessWidget {
                           ScaffoldMessenger.of(context).hideCurrentSnackBar();
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              backgroundColor: const Color(0xFF8DD300),
+                              backgroundColor: const Color(0xFFEAEAEA),
                               content: Text(
                                 'Could not start the interview. Please try again.',
                                 style: theme.textTheme.bodySmall?.copyWith(
-                                  color: Colors.black,
+                                  color: Color(0xFF0047AB),
                                 ),
                               ),
                             ),
                           );
                         }
                       },
-                      style: theme.elevatedButtonTheme.style,
+                      style: theme.elevatedButtonTheme.style?.copyWith(
+                        backgroundColor: WidgetStatePropertyAll(
+                          Color(0xFF0047AB),
+                        ),
+                      ),
                       child: Text(
                         'Start',
-                        style: theme.textTheme.headlineLarge?.copyWith(
+                        style: TextStyle(
                           fontSize: 22,
-                        ),
-                      ),
-                    ),
-
-                    SizedBox(height: 5),
-
-                    ElevatedButton(
-                      onPressed: () async {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) =>
-                                InterviewHistory(personaId: 1, title: "Mentor"),
-                          ),
-                        );
-                      },
-                      style: theme.elevatedButtonTheme.style?.copyWith(
-                        padding: WidgetStateProperty.all<EdgeInsets>(
-                          const EdgeInsets.symmetric(
-                            horizontal: 24,
-                            vertical: 12,
-                          ),
-                        ),
-                        backgroundColor: WidgetStateProperty.all<Color>(
-                          Color(0xFFEAEAEA),
-                        ),
-                      ),
-                      child: Text(
-                        'Archive',
-                        style: theme.textTheme.titleMedium?.copyWith(
-                          fontSize: 16,
-                          color: Colors.black87,
+                          fontFamily: 'DelaGothicOne',
+                          color: Colors.white,
                         ),
                       ),
                     ),
@@ -197,37 +205,37 @@ class TrainingCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
 
-    return Padding(
+    return Container(
+      height: screenWidth * 0.4,
+      width: screenWidth * 0.4,
+      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: Material(
         elevation: 4,
         borderRadius: BorderRadius.circular(16),
-        color: Theme.of(context).colorScheme.surfaceDim,
+        color: Theme.of(context).colorScheme.tertiary,
         child: InkWell(
           borderRadius: BorderRadius.circular(16),
           onTap: onTap,
           child: Container(
             height: screenWidth * 0.25,
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Row(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
                   icon,
-                  size: 36,
+                  size: 56,
                   color: Theme.of(context).colorScheme.secondary,
                 ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Text(
-                    title,
-                    style: Theme.of(
-                      context,
-                    ).textTheme.titleMedium?.copyWith(fontFamily: 'Trebuchet'),
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontFamily: 'ElmsSansBold',
+                    color: Colors.black87,
                   ),
-                ),
-                Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  color: Theme.of(context).colorScheme.secondary,
+                  textAlign: TextAlign.center,
                 ),
               ],
             ),

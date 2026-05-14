@@ -21,7 +21,6 @@ class TekachiGeo extends StatelessWidget {
         return MaterialApp(
           title: 'Tekachi',
           theme: AppTheme.lightTheme,
-          darkTheme: AppTheme.darkTheme,
           themeMode: themeMode,
           home: const HomeScreen(),
         );
