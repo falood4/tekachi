@@ -90,7 +90,7 @@ class PlacementResult extends StatelessWidget {
                       '$aptitudeScore/15',
                       aptitudeScore >= 8 ? Color(0xFF8DD300) : Colors.red,
                       screenWidth,
-                      Colors.black87,
+                      Colors.white,
                     ),
                     // Technical Interview
                     _buildScoreRow(
@@ -101,7 +101,7 @@ class PlacementResult extends StatelessWidget {
                           ? Color(0xFF8DD300)
                           : Colors.red,
                       screenWidth,
-                      Colors.black87,
+                      Colors.white,
                     ),
                     // HR Interview
                     _buildScoreRow(
@@ -110,7 +110,7 @@ class PlacementResult extends StatelessWidget {
                       hrVerdict,
                       hrVerdict == 'HIRED' ? Color(0xFF8DD300) : Colors.red,
                       screenWidth,
-                      Colors.black87,
+                      Colors.white,
                     ),
                   ],
                 ),
@@ -139,7 +139,7 @@ class PlacementResult extends StatelessWidget {
                 child: Text(
                   'Done',
                   style: theme.textTheme.headlineLarge?.copyWith(
-                    color: Colors.black,
+                    color: Colors.white,
                     fontSize: screenWidth * 0.06,
                   ),
                 ),

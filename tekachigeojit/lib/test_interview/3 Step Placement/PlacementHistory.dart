@@ -94,11 +94,12 @@ class _PlacementHistoryState extends State<PlacementHistory> {
   }
 
   Widget buildBody() {
+    final theme = Theme.of(context);
     if (_isLoading) {
       return const Center(child: CircularProgressIndicator());
     } else if (_attempts.isEmpty) {
-      return const Center(
-        child: Text('No attempts found', style: TextStyle(color: Colors.white)),
+      return Center(
+        child: Text('No attempts found', style: theme.textTheme.bodyMedium),
       );
     } else {
       return ListView.builder(
